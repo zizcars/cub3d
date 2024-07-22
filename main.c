@@ -23,6 +23,9 @@ void print_info(t_map_info *info)
     // }
 }
 
+// solve the problem of space between i information like F 32,   34, 343
+// check the number of players and other characters in the map
+
 int main()
 {
     t_map_info *info;
@@ -31,6 +34,10 @@ int main()
     fd = open("map.cub", O_RDONLY);
     info = read_info(fd);
     print_info(info);
+    if (check_map(info->map))
+        printf("valid map\n");
+    else 
+        printf("invalid map\n");
     close (fd);
 
     // if (check_char(argv[1][0]))

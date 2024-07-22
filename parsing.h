@@ -32,6 +32,8 @@ typedef struct s_map_info
 bool check_filename(char *file_name);
 bool check_char(char c);
 t_map_info *read_info(int fd);
+bool check_map(char *row);
+
 #endif
 
 

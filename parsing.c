@@ -29,29 +29,57 @@ bool check_char(char c)
 	return (false);
 }
 
-bool chack_map(char *row)
+bool check_map(char *row)
 {
 	int i;
 
 	i = 0;
-	while(row && row[i] && row[i] != '\n')
+	while (row && row[i] != '\n')
 	{
 		if (row[i] != '1')
+		{
+			printf("false 1:|%c|\n", row[i]);
 			return (false);
+		}
 		i++;
 	}
 	while (row && row[i])
 	{
+		if (row[i] == '\n')
+		{
+			if (row[i + 1] == '\n')
+				return (false);
+			i++;
+			continue;
+		}
 		if (check_char(row[i]) == false)
+		{
+			printf("false 2\n");
 			return (false);
+		}
 		if (row[i] != '1' && row[i + 1] && row[i + 1] == '\n')
+		{
+			printf("false 3\n");
 			return (false);
+		}
 		if (row[i] == '\n' && row[i + 1] && row[i + 1] != '1')
+		{
+			printf("false 4\n");
 			return (false);
-		if ()
-
+		}
+		i++;
 	}
-	
+	i-= 2;
+	while (i > 0 && row[i] != '\n')
+	{
+		if (row[i] != '1')
+		{
+			printf("false 5:|%c|\n", row[i]);
+			return (false);
+		}
+		i--;
+	}
+	return (true);
 }
 int array_lenght(char **array)
 {
@@ -150,6 +178,6 @@ t_map_info *read_info(int fd)
 		free(tmp);
 		line = get_next_line(fd);
 	}
-	
+
 	return (info);
 }

@@ -13,6 +13,7 @@ $(NAME) : $(OBJ)
 clean : 
 	make clean -C libft
 	rm -f $(OBJ)
+	rm -f getnextline/get_next_line_utils.o getnextline/get_next_line.o
 
 fclean : clean
 	make fclean -C libft
