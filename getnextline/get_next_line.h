@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 13:46:45 by abounab           #+#    #+#             */
-/*   Updated: 2024/07/16 11:50:48 by abounab          ###   ########.fr       */
+/*   Created: 2024/01/04 13:22:05 by Achakkaf          #+#    #+#             */
+/*   Updated: 2024/07/22 16:54:34 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# include "../types.h"
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <unistd.h>
+# include <stdlib.h>
+# include "../libft/libft.h"
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 42
 # endif
 
+size_t	ft_strlen(const char *s);
 char	*get_next_line(int fd);
-
-size_t	until_line(char *str);
-
-char	*ft_get_line(char *str);
-
-char	*ft_read_buff(int fd, char *str);
-
-char	*ft_update(char *str);
+char	*ft_strdup(const char *s);
+char	*get_one_line(char *s);
+char	*rm_line(char *s);
+int		find_nl(char *s);
 
 #endif
