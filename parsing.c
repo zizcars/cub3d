@@ -45,6 +45,11 @@ bool check_map(char *row)
 	}
 	while (row && row[i])
 	{
+		if (row[i] == '\n' && row[i + 1] && row[i + 1] != '1')
+		{
+			printf("false 4\n");
+			return (false);
+		}
 		if (row[i] == '\n')
 		{
 			if (row[i + 1] == '\n')
@@ -62,11 +67,6 @@ bool check_map(char *row)
 			printf("false 3\n");
 			return (false);
 		}
-		if (row[i] == '\n' && row[i + 1] && row[i + 1] != '1')
-		{
-			printf("false 4\n");
-			return (false);
-		}
 		i++;
 	}
 	i-= 2;
@@ -81,13 +81,17 @@ bool check_map(char *row)
 	}
 	return (true);
 }
-int array_lenght(char **array)
+int array_length(char **array)
 {
 	int len;
 
 	len = 0;
 	while (array && array[len])
+	{
+		if (ft_strcmp(array[len], "\n") == 0) // I add array[len] == '\n' because in some cases the array is being like this [..., "\n", NULL];
+			break;
 		len++;
+	}
 	return (len);
 }
 
@@ -105,12 +109,15 @@ void ft_error()
 	write(STDERR_FILENO, "Error\n", 7);
 	exit(1);
 }
+
+
 t_map_info *read_info(int fd)
 {
 	char *line;
 	char **split_line;
 	t_map_info *info;
 	char *tmp;
+	int ar_len;
 	tmp = NULL;
 	// bool is_no;
 	// bool is_so;
@@ -128,32 +135,34 @@ t_map_info *read_info(int fd)
 	while (split_line && split_line[0][0] != '1')
 	{
 		// printf("|%s|\n", split_line[0]);
-		if (ft_strcmp(split_line[0], "NO") == 0)
+		ar_len = array_length(split_line);
+		// printf("size: %d\t%s\n", ar_len, split_line[0]);
+		if (ar_len == 2 && ft_strcmp(split_line[0], "NO") == 0)
 		{
 			free(info->north_path);
 			info->north_path = ft_strdup(split_line[1]);
 		}
-		else if (ft_strcmp(split_line[0], "SO") == 0)
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "SO") == 0)
 		{
 			free(info->south_path);
 			info->south_path = ft_strdup(split_line[1]);
 		}
-		else if (ft_strcmp(split_line[0], "WE") == 0)
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "WE") == 0)
 		{
 			free(info->west_path);
 			info->west_path = ft_strdup(split_line[1]);
 		}
-		else if (ft_strcmp(split_line[0], "EA") == 0)
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "EA") == 0)
 		{
 			free(info->east_path);
 			info->east_path = ft_strdup(split_line[1]);
 		}
-		else if (ft_strcmp(split_line[0], "F") == 0)
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0)
 		{
 			free(info->floor_color);
 			info->floor_color = ft_strdup(split_line[1]);
 		}
-		else if (ft_strcmp(split_line[0], "C") == 0)
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "C") == 0)
 		{
 			free(info->ceiling_color);
 			info->ceiling_color = ft_strdup(split_line[1]);
@@ -173,11 +182,22 @@ t_map_info *read_info(int fd)
 	}
 	while (line)
 	{
-		tmp = info->map;
-		info->map = ft_strjoin(info->map, line);
+		tmp = line;
+		line = ft_strtrim(line, " \n");
 		free(tmp);
+		if(line && line[0])
+		{
+			tmp = info->map;
+			info->map = ft_strjoin(info->map, line);
+			free(tmp);
+			tmp = info->map;
+			info->map = ft_strjoin(info->map, "\n");
+			free(tmp);
+		}
 		line = get_next_line(fd);
 	}
+	if (info->map == NULL)
+		ft_error();
 
 	return (info);
 }
