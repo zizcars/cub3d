@@ -1,7 +1,6 @@
 
 #include "parsing.h"
 
-
 void print_info(t_map_info *info)
 {
     printf("North path: %s\n", info->north_path);
