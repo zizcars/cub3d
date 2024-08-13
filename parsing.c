@@ -15,6 +15,7 @@ bool check_filename(char *file_name)
 	return (false);
 }
 
+// check a char is valid
 bool check_char(char c)
 {
 	const char *valid_char;
@@ -29,10 +30,15 @@ bool check_char(char c)
 	return (false);
 }
 
+/// @brief check the validation of a map
+/// @param row the map
+/// @return true if valid else false
 bool check_map(char *row)
 {
 	int i;
+	int player_count;
 
+	player_count = 0;
 	i = 0;
 	while (row && row[i] != '\n')
 	{
@@ -67,9 +73,15 @@ bool check_map(char *row)
 			printf("false 3\n");
 			return (false);
 		}
+		if (row[i] == 'N' || row[i] == 'S' || row[i] == 'E' || row[i] == 'W')
+			player_count++;
+		if (player_count > 1)
+			return (false);
 		i++;
 	}
-	i-= 2;
+	if (player_count != 1)
+		return (false);
+	i -= 2;
 	while (i > 0 && row[i] != '\n')
 	{
 		if (row[i] != '1')
@@ -81,6 +93,8 @@ bool check_map(char *row)
 	}
 	return (true);
 }
+
+// calculate the length of an array
 int array_length(char **array)
 {
 	int len;
@@ -104,13 +118,31 @@ void free_array(char ***array)
 	free(*array);
 }
 
+// print Error massege in stderr
 void ft_error()
 {
 	write(STDERR_FILENO, "Error\n", 7);
 	exit(1);
 }
 
+/// @brief check if the values of color are correct
+/// @param color like 32,255,255
+/// @return true if valid else false
+bool check_color(char *color)
+{
+	int i;
 
+	i = 0;
+	while (color && color[i])
+	{
+		if (ft_isdigit(color[i]) && color[i] != ',')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+// read the .cub file and return it as t_map_info
 t_map_info *read_info(int fd)
 {
 	char *line;
@@ -119,24 +151,14 @@ t_map_info *read_info(int fd)
 	char *tmp;
 	int ar_len;
 	tmp = NULL;
-	// bool is_no;
-	// bool is_so;
-	// bool is_we;
-	// bool is_ea;
 
-	// is_no = false;
-	// is_so = false;
-	// is_we = false;
-	// is_ea = false;
 	info = ft_calloc(1, sizeof(t_map_info));
 	line = get_next_line(fd);
 	split_line = ft_split(line, SPACE);
 	// free(line);
 	while (split_line && split_line[0][0] != '1')
 	{
-		// printf("|%s|\n", split_line[0]);
 		ar_len = array_length(split_line);
-		// printf("size: %d\t%s\n", ar_len, split_line[0]);
 		if (ar_len == 2 && ft_strcmp(split_line[0], "NO") == 0)
 		{
 			free(info->north_path);
@@ -160,11 +182,15 @@ t_map_info *read_info(int fd)
 		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0)
 		{
 			free(info->floor_color);
+			if (check_color(split_line[1]) == false)
+				ft_error();
 			info->floor_color = ft_strdup(split_line[1]);
 		}
 		else if (ar_len == 2 && ft_strcmp(split_line[0], "C") == 0)
 		{
 			free(info->ceiling_color);
+			if (check_color(split_line[1]) == false)
+				ft_error();
 			info->ceiling_color = ft_strdup(split_line[1]);
 		}
 		else if (split_line[0][0] == '\n')
@@ -185,7 +211,7 @@ t_map_info *read_info(int fd)
 		tmp = line;
 		line = ft_strtrim(line, " \n");
 		free(tmp);
-		if(line && line[0])
+		if (line && line[0])
 		{
 			tmp = info->map;
 			info->map = ft_strjoin(info->map, line);
