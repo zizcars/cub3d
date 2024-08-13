@@ -38,7 +38,6 @@ int main()
     else 
         printf("invalid map\n");
     close (fd);
-
     // if (check_char(argv[1][0]))
     //     printf("char: %c\tvalid\n", argv[1][0]);
     // else   
