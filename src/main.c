@@ -1,5 +1,5 @@
 
-#include "parsing.h"
+#include "../includes/parsing.h"
 
 void print_info(t_map_info *info)
 {
@@ -9,7 +9,11 @@ void print_info(t_map_info *info)
     printf("East path: %s\n", info->east_path);
     printf("Floor color: %s\n", info->floor_color);
     printf("Ceiling color: %s\n", info->ceiling_color);
-    printf("map:\n%s", info->map);
+    printf("MAP: \n");
+    for (int i = 0; info->arr_map[i]; i++)
+    {
+        printf("|%s|\n", info->arr_map[i]);
+    }
     // int i = 0;
     // int j;
     // while(info->map && info->map[i])
@@ -24,23 +28,29 @@ void print_info(t_map_info *info)
 
 // solve the problem of space between i information like F 32,   34, 343
 // check the number of players and other characters in the map
+#define W 255
+#define H 255
 
 int main()
 {
-    t_map_info *info;
-    int fd;
+    // t_map_info *info;
+    // int fd;
 
-    fd = open("map.cub", O_RDONLY);
-    info = read_info(fd);
-    print_info(info);
-    if (check_map(info->map))
-        printf("valid map\n");
-    else 
-        printf("invalid map\n");
-    close (fd);
-    // if (check_char(argv[1][0]))
-    //     printf("char: %c\tvalid\n", argv[1][0]);
-    // else   
-    //     printf("char: %c\tinvalid\n", argv[1][0]);
+    // fd = open("maps/map.cub", O_RDONLY);
+    // if (fd < 0)
+    //     printf("no file\n");
+    // info = read_info(fd);
 
+    // close (fd);
+    mlx_t *mlx;
+    mlx_image_t *mlx_im;
+    mlx = mlx_init(W, H, "window", true);
+    mlx_im = mlx_new_image(mlx, W, H);
+    for(int i = 0; i < 100; i++)
+    {
+        mlx_put_pixel(mlx_im, i , i, 100);
+    }
+
+    mlx_image_to_window(mlx, mlx_im, 0, 0);
+    mlx_loop(mlx);
 }

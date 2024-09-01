@@ -5,9 +5,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include "libft/libft.h"
-#include "getnextline/get_next_line.h"
-#include "mlx/mlx.h"
+#include "../libs/libft/libft.h"
+#include "../libs/getnextline/get_next_line.h"
+#include "../libs/MLX42/include/MLX42/MLX42.h"
 
 #define SPACE 32
 
@@ -25,8 +25,8 @@ typedef struct s_map_info
 	char *east_path;
 	char *floor_color;
 	char *ceiling_color;
-	// char **map;
-	char *map;
+	char **arr_map;
+	// char *map;
 } t_map_info;
 
 #endif
