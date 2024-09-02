@@ -1,25 +1,31 @@
 
 NAME = cub3d
-CFLAGS = -Wall -Wextra -Werror
-SRC = src/main.c src/parsing.c libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c
+
+CFLAGS = -Wall -Wextra -Werror 
+
+SRC =	src/main.c src/parsing.c src/array.c src/check.c \
+		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c
 # SRC = test.c
+
 OBJ = $(SRC:.c=.o)
+
 LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
+
 MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/"
-INCLUDES = includes/parsing.h includes/types.h
+
+INCLUDES = includes/parsing.h includes/types.h 
 
 all: $(NAME)
 
 $(NAME): $(OBJ) #mlxlib
 	make -C libs/libft
-	cc $(CFLAGS) $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
+	cc  $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 
 %.o: %.c
-	cc $(CFLAGS) -c $< -o $@
+	cc  -c $< -o $@
 
 mlxlib:
 	cd libs/MLX42/ && cmake -B build && cmake --build build -j4 && cd ..
-# @mv MLX42/build/libmlx42.a .
 
 clean:
 	make clean -C libs/libft

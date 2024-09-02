@@ -1,4 +1,65 @@
 
+// bool check_map(char *row)
+// {
+// 	int i;
+// 	int player_count;
+// 	player_count = 0;
+// 	i = 0;
+// 	while (row && row[i] != '\n')
+// 	{
+// 		if (row[i] != '1')
+// 		{
+// 			printf("false 1:|%c|\n", row[i]);
+// 			return (false);
+// 		}
+// 		i++;
+// 	}
+// 	while (row && row[i])
+// 	{
+// 		if (row[i] == '\n' && row[i + 1] && row[i + 1] != '1')
+// 		{
+// 			printf("false 4\n");
+// 			return (false);
+// 		}
+// 		if (row[i] == '\n')
+// 		{
+// 			if (row[i + 1] == '\n')
+// 				return (false);
+// 			i++;
+// 			continue;
+// 		}
+// 		if (check_char(row[i]) == false)
+// 		{
+// 			printf("false 2\n");
+// 			return (false);
+// 		}
+// 		if (row[i] != '1' && row[i + 1] && row[i + 1] == '\n')
+// 		{
+// 			printf("false 3\n");
+// 			return (false);
+// 		}
+// 		if (row[i] == 'N' || row[i] == 'S' || row[i] == 'E' || row[i] == 'W')
+// 			player_count++;
+// 		if (player_count > 1)
+// 			return (false);
+// 		i++;
+// 	}
+// 	if (player_count != 1)
+// 		return (false);
+// 	i -= 2;
+// 	while (i > 0 && row[i] != '\n')
+// 	{
+// 		if (row[i] != '1')
+// 		{
+// 			printf("false 5:|%c|\n", row[i]);
+// 			return (false);
+// 		}
+// 		i--;
+// 	}
+// 	return (true);
+// }
+
+
 // Written by Bruh
 
 #include <stdlib.h>

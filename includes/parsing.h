@@ -3,38 +3,20 @@
 #define PARSING_H
 
 #include "types.h"
-
+//              check.c
 bool check_filename(char *file_name);
-bool check_char(char c);
-t_map_info *read_info(int fd);
+// bool check_char(char c);
+bool check_color(int *color);
+void check_map(char **map);
+
+//			array
+int array_length(char **array);
+void free_array(char ***array);
+int array_size(char **array);
+char **append_array(char **old_array, char *arg);
+
+t_info *read_info(int fd);
+void ft_error(char *error_ms);
 // bool check_map(char *row);
-bool check_map(char **map);
 
 #endif
-
-
-/*
-
-NO ./path_to_the_north_texture
-SO ./path_to_the_south_texture
-WE ./path_to_the_west_texture
-EA ./path_to_the_east_texture
-
-F 220,100,0
-C 225,30,0
-
-1111111111111111111111111
-1000000000110000000000001
-1011000001110000000000001
-1001000000000000000000001
-111111111011000001110000000000001
-100000000011000001110111111111111
-11110111111111011100000010001
-11110111111111011101010010001
-11000000110101011100000010001
-10000000000000001100000010001
-10000000000000001101010010001
-11000001110101011111011110N0111
-111101111110101101111010001
-111111111111111111111111111
-*/

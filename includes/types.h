@@ -10,23 +10,33 @@
 #include "../libs/MLX42/include/MLX42/MLX42.h"
 
 #define SPACE 32
+#define W 400
+#define H 400
+#define SIZE 20
 
-// typedef struct s_row
-// {
-// 	char *row;
-// 	struct s_row *next;
-// } t_row;
 
-typedef struct s_map_info
+typedef struct s_mlx
+{
+	mlx_t *mlx;
+	mlx_image_t *image;
+	int width;
+	int height;
+} t_mlx;
+
+typedef struct s_info
 {
 	char *north_path;
 	char *south_path;
 	char *west_path;
 	char *east_path;
 	char *floor_color;
+	int *f_color;
 	char *ceiling_color;
+	int *c_color;
 	char **arr_map;
+	int width;
+	int height;
 	// char *map;
-} t_map_info;
+} t_info;
 
 #endif
