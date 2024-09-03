@@ -47,7 +47,7 @@ bool check_color(int *color)
 	return (false);
 }
 
-void check_map(char **map)
+void check_map(t_info *info)
 {
 	int i;
 	int j;
@@ -56,33 +56,38 @@ void check_map(char **map)
 
 	j = 0;
 	count = 0;
-	while (map[0][j] && map[0][j] == '1')
+	while (info->arr_map[0][j] && info->arr_map[0][j] == '1')
 		j++;
-	if (map[0][j] != '\0')
+	if (info->arr_map[0][j] != '\0')
 		ft_error("first line not 1");
 	i = 1;
-	while (map[i + 1])
+	while (info->arr_map[i + 1])
 	{
 		len = j;
 		j = 0;
-		while (map[i][j])
+		while (info->arr_map[i][j])
 		{
-			if (check_char(map[i][j]) == false)
+			if (check_char(info->arr_map[i][j]) == false)
 				ft_error("invalid char");
-			if (map[i][j] != '0' && map[i][j] != '1')
+			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1')
 				count++;
-			if (map[i][j] != '1' && (len <= j || ft_strlen(map[i + 1]) <= j))
+			if (info->arr_map[i][j] != '1' && (len <= j || ft_strlen(info->arr_map[i + 1]) <= j))
 				ft_error("the map not srounded by walls");
+			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1')
+			{
+				info->x_player = j;
+				info->y_player = i;
+			}
 			j++;
 		}
-		if (map[i][0] != '1' || map[i][j - 1] != '1')
+		if (info->arr_map[i][0] != '1' || info->arr_map[i][j - 1] != '1')
 			ft_error("first or last char in line not 1");
 		i++;
 	}
 	j = 0;
-	while (map[i][j] && map[i][j] == '1')
+	while (info->arr_map[i][j] && info->arr_map[i][j] == '1')
 		j++;
-	if (map[i][j] != '\0')
+	if (info->arr_map[i][j] != '\0')
 		ft_error("last line not 1");
 	if (count != 1)
 		ft_error("Problem in the Player numeber in the map");

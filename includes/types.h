@@ -7,13 +7,12 @@
 #include <fcntl.h>
 #include "../libs/libft/libft.h"
 #include "../libs/getnextline/get_next_line.h"
-#include "../libs/MLX42_/include/MLX42/MLX42.h"
+#include "../libs/MLX42/include/MLX42/MLX42.h"
 
 #define SPACE 32
 #define W 400
 #define H 400
 #define SIZE 20
-
 
 typedef struct s_mlx
 {
@@ -36,6 +35,8 @@ typedef struct s_info
 	char **arr_map;
 	int width;
 	int height;
+	int x_player;
+	int y_player;
 	// char *map;
 } t_info;
 

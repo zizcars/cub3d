@@ -32,8 +32,7 @@ void take_map(t_info *info, char *line, int fd)
 	}
 	if (info->arr_map == NULL)
 		ft_error("no map");
-	else
-		check_map(info->arr_map);
+	check_map(info);
 }
 
 int *take_color(char *s_color)

@@ -7,7 +7,7 @@
 bool check_filename(char *file_name);
 // bool check_char(char c);
 bool check_color(int *color);
-void check_map(char **map);
+void check_map(t_info *info);
 
 //			array
 int array_length(char **array);

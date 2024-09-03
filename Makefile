@@ -5,11 +5,12 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRC =	src/main.c src/parsing.c src/array.c src/check.c \
 		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c
+
 # SRC = test.c
 
 OBJ = $(SRC:.c=.o)
 
-LIB = libs/libft/libft.a libs/MLX42_/build/libmlx42.a
+LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
 
 MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/"
 
@@ -17,7 +18,7 @@ INCLUDES = includes/parsing.h includes/types.h
 
 all: $(NAME)
 
-$(NAME): $(OBJ) mlxlib
+$(NAME): $(OBJ) #mlxlib
 	make -C libs/libft
 	cc  $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 
@@ -25,7 +26,7 @@ $(NAME): $(OBJ) mlxlib
 	cc  -c $< -o $@
 
 mlxlib:
-	cd libs/MLX42_/ && cmake -B build && cmake --build build -j4 && cd ..
+	cd libs/MLX42/ && cmake -B build && cmake --build build -j4 && cd ..
 
 clean:
 	make clean -C libs/libft
@@ -41,8 +42,10 @@ re: fclean all
 .PHONY: all clean fclean re mlxlib
 
 
-
-
+# build:
+# 	brew install glfw
+# 	brew install cmake
+# 	git clone https://github.com/codam-coding-college/MLX42.git
 
 
 # NAME = cub3d
