@@ -7,7 +7,7 @@
 #include <fcntl.h>
 #include "../libs/libft/libft.h"
 #include "../libs/getnextline/get_next_line.h"
-#include "../libs/MLX42/include/MLX42/MLX42.h"
+#include "../libs/MLX42_/include/MLX42/MLX42.h"
 
 #define SPACE 32
 #define W 400

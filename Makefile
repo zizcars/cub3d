@@ -9,7 +9,7 @@ SRC =	src/main.c src/parsing.c src/array.c src/check.c \
 
 OBJ = $(SRC:.c=.o)
 
-LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
+LIB = libs/libft/libft.a libs/MLX42_/build/libmlx42.a
 
 MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/"
 
@@ -25,7 +25,7 @@ $(NAME): $(OBJ) mlxlib
 	cc  -c $< -o $@
 
 mlxlib:
-	cd libs/MLX42/ && cmake -B build && cmake --build build -j4 && cd ..
+	cd libs/MLX42_/ && cmake -B build && cmake --build build -j4 && cd ..
 
 clean:
 	make clean -C libs/libft
