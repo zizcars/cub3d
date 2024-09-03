@@ -17,7 +17,7 @@ INCLUDES = includes/parsing.h includes/types.h
 
 all: $(NAME)
 
-$(NAME): $(OBJ) #mlxlib
+$(NAME): $(OBJ) mlxlib
 	make -C libs/libft
 	cc  $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 
