@@ -12,13 +12,14 @@ OBJ = $(SRC:.c=.o)
 
 LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
 
-MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/"
+# MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
+MLXFLAGS = -Iinclude -lglfw # in my mac
 
 INCLUDES = includes/parsing.h includes/types.h 
 
 all: $(NAME)
 
-$(NAME): $(OBJ) #mlxlib
+$(NAME): $(OBJ) mlxlib
 	make -C libs/libft
 	cc  $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 

@@ -82,19 +82,19 @@ int main()
 {
 	t_info *info;
 	int fd;
-	// t_mlx mlx;
-	// int color;
+	t_mlx mlx;
+	int color;
 
 	fd = open("maps/map1.cub", O_RDONLY);
 	if (fd < 0)
 		printf("no file\n");
 	info = read_info(fd);
-	print_info(info);
+	// print_info(info);
 	close(fd);
-	// color = get_rgba(200, 35, 12, 255);
-	// mlx.mlx = mlx_init(info->width * SIZE, info->height * SIZE, "test", true);
-	// mlx.image = mlx_new_image(mlx.mlx, info->width * SIZE, info->height * SIZE);
-	// display_map(mlx, info);
-	// mlx_image_to_window(mlx.mlx, mlx.image, 0, 0);
-	// mlx_loop(mlx.mlx);
+	color = get_rgba(200, 35, 12, 255);
+	mlx.mlx = mlx_init(info->width * SIZE, info->height * SIZE, "test", true);
+	mlx.image = mlx_new_image(mlx.mlx, info->width * SIZE, info->height * SIZE);
+	display_map(mlx, info);
+	mlx_image_to_window(mlx.mlx, mlx.image, 0, 0);
+	mlx_loop(mlx.mlx);
 }
