@@ -48,12 +48,24 @@ void display_square(t_mlx mlx, int color, const int x, const int y)
 	}
 }
 
+void display_player(t_mlx mlx, int color, const int x, const int y, char direction)
+{
+	int i = 0;
+	int j = 0;
+	int iextra = 0;
+	int jextra = 0;
+
+
+	mlx_put_pixel(mlx.image, i + x, j + y, color);
+	//drawing direction of the ligne cast
+}
+
 void display_map(t_mlx mlx, t_info *info)
 {
 	int i;
 	int j;
-	int x;
-	int y;
+	int x;//better group it in an array x and y
+	int y;//
 
 	y = 0;
 	i = 0;
@@ -64,12 +76,11 @@ void display_map(t_mlx mlx, t_info *info)
 		while (info->arr_map[i][j])
 		{
 			// printf("%c\n", info->arr_map[i][j]);
+			display_square(mlx, get_rgba(255, 255, 255, 255), x, y);
 			if (info->arr_map[i][j] == '1')
 				display_square(mlx, get_rgba(0, 0, 0, 500), x, y);
-			// else if (info->arr_map[i][j] == '0')
-			// 	display_square(mlx, get_rgba(255, 255, 255, 255), x, y);
-			else
-				display_square(mlx, get_rgba(255, 255, 255, 255), x, y);
+			else if (info->arr_map[i][j] != '0')
+				display_player(mlx, get_rgba(255, 0, 0, 255), x, y, info->arr_map[i][j]);
 			j++;
 			x += SIZE;
 		}
@@ -82,8 +93,8 @@ int main()
 {
 	t_info *info;
 	int fd;
-	// t_mlx mlx;
-	// int color;
+	t_mlx mlx;
+	int color;
 
 	fd = open("maps/map1.cub", O_RDONLY);
 	if (fd < 0)
@@ -91,10 +102,10 @@ int main()
 	info = read_info(fd);
 	print_info(info);
 	close(fd);
-	// color = get_rgba(200, 35, 12, 255);
-	// mlx.mlx = mlx_init(info->width * SIZE, info->height * SIZE, "test", true);
-	// mlx.image = mlx_new_image(mlx.mlx, info->width * SIZE, info->height * SIZE);
-	// display_map(mlx, info);
-	// mlx_image_to_window(mlx.mlx, mlx.image, 0, 0);
-	// mlx_loop(mlx.mlx);
+	color = get_rgba(200, 35, 12, 255);
+	mlx.mlx = mlx_init(info->width * SIZE, info->height * SIZE, "test", true);
+	mlx.image = mlx_new_image(mlx.mlx, info->width * SIZE, info->height * SIZE);
+	display_map(mlx, info);
+	mlx_image_to_window(mlx.mlx, mlx.image, 0, 0);
+	mlx_loop(mlx.mlx);
 }
