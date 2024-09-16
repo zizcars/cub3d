@@ -1,7 +1,7 @@
 
 NAME = cub3d
 
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 
 SRC =	src/main.c src/parsing.c src/array.c src/check.c \
 		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c

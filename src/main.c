@@ -23,7 +23,15 @@ void print_info(t_info *info)
 // solve the problem of space between i information like F 32,   34, 343
 // check the number of players and other characters in the map
 
-
+void put_pixel(t_mlx *mlx, int x, int y, int color)
+{
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+			mlx_put_pixel(mlx->image, x + i, y + j, color);
+	}
+	mlx_image_to_window(mlx->mlx, mlx->image, 0, 0);
+}
 
 int get_rgba(int r, int g, int b, int a)
 {
@@ -48,7 +56,7 @@ void display_square(t_mlx mlx, int color, const int x, const int y)
 	}
 }
 
-void display_map(t_mlx mlx, t_info *info)
+void display_map(t_mlx mlx)
 {
 	int i;
 	int j;
@@ -57,14 +65,14 @@ void display_map(t_mlx mlx, t_info *info)
 
 	y = 0;
 	i = 0;
-	while (info->arr_map[i])
+	while (mlx.info->arr_map[i])
 	{
 		j = 0;
 		x = 0;
-		while (info->arr_map[i][j])
+		while (mlx.info->arr_map[i][j])
 		{
 			// printf("%c\n", info->arr_map[i][j]);
-			if (info->arr_map[i][j] == '1')
+			if (mlx.info->arr_map[i][j] == '1')
 				display_square(mlx, get_rgba(0, 0, 0, 500), x, y);
 			// else if (info->arr_map[i][j] == '0')
 			// 	display_square(mlx, get_rgba(255, 255, 255, 255), x, y);
@@ -78,23 +86,59 @@ void display_map(t_mlx mlx, t_info *info)
 	}
 }
 
+void keyhook(mlx_key_data_t keydata, void *param)
+{
+	t_mlx *mlx = (t_mlx *)param;
+
+	if (keydata.key == MLX_KEY_UP && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	{
+		if (mlx->info->y_player - 5 > 0)
+			mlx->info->y_player -= 5;
+	}
+	else if (keydata.key == MLX_KEY_DOWN && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	{
+		if (mlx->info->y_player + 5 < mlx->info->height * SIZE)
+			mlx->info->y_player += 5;
+	}
+	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	{
+		if (mlx->info->x_player + 5 < mlx->info->width * SIZE)
+			mlx->info->x_player += 5;
+	}
+	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	{
+		if (mlx->info->x_player - 5 >= 0)
+			mlx->info->x_player -= 5;
+	}
+	else
+		return;
+	printf("x: %d| y: %d| width: %d| height: %d\n", mlx->info->x_player, mlx->info->y_player, mlx->info->width * SIZE, mlx->info->height * SIZE);
+	// mlx_delete_image(mlx->mlx, mlx->p_image);
+	mlx->image = mlx_new_image(mlx->mlx, mlx->width * SIZE, mlx->height * SIZE);
+	display_map(*mlx);
+	// printf("hi\n");
+	put_pixel(mlx, mlx->info->x_player, mlx->info->y_player, get_rgba(0, 255, 0, 255));
+}
+
 int main()
 {
-	t_info *info;
+	// t_info *info;
 	int fd;
 	t_mlx mlx;
-	int color;
+	int color_;
 
 	fd = open("maps/map1.cub", O_RDONLY);
 	if (fd < 0)
 		printf("no file\n");
-	info = read_info(fd);
+	mlx.info = read_info(fd);
 	// print_info(info);
 	close(fd);
-	color = get_rgba(200, 35, 12, 255);
-	mlx.mlx = mlx_init(info->width * SIZE, info->height * SIZE, "test", true);
-	mlx.image = mlx_new_image(mlx.mlx, info->width * SIZE, info->height * SIZE);
-	display_map(mlx, info);
+	color_ = get_rgba(200, 35, 12, 255);
+	mlx.mlx = mlx_init(mlx.info->width * SIZE, mlx.info->height * SIZE, "test", true);
+	mlx.image = mlx_new_image(mlx.mlx, mlx.info->width * SIZE, mlx.info->height * SIZE);
+	display_map(mlx);
+	put_pixel(&mlx, mlx.info->x_player * SIZE, mlx.info->y_player * SIZE, get_rgba(0, 255, 0, 255));
 	mlx_image_to_window(mlx.mlx, mlx.image, 0, 0);
+	mlx_key_hook(mlx.mlx, keyhook, &mlx);
 	mlx_loop(mlx.mlx);
 }

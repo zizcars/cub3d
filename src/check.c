@@ -75,8 +75,8 @@ void check_map(t_info *info)
 				ft_error("the map not srounded by walls");
 			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1')
 			{
-				info->x_player = j;
-				info->y_player = i;
+				info->x_player = j * SIZE;
+				info->y_player = i * SIZE;
 			}
 			j++;
 		}

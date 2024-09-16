@@ -14,14 +14,6 @@
 #define H 400
 #define SIZE 20
 
-typedef struct s_mlx
-{
-	mlx_t *mlx;
-	mlx_image_t *image;
-	int width;
-	int height;
-} t_mlx;
-
 typedef struct s_info
 {
 	char *north_path;
@@ -39,5 +31,15 @@ typedef struct s_info
 	int y_player;
 	// char *map;
 } t_info;
+
+typedef struct s_mlx
+{
+	mlx_t *mlx;
+	mlx_image_t *image;
+	mlx_image_t *p_image;
+	int width;
+	int height;
+	t_info *info;
+} t_mlx;
 
 #endif
