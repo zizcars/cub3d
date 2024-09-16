@@ -82,7 +82,7 @@ t_info *read_info(int fd)
 			info->west_path = ft_strdup(split_line[1]);
 		else if (ar_len == 2 && ft_strcmp(split_line[0], "EA") == 0)
 			info->east_path = ft_strdup(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0)
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0) // do I have to handle this case F 0,   255, 255
 			info->f_color = take_color(split_line[1]);
 		else if (ar_len == 2 && ft_strcmp(split_line[0], "C") == 0)
 			info->c_color = take_color(split_line[1]);

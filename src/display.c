@@ -1,5 +1,6 @@
 
 #include "../includes/types.h"
+#include "../includes/parsing.h"
 
 void put_pixel(t_mlx *mlx, int x, int y, int color)
 {
@@ -65,42 +66,48 @@ void keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_mlx *mlx = (t_mlx *)param;
 
-	if (keydata.key == MLX_KEY_UP && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	if (keydata.key == MLX_KEY_W && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->y_player - STEP_SIZE >= 0 && mlx->info->arr_map[(mlx->info->y_player - STEP_SIZE) / SIZE][mlx->info->x_player / SIZE] != '1')
-			mlx->info->y_player -= STEP_SIZE;
+		if (mlx->info->player_y - STEP_SIZE >= 0 && mlx->info->arr_map[(mlx->info->player_y - STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
+			mlx->info->player_y -= STEP_SIZE;
 	}
-	else if (keydata.key == MLX_KEY_DOWN && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	else if (keydata.key == MLX_KEY_S && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->y_player + STEP_SIZE < mlx->info->height * SIZE && mlx->info->arr_map[(mlx->info->y_player + STEP_SIZE) / SIZE][mlx->info->x_player / SIZE] != '1')
-			mlx->info->y_player += STEP_SIZE;
+		if (mlx->info->player_y + STEP_SIZE < mlx->info->height * SIZE && mlx->info->arr_map[(mlx->info->player_y + STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
+			mlx->info->player_y += STEP_SIZE;
 	}
-	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	else if (keydata.key == MLX_KEY_D && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->x_player + STEP_SIZE < mlx->info->width * SIZE && mlx->info->arr_map[mlx->info->y_player / SIZE][(mlx->info->x_player + STEP_SIZE) / SIZE] != '1')
-			mlx->info->x_player += STEP_SIZE;
+		if (mlx->info->player_x + STEP_SIZE < mlx->info->width * SIZE && mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x + STEP_SIZE) / SIZE] != '1')
+			mlx->info->player_x += STEP_SIZE;
 	}
-	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->x_player - STEP_SIZE >= 0 && mlx->info->arr_map[mlx->info->y_player / SIZE][(mlx->info->x_player - STEP_SIZE) / SIZE] != '1')
-			mlx->info->x_player -= STEP_SIZE;
+		if (mlx->info->player_x - STEP_SIZE >= 0 && mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x - STEP_SIZE) / SIZE] != '1')
+			mlx->info->player_x -= STEP_SIZE;
 	}
 	else if (keydata.key == MLX_KEY_ESCAPE)
-		exit(0);
+		exit(0); // i think here some leaks
+	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+		mlx->info->player_angle += 10;
+	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+		mlx->info->player_angle -= 10;
 	else
 		return;
 	mlx_delete_image(mlx->mlx, mlx->image);
 	mlx->image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	display_map(*mlx);
-	put_pixel(mlx, mlx->info->x_player, mlx->info->y_player, get_rgba(0, 255, 0, 255));
+	put_pixel(mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
+	display_aline(*mlx);
 }
 
 void display_window(t_mlx *mlx)
 {
-	mlx->mlx = mlx_init(mlx->info->width * SIZE, mlx->info->height * SIZE, "test", true);
+	mlx->mlx = mlx_init(mlx->info->width * SIZE, mlx->info->height * SIZE, "CUB3D", true);
 	mlx->image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	display_map(*mlx);
-	put_pixel(mlx, mlx->info->x_player, mlx->info->y_player, get_rgba(0, 255, 0, 255));
+	put_pixel(mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
+	display_aline(*mlx);
 	mlx_image_to_window(mlx->mlx, mlx->image, 0, 0);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
 	mlx_loop(mlx->mlx);

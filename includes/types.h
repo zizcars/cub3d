@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include "math.h"
 #include "../libs/libft/libft.h"
 #include "../libs/getnextline/get_next_line.h"
 #include "../libs/MLX42/include/MLX42/MLX42.h"
@@ -14,6 +15,7 @@
 // #define H 400
 #define SIZE 20
 #define STEP_SIZE 5
+#define PI 3.14159265
 
 typedef struct s_info
 {
@@ -26,8 +28,10 @@ typedef struct s_info
 	char **arr_map;
 	int width;
 	int height;
-	int x_player;
-	int y_player;
+	int player_x;
+	int player_y;
+	float player_angle; // player angle N, W , S, E 
+	float player_fov; // player Field of View
 } t_info;
 
 typedef struct s_mlx

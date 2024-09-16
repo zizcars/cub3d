@@ -56,6 +56,7 @@ void check_map(t_info *info)
 
 	j = 0;
 	count = 0;
+	info->player_fov = 60;
 	while (info->arr_map[0][j] && info->arr_map[0][j] == '1')
 		j++;
 	if (info->arr_map[0][j] != '\0')
@@ -75,8 +76,16 @@ void check_map(t_info *info)
 				ft_error("the map not srounded by walls");
 			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1')
 			{
-				info->x_player = j * SIZE;
-				info->y_player = i * SIZE;
+				info->player_x = j * SIZE;
+				info->player_y = i * SIZE;
+				if (info->arr_map[i][j] == 'N')
+					info->player_angle = 270;
+				else if (info->arr_map[i][j] == 'E')
+					info->player_angle = 0;
+				else if (info->arr_map[i][j] == 'S')
+					info->player_angle = 90;
+				else 
+					info->player_angle = 180;
 			}
 			j++;
 		}
@@ -92,3 +101,4 @@ void check_map(t_info *info)
 	if (count != 1)
 		ft_error("Problem in the Player numeber in the map");
 }
+

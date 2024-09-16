@@ -1,9 +1,9 @@
 
 NAME = cub3d
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
-SRC =	src/main.c src/display.c src/parsing.c src/array.c src/check.c \
+SRC =	src/main.c src/display.c src/raycasting.c src/parsing.c src/array.c src/check.c \
 		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c
 
 # SRC = test.c
@@ -21,10 +21,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ) mlxlib
 	make -C libs/libft
-	cc  $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
+	cc -g -fsanitize=address $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 
 %.o: %.c
-	cc  -c $< -o $@
+	cc -g -fsanitize=address -c $< -o $@
 
 mlxlib:
 	cd libs/MLX42/ && cmake -B build && cmake --build build -j4 && cd ..

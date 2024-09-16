@@ -10,14 +10,13 @@ void print_info(t_info *info)
 	printf("Floor color: [%d, %d, %d]\n", info->f_color[0], info->f_color[1], info->f_color[2]);
 	printf("Ceiling color: [%d, %d, %d]\n", info->c_color[0], info->c_color[1], info->c_color[2]);
 	printf("width: %d\t heigth: %d\n", info->width, info->height);
-	printf("Player:(%d,%d)\n", info->x_player, info->y_player);
+	printf("Player:(%d,%d)\n", info->player_x, info->player_y);
 	printf("MAP: \n");
 	for (int i = 0; info->arr_map[i]; i++)
 	{
 		printf("|%s|\n", info->arr_map[i]);
 	}
 }
-
 
 int main()
 {
