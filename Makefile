@@ -1,9 +1,9 @@
 
 NAME = cub3d
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
-SRC =	src/main.c src/parsing.c src/array.c src/check.c \
+SRC =	src/main.c src/display.c src/parsing.c src/array.c src/check.c \
 		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c
 
 # SRC = test.c
@@ -12,8 +12,8 @@ OBJ = $(SRC:.c=.o)
 
 LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
 
-# MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
-MLXFLAGS = -Iinclude -lglfw # in my mac
+MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
+# MLXFLAGS = -Iinclude -lglfw # in my mac
 
 INCLUDES = includes/parsing.h includes/types.h 
 

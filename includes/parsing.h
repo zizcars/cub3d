@@ -19,4 +19,11 @@ t_info *read_info(int fd);
 void ft_error(char *error_ms);
 // bool check_map(char *row);
 
+
+void put_pixel(t_mlx *mlx, int x, int y, int color);
+void display_square(t_mlx mlx, int color, const int x, const int y);
+int get_rgba(int r, int g, int b, int a);
+void display_map(t_mlx mlx);
+void keyhook(mlx_key_data_t keydata, void *param);
+void display_window(t_mlx *mlx);
 #endif
