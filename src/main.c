@@ -23,11 +23,11 @@ int main()
 	int fd;
 	t_mlx mlx;
 
-	fd = open("maps/cheese_maze.cub", O_RDONLY);
+	fd = open("maps/map.cub", O_RDONLY);
 	if (fd < 0)
 		printf("no file\n");
 	mlx.info = read_info(fd);
-	// print_info(info);
+	// print_info(mlx.info);
 	close(fd);
 	display_window(&mlx);
 }

@@ -20,7 +20,7 @@ bool check_char(char c)
 {
 	const char *valid_char;
 
-	valid_char = "01NSEW";
+	valid_char = "01NSEW ";
 	while (*valid_char && c != '\0')
 	{
 		if (c == *valid_char)
@@ -56,7 +56,6 @@ void check_map(t_info *info)
 
 	j = 0;
 	count = 0;
-	info->player_fov = 114;
 	while (info->arr_map[0][j] && info->arr_map[0][j] == '1')
 		j++;
 	if (info->arr_map[0][j] != '\0')

@@ -11,25 +11,30 @@
 #include "../libs/MLX42/include/MLX42/MLX42.h"
 
 #define SPACE 32
-// #define W 400
-// #define H 400
+// #define WIDTH 400
+// #define HEIGHT 400
 #define SIZE 20
 #define STEP_SIZE 5
-#define PI 3.14159265
+// #define PI 3.14159265
+
+#define WALL_COLOR 18, 25, 41
+#define FLOOR_COLOR  79, 86, 89
+#define PERSON_COLOR 109, 184, 194
+#define RAYS_COLOR 211, 215, 237
 
 typedef struct s_info
 {
 	char *north_path;
-	char *south_path;
+	char *south_path;  // they store the path to n, s, w, e textures
 	char *west_path;
-	char *east_path;
-	int *f_color;
-	int *c_color;
-	char **arr_map;
-	int width;
-	int height;
-	int player_x;
-	int player_y;
+	char *east_path; 
+	int *f_color; // floor color as [r, g, b]
+	int *c_color; // celling color as [r, g, b]
+	char **arr_map; // the map as an array of lines
+	int width; // the width of the map, the width of the window is width * SIZE
+	int height; // the height of the map, the height of the window is height * SIZE
+	int player_x; // position of the player x
+	int player_y; // position of the player y
 	float player_angle; // player angle N, W , S, E 
 	float player_fov; // player Field of View
 } t_info;

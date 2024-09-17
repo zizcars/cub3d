@@ -69,6 +69,7 @@ t_info *read_info(int fd)
 	int i = 0;
 
 	info = ft_calloc(1, sizeof(t_info));
+	info->player_fov = 114;
 	line = get_next_line(fd);
 	split_line = ft_split(line, SPACE);
 	while (split_line && split_line[0][0] != '1')

@@ -23,7 +23,7 @@ $(NAME): $(OBJ) mlxlib
 	make -C libs/libft
 	cc -g -fsanitize=address $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 
-%.o: %.c
+%.o: %.c $(INCLUDES)
 	cc -g -fsanitize=address -c $< -o $@
 
 mlxlib:
