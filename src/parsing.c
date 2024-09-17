@@ -28,10 +28,11 @@ void take_map(t_info *info, char *line, int fd)
 		len = ft_strlen(line);
 		if (info->width < len)
 			info->width = len;
+		free(line);
 		line = get_next_line(fd);
 	}
 	if (info->arr_map == NULL)
-		ft_error("no map");
+		ft_error("No map");
 	check_map(info);
 }
 
@@ -74,6 +75,7 @@ t_info *read_info(int fd)
 	split_line = ft_split(line, SPACE);
 	while (split_line && split_line[0][0] != '1')
 	{
+		free(line);
 		ar_len = array_length(split_line);
 		if (ar_len == 2 && ft_strcmp(split_line[0], "NO") == 0)
 			info->north_path = ft_strdup(split_line[1]);
@@ -83,19 +85,21 @@ t_info *read_info(int fd)
 			info->west_path = ft_strdup(split_line[1]);
 		else if (ar_len == 2 && ft_strcmp(split_line[0], "EA") == 0)
 			info->east_path = ft_strdup(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0) // do I have to handle this case F 0,   255, 255
+		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0)
 			info->f_color = take_color(split_line[1]);
 		else if (ar_len == 2 && ft_strcmp(split_line[0], "C") == 0)
 			info->c_color = take_color(split_line[1]);
 		else if (split_line[0][0] == '\n')
 		{
 			line = get_next_line(fd);
+			free_array(&split_line);
 			split_line = ft_split(line, SPACE);
 			continue;
 		}
 		else
-			ft_error("error1");
+			ft_error("ERROR");
 		line = get_next_line(fd);
+		free_array(&split_line);
 		split_line = ft_split(line, SPACE);
 	}
 	take_map(info, line, fd);
