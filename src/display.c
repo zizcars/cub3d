@@ -35,6 +35,19 @@ void display_square(t_mlx mlx, int color, const int x, const int y)
 	}
 }
 
+void display_person(t_mlx mlx, const int x, const int y, int color)
+{
+	float i, j, a;
+	i = j = a = 0;
+	while (a < 2 * M_PI)
+	{
+		i = x + 2 * cos(a);
+		j = y + 2 * sin(a);
+		mlx_put_pixel(mlx.image, i, j, color);
+		a += 1;
+	}
+}
+
 void display_map(t_mlx mlx)
 {
 	int i;
@@ -98,7 +111,8 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	mlx->image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	display_map(*mlx);
 	put_pixel(mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
-	display_aline(*mlx);
+	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
+	display_rays(*mlx);
 }
 
 void display_window(t_mlx *mlx)
@@ -107,7 +121,8 @@ void display_window(t_mlx *mlx)
 	mlx->image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	display_map(*mlx);
 	put_pixel(mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
-	display_aline(*mlx);
+	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
+	display_rays(*mlx);
 	mlx_image_to_window(mlx->mlx, mlx->image, 0, 0);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
 	mlx_loop(mlx->mlx);
