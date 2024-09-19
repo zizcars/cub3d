@@ -11,6 +11,7 @@
 #include "../libs/MLX42/include/MLX42/MLX42.h"
 
 #define SPACE 32
+#define TAB 9
 // #define WIDTH 400
 // #define HEIGHT 400
 #define SIZE 20

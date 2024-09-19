@@ -38,32 +38,81 @@ void take_map(t_info *info, char *line, int fd)
 
 int *take_color(char *s_color)
 {
-	char **tmp;
+	char *tmp;
 	int *color;
-	int i = 0;
+	int i = 1;
+	int start;
+	int j = 0;
+	int count = 0;
+	bool is_n;
 
-	color = malloc(sizeof(int) * 3);
+	is_n = false;
+	tmp = NULL;
+	color = ft_calloc(3, sizeof(int));
 	if (color == NULL)
 		return NULL;
-	tmp = ft_split(s_color, ',');
-	if (array_length(tmp) != 3)
-		ft_error("invalid color value");
-	i = 0;
-	while (i < 3)
+	while (j < 3)
 	{
-		color[i] = ft_atoi(tmp[i]);
-		i++;
+		while (s_color[i] == SPACE || s_color[i] == TAB)
+			i++;
+		start = i;
+		while (s_color[i] && s_color[i] != ',')
+		{
+			if (s_color[i] == SPACE || s_color[i] == TAB)
+			{
+				i++;
+				continue;
+			}
+			if (ft_isdigit(s_color[i]) == 0)
+				is_n = true;
+			else if (s_color[i] == '-' || s_color[i] == '+')
+				count++;
+			if (count > 1 || (ft_isdigit(s_color[i]) != 0 && s_color[i] != '-' && s_color[i] != '+'))
+				ft_error("The color must be a number");
+			i++;
+		}
+		if (is_n)
+			tmp = ft_substr(s_color, start, i - 1);
+		else
+			ft_error("The is no digit before coma");
+		color[j] = ft_atoi(tmp);
+		printf("color[j] = %d\n", color[j]);
+		if (color[j] < 0 || color[j] > 255)
+			ft_error("The color number shoud be between [0, 255]");
+		is_n = false;
+		if (s_color[i])
+			i++;
+		j++;
+		count = 0;
 	}
-	free_array(&tmp);
-	if (check_color(color))
-		ft_error("invalid color");
+	if (s_color[i] != '\0')
+		ft_error("The form of color is x, x, x");
 	return (color);
+}
+
+char *take_diraction_path(char *trim_line)
+{
+	int start;
+	int i;
+
+	i = 2;
+	while (trim_line[i] == SPACE || trim_line[i] == TAB)
+		i++;
+	start = i;
+	while (trim_line[i] != SPACE && trim_line[i] != TAB && trim_line[i] != '\0')
+		i++;
+	if (trim_line[i] == SPACE || trim_line[i] == TAB)
+		ft_error("Invalid information");
+	else
+		return ft_substr(trim_line, start, i);
+	return NULL;
 }
 
 // read the .cub file and return it as t_info
 t_info *read_info(int fd)
 {
 	char *line;
+	char *tmp;
 	char **split_line;
 	t_info *info;
 	int ar_len;
@@ -72,36 +121,29 @@ t_info *read_info(int fd)
 	info = ft_calloc(1, sizeof(t_info));
 	info->player_fov = 114;
 	line = get_next_line(fd);
-	split_line = ft_split(line, SPACE);
-	while (split_line && split_line[0][0] != '1')
+	tmp = ft_strtrim(line, " 	\n");
+	while (tmp && tmp[0] != '1')
 	{
 		free(line);
-		ar_len = array_length(split_line);
-		if (ar_len == 2 && ft_strcmp(split_line[0], "NO") == 0)
-			info->north_path = ft_strdup(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "SO") == 0)
-			info->south_path = ft_strdup(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "WE") == 0)
-			info->west_path = ft_strdup(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "EA") == 0)
-			info->east_path = ft_strdup(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "F") == 0)
-			info->f_color = take_color(split_line[1]);
-		else if (ar_len == 2 && ft_strcmp(split_line[0], "C") == 0)
-			info->c_color = take_color(split_line[1]);
-		else if (split_line[0][0] == '\n')
+
+		if (tmp)
 		{
-			line = get_next_line(fd);
-			free_array(&split_line);
-			split_line = ft_split(line, SPACE);
-			continue;
+			if (tmp[0] == 'N' && tmp[1] == 'O' && (tmp[2] == SPACE || tmp[2] == TAB))
+				info->north_path = take_diraction_path(tmp);
+			else if (tmp[0] == 'S' && tmp[1] == 'O' && (tmp[2] == SPACE || tmp[2] == TAB))
+				info->south_path = take_diraction_path(tmp);
+			else if (tmp[0] == 'W' && tmp[1] == 'E' && (tmp[2] == SPACE || tmp[2] == TAB))
+				info->west_path = take_diraction_path(tmp);
+			else if (tmp[0] == 'E' && tmp[1] == 'A' && (tmp[2] == SPACE || tmp[2] == TAB))
+				info->east_path = take_diraction_path(tmp);
+			else if (tmp[0] == 'F' && (tmp[1] == SPACE || tmp[1] == TAB))
+				info->f_color = take_color(tmp);
+			else if (tmp[0] == 'C' && (tmp[1] == SPACE || tmp[1] == TAB))
+				info->c_color = take_color(tmp);
 		}
-		else
-			ft_error("ERROR");
 		line = get_next_line(fd);
-		free_array(&split_line);
-		split_line = ft_split(line, SPACE);
+		tmp = ft_strtrim(line, " 	\n");
 	}
-	take_map(info, line, fd);
+	// take_map(info, line, fd);
 	return (info);
 }
