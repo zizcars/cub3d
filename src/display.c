@@ -81,23 +81,23 @@ void keyhook(mlx_key_data_t keydata, void *param)
 
 	if (keydata.key == MLX_KEY_W && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->player_y - STEP_SIZE >= 0 && mlx->info->arr_map[(mlx->info->player_y - STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
+		if (mlx->info->arr_map[(mlx->info->player_y - STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
 			mlx->info->player_y -= STEP_SIZE;
 	}
 	else if (keydata.key == MLX_KEY_S && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->player_y + STEP_SIZE < mlx->info->height * SIZE && mlx->info->arr_map[(mlx->info->player_y + STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
+		if (mlx->info->arr_map[(mlx->info->player_y + STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
 			mlx->info->player_y += STEP_SIZE;
 	}
 	else if (keydata.key == MLX_KEY_D && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->player_x + STEP_SIZE < mlx->info->width * SIZE && mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x + STEP_SIZE) / SIZE] != '1')
+		if (mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x + STEP_SIZE) / SIZE] != '1')
 			mlx->info->player_x += STEP_SIZE;
 	}
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->player_x - STEP_SIZE >= 0 && mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x - STEP_SIZE) / SIZE] != '1')
-			mlx->info->player_x -= STEP_SIZE;
+		if (mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x - STEP_SIZE) / SIZE] != '1')
+			mlx->info->player_x -= STEP_SIZE; //change this to something depand on the angle
 	}
 	else if (keydata.key == MLX_KEY_ESCAPE)
 		exit(0); // i think here some leaks

@@ -12,20 +12,23 @@ void take_map(t_info *info, char *line, int fd)
 {
 	int len;
 	char *tmp;
-
+	// int i;
 	info->width = 0;
 	info->height = 0;
-	while (line)
+	while (line && line[0] != '\n') // I add line[0] != '\n' because they say in subject Except for the map, each type of information from an element can be separate by one or more space(s)
 	{
+		len = ft_strlen(line);
+		// i = len - 2;
+		// while (i > 0 && (line[i] == SPACE || line[i] == TAB)) // line[i] == '\n'
+		// 	i--;
 		tmp = line;
-		line = ft_strtrim(line, " \n");
+		line = ft_substr(line, 0, len - 2);
 		free(tmp);
 		if (line && line[0])
 		{
 			info->arr_map = append_array(info->arr_map, line);
 			info->height++;
 		}
-		len = ft_strlen(line);
 		if (info->width < len)
 			info->width = len;
 		free(line);
@@ -38,56 +41,50 @@ void take_map(t_info *info, char *line, int fd)
 
 int *take_color(char *s_color)
 {
-	char *tmp;
 	int *color;
-	int i = 1;
-	int start;
-	int j = 0;
-	int count = 0;
-	bool is_n;
+	int i;
+	char *tmp;
+	char  **color_split;
+	int count;
+	int j ;
 
-	is_n = false;
-	tmp = NULL;
+	count = 0;
+	i = 0;
 	color = ft_calloc(3, sizeof(int));
 	if (color == NULL)
-		return NULL;
-	while (j < 3)
+		ft_error("Malloc flied");
+	tmp = ft_substr(s_color, 1, ft_strlen(s_color));
+	color_split = ft_split(tmp, ',');
+	free(tmp);
+	if (array_length(color_split) > 3)
+		ft_error("Invalid color number");
+	while(i < 3)
 	{
-		while (s_color[i] == SPACE || s_color[i] == TAB)
-			i++;
-		start = i;
-		while (s_color[i] && s_color[i] != ',')
+		j = 0;
+		tmp = color_split[i];
+		color_split[i] = ft_strtrim(color_split[i], "	 ");
+		free(tmp);
+		while (color_split[i] && color_split[i][j])
 		{
-			if (s_color[i] == SPACE || s_color[i] == TAB)
-			{
-				i++;
-				continue;
-			}
-			if (ft_isdigit(s_color[i]) == 0)
-				is_n = true;
-			else if (s_color[i] == '-' || s_color[i] == '+')
+			if (color_split[i][j] == '-' || color_split[i][j] == '+')
 				count++;
-			if (count > 1 || (ft_isdigit(s_color[i]) != 0 && s_color[i] != '-' && s_color[i] != '+'))
+			else if (ft_isdigit(color_split[i][j]) == -1)
 				ft_error("The color must be a number");
-			i++;
+			if (count > 1)
+				ft_error("Invalid color number");
+			j++;
 		}
-		if (is_n)
-			tmp = ft_substr(s_color, start, i - 1);
+		if (color_split[i] && color_split[i][0])
+			color[i] = ft_atoi(color_split[i]);
 		else
-			ft_error("The is no digit before coma");
-		color[j] = ft_atoi(tmp);
-		printf("color[j] = %d\n", color[j]);
-		if (color[j] < 0 || color[j] > 255)
-			ft_error("The color number shoud be between [0, 255]");
-		is_n = false;
-		if (s_color[i])
-			i++;
-		j++;
+			ft_error("Invalid color number");
+		if (color[i] < 0 || color[i] > 255)
+			ft_error("The color number must be in this range [0, 255]");
 		count = 0;
+		i++;
 	}
-	if (s_color[i] != '\0')
-		ft_error("The form of color is x, x, x");
-	return (color);
+	return color;
+	
 }
 
 char *take_diraction_path(char *trim_line)
@@ -125,7 +122,6 @@ t_info *read_info(int fd)
 	while (tmp && tmp[0] != '1')
 	{
 		free(line);
-
 		if (tmp)
 		{
 			if (tmp[0] == 'N' && tmp[1] == 'O' && (tmp[2] == SPACE || tmp[2] == TAB))
@@ -140,10 +136,12 @@ t_info *read_info(int fd)
 				info->f_color = take_color(tmp);
 			else if (tmp[0] == 'C' && (tmp[1] == SPACE || tmp[1] == TAB))
 				info->c_color = take_color(tmp);
+			else if (tmp[0] != '\0')
+				ft_error("Invalid information");
 		}
 		line = get_next_line(fd);
 		tmp = ft_strtrim(line, " 	\n");
 	}
-	// take_map(info, line, fd);
+	take_map(info, line, fd);
 	return (info);
 }
