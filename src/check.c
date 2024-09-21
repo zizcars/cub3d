@@ -84,7 +84,6 @@ void set_player_info(t_info *info, int x, int y)
 
 void check_around(char **map, int x, int y, int height)
 {
-	// printf("(%d, %d) = |%c|\n", x, y, map[y][x]);
 	if (map[y][x] == '\0')
 		return;
 	if (map[y][x] == '1' && map[y + 1][x] == '\0')
@@ -104,6 +103,16 @@ void check_around(char **map, int x, int y, int height)
 	check_around(map, 0, y + 1, height);
 }
 
+bool invalid(char c)
+{
+	return (c == SPACE || c == '\0');
+}
+
+bool is_player(char c)
+{
+	return (c == 'N' || c == 'S'|| c == 'E'|| c == 'W');
+}
+
 void check_map(t_info *info)
 {
 	int i;
@@ -115,24 +124,27 @@ void check_map(t_info *info)
 	count = 0;
 	j = check_ones(info->arr_map[0]);
 	i = 1;
+	if (info->arr_map[i] == NULL)
+		ft_error("Invalid map");
 	while (info->arr_map[i + 1])
 	{
-		// len = j;
+		len = j;
 		j = 0;
 		while (info->arr_map[i][j])
 		{
 			if (check_char(info->arr_map[i][j]) == false)
 				ft_error("invalid char");
-			// if (info->arr_map[i][j] == '0' && (info->arr_map[i + 1][j] == SPACE || info->arr_map[i + 1][j] == '\0'))
-			// {
-			// 	printf("error (%d, %d) = |%c|\n", j, i + 1, info->arr_map[i][j + 1]);
-			// 	ft_error("Map not srounded by walls 1");
-			// }
-			// if (info->arr_map[i][j] == '0' && (info->arr_map[i][j + 1] == SPACE || info->arr_map[i][j + 1] == '\0'))
-			// {
-			// 	printf("error (%d, %d) = |%c|\n", j + 1, i, info->arr_map[i][j + 1]);
-			// 	ft_error("Map not srounded by walls 2");
-			// }
+			if (info->arr_map[i][j] == '0' || is_player(info->arr_map[i][j]))
+			{
+				if (ft_strlen(info->arr_map[i + 1]) > j && invalid(info->arr_map[i + 1][j]))
+					ft_error("Map not srounded by walls 1");
+				else if (ft_strlen(info->arr_map[i - 1]) > j &&  invalid(info->arr_map[i - 1][j]))
+					ft_error("Map not srounded by walls 2");
+				else if (invalid(info->arr_map[i][j + 1]))
+					ft_error("Map not srounded by walls 3");
+				else if (j > 0 && invalid(info->arr_map[i][j - 1]))
+					ft_error("Map not srounded by walls 4");
+			}
 			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1' && info->arr_map[i][j] != SPACE)
 			{
 				set_player_info(info, j, i);
@@ -145,6 +157,4 @@ void check_map(t_info *info)
 	check_ones(info->arr_map[i]);
 	if (count != 1)
 		ft_error("Problem in the Player numeber in the map");
-	check_around(info->arr_map, 0, 0, info->height);
-	// printf("|%c|\n", info->arr_map[0][13]);
 }

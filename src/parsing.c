@@ -15,14 +15,14 @@ void take_map(t_info *info, char *line, int fd)
 	// int i;
 	info->width = 0;
 	info->height = 0;
-	while (line && line[0] != '\n') // I add line[0] != '\n' because they say in subject Except for the map, each type of information from an element can be separate by one or more space(s)
+	while (line && line[0] != '\n') // I add line[0] != '\n' empty lines in the map are not valid
 	{
 		len = ft_strlen(line);
 		// i = len - 2;
 		// while (i > 0 && (line[i] == SPACE || line[i] == TAB)) // line[i] == '\n'
 		// 	i--;
 		tmp = line;
-		line = ft_substr(line, 0, len - 2);
+		line = ft_substr(line, 0, len - 1);
 		free(tmp);
 		if (line && line[0])
 		{
@@ -34,6 +34,7 @@ void take_map(t_info *info, char *line, int fd)
 		free(line);
 		line = get_next_line(fd);
 	}
+	free(line);
 	if (info->arr_map == NULL)
 		ft_error("No map");
 	check_map(info);
@@ -83,6 +84,7 @@ int *take_color(char *s_color)
 		count = 0;
 		i++;
 	}
+	free_array(&color_split);
 	return color;
 	
 }
@@ -139,9 +141,11 @@ t_info *read_info(int fd)
 			else if (tmp[0] != '\0')
 				ft_error("Invalid information");
 		}
+		free(tmp);
 		line = get_next_line(fd);
 		tmp = ft_strtrim(line, " 	\n");
 	}
+	free(tmp);
 	take_map(info, line, fd);
 	return (info);
 }

@@ -21,10 +21,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ) #mlxlib
 	make -C libs/libft
-	cc -g -fsanitize=address $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
+	cc $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
 
 %.o: %.c $(INCLUDES)
-	cc -g -fsanitize=address -c $< -o $@
+	cc -c $< -o $@
 
 mlxlib:
 	cd libs/MLX42/ && cmake -B build && cmake --build build -j4 && cd ..

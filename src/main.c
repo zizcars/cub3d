@@ -23,9 +23,7 @@ void print_info(t_info *info)
 		{
 			printf("MAP: \n");
 			for (int i = 0; info->arr_map[i]; i++)
-			{
 				printf("|%s|\n", info->arr_map[i]);
-			}
 		}
 		else
 			printf("map:(null)\n");
@@ -34,17 +32,22 @@ void print_info(t_info *info)
 		printf("info: (null)\n");
 }
 
+void leaks()
+{
+	system("leaks -q cub3D");
+}
+
 int main()
 {
 	int fd;
 	t_mlx mlx;
 
+	// atexit(leaks);
 	fd = open("maps/test.cub", O_RDONLY);
 	if (fd < 0)
 		printf("no file\n");
 	mlx.info = read_info(fd);
-	print_info(mlx.info);
+	// print_info(mlx.info);
 	close(fd);
 	// display_window(&mlx);
-	// system("leaks -q cub3D");
 }
