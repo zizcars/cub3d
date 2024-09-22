@@ -43,11 +43,11 @@ int main()
 	t_mlx mlx;
 
 	// atexit(leaks);
-	fd = open("maps/test.cub", O_RDONLY);
+	fd = open("maps/map1.cub", O_RDONLY);
 	if (fd < 0)
 		printf("no file\n");
 	mlx.info = read_info(fd);
 	// print_info(mlx.info);
 	close(fd);
-	// display_window(&mlx);
+	display_window(&mlx);
 }

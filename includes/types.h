@@ -43,7 +43,8 @@ typedef struct s_info
 typedef struct s_mlx
 {
 	mlx_t *mlx;
-	mlx_image_t *image;
+	mlx_image_t *map_image;
+	mlx_image_t *r_image;
 	t_info *info;
 } t_mlx;
 
