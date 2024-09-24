@@ -7,26 +7,71 @@
 //  Information about where the intersection happens, like coordinates or wall type, to use for further logic or rendering.
 
 // Change the ray casting for calcule every point to calculate just the start and end of a block
-void display_rays(t_mlx *mlx)
+void display_rays(t_mlx mlx)
 {
-    float startAngle = mlx->info->player_angle - mlx->info->player_fov / 2;
-    float endAngle = mlx->info->player_angle + mlx->info->player_fov / 2;
-
-    for (int i = 0; i < NUM_RAYS; i++)
-    {
-        float angle = startAngle + i * (endAngle - startAngle) / NUM_RAYS;
-        float radAngle = angle * M_PI / 180.0f;
-        float x = mlx->info->player_x;
-        float y = mlx->info->player_y;
-        while (1)
-        {
-            if ( x < 0 || x >= mlx->info->width * SIZE || y < 0 || y >= mlx->info->height * SIZE)
-                break;
-            if (mlx->info->arr_map[(int)y / SIZE][(int)x / SIZE] == '1')
-                break;
-            x += cosf(radAngle); // tells you how much to move horizontally to stay in that direction.
-            y += sinf(radAngle); // tells you how much to move vertically to stay in that direction.
-            mlx_put_pixel(mlx->r_image, x, y, get_rgba(RAYS_COLOR, 255));
-        }
-    }
+	float start_angle = mlx.info->player_angle - mlx.info->player_fov / 2;
+	float end_angle = mlx.info->player_angle + mlx.info->player_fov / 2;
+	float angle = start_angle;
+	int r = 0;
+	float x, y, xa, ya, xb, yb;
+	float d1, d2;
+	while (r < NUM_RAYS)
+	{
+		angle = start_angle + r * mlx.info->player_fov / NUM_RAYS;
+		angle = angle * M_PI / 180.0f;
+		// if (angle < 2 * M_PI && angle > 0)
+		// 	ya = floor(mlx.info->player_y / SIZE) * SIZE + SIZE;
+		// else
+		// 	ya = floor(mlx.info->player_y / SIZE) * SIZE - 1;
+		// if (fabs(tan(angle)) > 0.0001)
+		// 	xa = (ya - mlx.info->player_y) / tan(angle) + mlx.info->player_x;
+		// while (xa > 0 && xa < mlx.info->width * SIZE && ya > 0 && ya < mlx.info->height * SIZE)
+		// {
+		// 	// printf("(%f,%f) [%d, %d]\n", xa, ya, (int)xa / SIZE, (int)ya / SIZE);
+		// 	if (mlx.info->arr_map[(int)ya / SIZE][(int)xa / SIZE] == '1' || mlx.info->arr_map[(int)ya / SIZE][(int)xa / SIZE] == '\0')
+		// 		break;
+		// 	if (angle < 2 * M_PI && angle > 0)
+		// 		y = SIZE;
+		// 	else
+		// 		y = -SIZE;
+		// 	if (fabs(tan(angle)) > 0.0001)
+		// 		x = y / tan(angle);
+		// 	xa += x;
+		// 	ya += y;
+		// }
+		// mlx_put_pixel(mlx.r_image, xa, ya, get_rgba(255, 0, 0, 255));
+		// d1 = sqrt(pow(mlx.info->player_x - xa, 2) + pow(mlx.info->player_y - ya, 2));
+		if (angle < (3 * M_PI) / 2 && angle > M_PI / 2)
+			xb = floor(mlx.info->player_x / SIZE) * SIZE - 1;
+		else
+			xb = floor(mlx.info->player_x / SIZE) * SIZE + SIZE;
+		if (fabs(cos(angle)) >= 0.0001)
+			yb = mlx.info->player_y + (mlx.info->player_x - xb) * tan(angle);
+		// else
+		// 	yb = mlx.info->player_y + (mlx.info->player_x - xb);
+		while (xb > 0 && xb < mlx.info->width * SIZE && yb > 0 && yb < mlx.info->height * SIZE)
+		{
+			// printf("(%f, %f)\n", xb/SIZE, yb/SIZE);
+			mlx_put_pixel(mlx.r_image, xb, yb, get_rgba(0, 255, 0, 255));
+			if (mlx.info->arr_map[(int)yb / SIZE][(int)xb / SIZE] == '1' || mlx.info->arr_map[(int)yb / SIZE][(int)xb / SIZE] == '\0')
+				break;
+			if (angle < (3 * M_PI) / 2 && angle > M_PI / 2)
+				x = SIZE;
+			else
+				x = -SIZE
+			if (fabs(cos(angle)) >= 0.0001)
+				y = x * tan(angle);
+			// else
+			// 	y = x;
+			xb += x;
+			yb += y;
+		}
+		// d2 = sqrt(pow(mlx.info->player_x - xb, 2) + pow(mlx.info->player_y - yb, 2));
+		if (xb > 0 && xb < mlx.info->width * SIZE && yb > 0 && yb < mlx.info->height * SIZE)
+			mlx_put_pixel(mlx.r_image, xb, yb, get_rgba(0, 255, 0, 255));
+		// if (xa > 0 && xa < mlx.info->width * SIZE && ya > 0 && ya < mlx.info->height * SIZE)
+		// 	mlx_put_pixel(mlx.r_image, xa, ya, get_rgba(255, 0, 0, 255));
+		r++;
+	}
+	// printf("------------------------------\n");
 }

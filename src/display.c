@@ -110,7 +110,7 @@ void keyhook(mlx_key_data_t keydata, void *param)
 		return;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
 	mlx->r_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
-	display_rays(mlx);
+	display_rays(*mlx);
 	display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }
@@ -121,7 +121,7 @@ void display_window(t_mlx *mlx)
 	mlx->map_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	mlx->r_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	display_map(*mlx);
-	display_rays(mlx);
+	display_rays(*mlx);
 	// put_pixel(mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
 	display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
