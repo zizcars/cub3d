@@ -73,13 +73,13 @@ void set_player_info(t_info *info, int x, int y)
 	info->player_x = x * SIZE;
 	info->player_y = y * SIZE;
 	if (info->arr_map[y][x] == 'N')
-		info->player_angle = 270;
+		info->player_angle = (270 * M_PI) / 180.0f;
 	else if (info->arr_map[y][x] == 'E')
 		info->player_angle = 0;
 	else if (info->arr_map[y][x] == 'S')
-		info->player_angle = 90;
+		info->player_angle = (90 * M_PI) / 180.0f;
 	else
-		info->player_angle = 180;
+		info->player_angle = (180 * M_PI) / 180.0f;
 }
 
 void check_around(char **map, int x, int y, int height)

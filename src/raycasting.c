@@ -11,22 +11,24 @@ void display_rays(t_mlx *mlx)
 {
     float startAngle = mlx->info->player_angle - mlx->info->player_fov / 2;
     float endAngle = mlx->info->player_angle + mlx->info->player_fov / 2;
+    int d;
 
     for (int i = 0; i < NUM_RAYS; i++)
     {
         float angle = startAngle + i * (endAngle - startAngle) / NUM_RAYS;
-        float radAngle = angle * M_PI / 180.0f;
+        // float radAngle = angle * M_PI / 180.0f;
         float x = mlx->info->player_x;
         float y = mlx->info->player_y;
         while (1)
         {
-            if ( x < 0 || x >= mlx->info->width * SIZE || y < 0 || y >= mlx->info->height * SIZE)
+            if (x < 0 || x >= mlx->info->width * SIZE || y < 0 || y >= mlx->info->height * SIZE)
                 break;
-            if (mlx->info->arr_map[(int)y / SIZE][(int)x / SIZE] == '1')
+            if (mlx->info->arr_map[(int)y / SIZE][(int)x / SIZE] == '1' || mlx->info->arr_map[(int)y / SIZE][(int)x / SIZE] == '\0' || mlx->info->arr_map[(int)y / SIZE][(int)x / SIZE] == SPACE)
                 break;
-            x += cosf(radAngle); // tells you how much to move horizontally to stay in that direction.
-            y += sinf(radAngle); // tells you how much to move vertically to stay in that direction.
+            x += cosf(angle); // tells you how much to move horizontally to stay in that direction.
+            y += sinf(angle); // tells you how much to move vertically to stay in that direction.
             mlx_put_pixel(mlx->r_image, x, y, get_rgba(RAYS_COLOR, 255));
         }
+        d = sqrt(pow(x - mlx->info->player_x, 2) + pow(y - mlx->info->player_y, 2));
     }
 }

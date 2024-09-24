@@ -118,7 +118,7 @@ t_info *read_info(int fd)
 	int i = 0;
 
 	info = ft_calloc(1, sizeof(t_info));
-	info->player_fov = 60;
+	info->player_fov = (60 * M_PI) / 180.0f;
 	line = get_next_line(fd);
 	tmp = ft_strtrim(line, " 	\n");
 	while (tmp && tmp[0] != '1')

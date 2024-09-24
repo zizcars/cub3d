@@ -64,7 +64,7 @@ void display_map(t_mlx mlx)
 		while (mlx.info->arr_map[i][j])
 		{
 			if (mlx.info->arr_map[i][j] == '1')
-				display_square(mlx.map_image, get_rgba(WALL_COLOR , 255), x, y);
+				display_square(mlx.map_image, get_rgba(WALL_COLOR, 255), x, y);
 			else
 				display_square(mlx.map_image, get_rgba(FLOOR_COLOR, 255), x, y);
 			j++;
@@ -79,33 +79,68 @@ void display_map(t_mlx mlx)
 void keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_mlx *mlx = (t_mlx *)param;
+	int tmp_y;
+	int tmp_x;
 
 	if (keydata.key == MLX_KEY_W && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->arr_map[(mlx->info->player_y - STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
-			mlx->info->player_y -= STEP_SIZE;
+		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
+		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
+		// printf("tmp_y:%d sin(a) = %lf y: %d\n", tmp_y, mlx->info->player_x);
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		{
+			mlx->info->player_y = tmp_y;
+			mlx->info->player_x = tmp_x;
+		}
 	}
 	else if (keydata.key == MLX_KEY_S && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->arr_map[(mlx->info->player_y + STEP_SIZE) / SIZE][mlx->info->player_x / SIZE] != '1')
-			mlx->info->player_y += STEP_SIZE;
+		tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
+		tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		{
+			mlx->info->player_y = tmp_y;
+			mlx->info->player_x = tmp_x;
+		}
 	}
 	else if (keydata.key == MLX_KEY_D && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x + STEP_SIZE) / SIZE] != '1')
-			mlx->info->player_x += STEP_SIZE;
+		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle + (90 * M_PI) / 180) * STEP_SIZE;
+		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle + (90 * M_PI) / 180) * STEP_SIZE;
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		{
+			mlx->info->player_y = tmp_y;
+			mlx->info->player_x = tmp_x;
+		}
 	}
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		if (mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x - STEP_SIZE) / SIZE] != '1')
-			mlx->info->player_x -= STEP_SIZE; //change this to something depand on the angle
+		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle - (90 * M_PI) / 180) * STEP_SIZE;
+		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle - (90 * M_PI) / 180) * STEP_SIZE;
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		{
+			mlx->info->player_y = tmp_y;
+			mlx->info->player_x = tmp_x;
+		}
 	}
 	else if (keydata.key == MLX_KEY_ESCAPE)
 		exit(0); // i think here some leaks
 	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-		mlx->info->player_angle += 10;
+	{
+		mlx->info->player_angle += (10 * M_PI) / 180.0f;
+		if (mlx->info->player_angle > (360 * M_PI) / 180.0f)
+			mlx->info->player_angle -= ((360 * M_PI) / 180.0f);
+		// else if (mlx->info->player_angle < 0)
+		// 	mlx->info->player_angle += ((360 * M_PI) / 180.0f);
+	}
 	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-		mlx->info->player_angle -= 10;
+	{
+		mlx->info->player_angle -= (10 * M_PI) / 180.0f;
+		// if (mlx->info->player_angle > (360 * M_PI) / 180.0f)
+		// 	mlx->info->player_angle -= ((360 * M_PI) / 180.0f);
+		if (mlx->info->player_angle < 0)
+			mlx->info->player_angle += ((360 * M_PI) / 180.0f);
+	}
 	else
 		return;
 	mlx_delete_image(mlx->mlx, mlx->r_image);

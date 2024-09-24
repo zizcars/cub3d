@@ -16,7 +16,7 @@
 // #define HEIGHT 400
 #define SIZE 20
 #define STEP_SIZE 5
-// #define PI 3.14159265
+// #define PI 180
 
 #define WALL_COLOR 18, 25, 41
 #define FLOOR_COLOR  79, 86, 89
