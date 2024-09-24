@@ -23,6 +23,8 @@
 #define PERSON_COLOR 109, 184, 194
 #define RAYS_COLOR 211, 215, 237
 
+#define POV_ANGLE 60 * M_PI / 180
+
 typedef struct s_info
 {
 	char *north_path;
