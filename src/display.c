@@ -64,7 +64,7 @@ void display_map(t_mlx mlx)
 		while (mlx.info->arr_map[i][j])
 		{
 			if (mlx.info->arr_map[i][j] == '1')
-				display_square(mlx.map_image, get_rgba(WALL_COLOR , 255), x, y);
+				display_square(mlx.map_image, get_rgba(WALL_COLOR, 255), x, y);
 			else
 				display_square(mlx.map_image, get_rgba(FLOOR_COLOR, 255), x, y);
 			j++;
@@ -98,14 +98,27 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
 		if (mlx->info->arr_map[mlx->info->player_y / SIZE][(mlx->info->player_x - STEP_SIZE) / SIZE] != '1')
-			mlx->info->player_x -= STEP_SIZE; //change this to something depand on the angle
+			mlx->info->player_x -= STEP_SIZE; // change this to something depand on the angle
 	}
 	else if (keydata.key == MLX_KEY_ESCAPE)
 		exit(0); // i think here some leaks
 	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-		mlx->info->player_angle += 10;
+	{
+		mlx->info->player_angle += 60 * M_PI / 180.0f;
+		if (mlx->info->player_angle > 2 * M_PI)
+			mlx->info->player_angle -= 2 * M_PI;
+		else if (mlx->info->player_angle < 0)
+			mlx->info->player_angle += 2 * M_PI;
+
+	}
 	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-		mlx->info->player_angle -= 10;
+	{
+		mlx->info->player_angle -= 60 * M_PI / 180.0f;
+		if (mlx->info->player_angle > 2 * M_PI)
+			mlx->info->player_angle -= 2 * M_PI;
+		else if (mlx->info->player_angle < 0)
+			mlx->info->player_angle += 2 * M_PI;
+	}
 	else
 		return;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
