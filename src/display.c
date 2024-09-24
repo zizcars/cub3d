@@ -87,7 +87,7 @@ void keyhook(mlx_key_data_t keydata, void *param)
 		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
 		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
 		// printf("tmp_y:%d sin(a) = %lf y: %d\n", tmp_y, mlx->info->player_x);
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
 		{
 			mlx->info->player_y = tmp_y;
 			mlx->info->player_x = tmp_x;
@@ -97,7 +97,7 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	{
 		tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
 		tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
 		{
 			mlx->info->player_y = tmp_y;
 			mlx->info->player_x = tmp_x;
@@ -107,7 +107,7 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	{
 		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle + (90 * M_PI) / 180) * STEP_SIZE;
 		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle + (90 * M_PI) / 180) * STEP_SIZE;
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
 		{
 			mlx->info->player_y = tmp_y;
 			mlx->info->player_x = tmp_x;
@@ -117,7 +117,7 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	{
 		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle - (90 * M_PI) / 180) * STEP_SIZE;
 		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle - (90 * M_PI) / 180) * STEP_SIZE;
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1')
+		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
 		{
 			mlx->info->player_y = tmp_y;
 			mlx->info->player_x = tmp_x;
