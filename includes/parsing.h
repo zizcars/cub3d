@@ -26,8 +26,9 @@ int get_rgba(int r, int g, int b, int a);
 void display_map(t_mlx mlx);
 void keyhook(mlx_key_data_t keydata, void *param);
 void display_window(t_mlx *mlx);
+double angle_corrector(double angle);
 
 
-void display_rays(t_mlx *mlx);
+void display_rays(t_mlx mlx);
 
 #endif

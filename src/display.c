@@ -76,6 +76,51 @@ void display_map(t_mlx mlx)
 	mlx_image_to_window(mlx.mlx, mlx.map_image, 0, 0);
 }
 
+double angle_corrector(double angle)
+{
+	if (angle > (360 * M_PI) / 180.0f)
+		angle -= ((360 * M_PI) / 180.0f);
+	else if (angle < 0)
+		angle += ((360 * M_PI) / 180.0f);
+	return (angle);
+}
+
+void move(t_mlx *mlx, E_DIRECTION d)
+{
+	int tmp_y;
+	int tmp_x;
+
+	if (d == UP)
+	{
+		// printf("UP angle: %f\n", mlx->info->player_angle * 180 / M_PI);
+		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
+		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
+	}
+	else if (d == DOWN)
+	{
+		// printf("DOWN angle: %f\n", mlx->info->player_angle * 180 / M_PI);
+		tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
+		tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
+	}
+	else if (d == RIGHT)
+	{
+		// printf("RIGHT angle: %f\n", angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180) * 180 / M_PI);
+		tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
+		tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
+	}
+	else if (d == LEFT)
+	{
+		// printf("LEFT angle: %f\n", angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180) * 180 / M_PI);
+		tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
+		tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
+	}
+	if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
+	{
+		mlx->info->player_y = tmp_y;
+		mlx->info->player_x = tmp_x;
+	}
+}
+
 void keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_mlx *mlx = (t_mlx *)param;
@@ -83,69 +128,30 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	int tmp_x;
 
 	if (keydata.key == MLX_KEY_W && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-	{
-		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
-		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
-		// printf("tmp_y:%d sin(a) = %lf y: %d\n", tmp_y, mlx->info->player_x);
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
-		{
-			mlx->info->player_y = tmp_y;
-			mlx->info->player_x = tmp_x;
-		}
-	}
+		move(mlx, UP);
 	else if (keydata.key == MLX_KEY_S && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-	{
-		tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
-		tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
-		{
-			mlx->info->player_y = tmp_y;
-			mlx->info->player_x = tmp_x;
-		}
-	}
+		move(mlx, DOWN);
 	else if (keydata.key == MLX_KEY_D && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-	{
-		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle + (90 * M_PI) / 180) * STEP_SIZE;
-		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle + (90 * M_PI) / 180) * STEP_SIZE;
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
-		{
-			mlx->info->player_y = tmp_y;
-			mlx->info->player_x = tmp_x;
-		}
-	}
+		move(mlx, RIGHT);
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-	{
-		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle - (90 * M_PI) / 180) * STEP_SIZE;
-		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle - (90 * M_PI) / 180) * STEP_SIZE;
-		if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
-		{
-			mlx->info->player_y = tmp_y;
-			mlx->info->player_x = tmp_x;
-		}
-	}
+		move(mlx, LEFT);
 	else if (keydata.key == MLX_KEY_ESCAPE)
 		exit(0); // i think here some leaks
 	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
 		mlx->info->player_angle += (10 * M_PI) / 180.0f;
-		if (mlx->info->player_angle > (360 * M_PI) / 180.0f)
-			mlx->info->player_angle -= ((360 * M_PI) / 180.0f);
-		// else if (mlx->info->player_angle < 0)
-		// 	mlx->info->player_angle += ((360 * M_PI) / 180.0f);
+		mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
 	}
 	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
 		mlx->info->player_angle -= (10 * M_PI) / 180.0f;
-		// if (mlx->info->player_angle > (360 * M_PI) / 180.0f)
-		// 	mlx->info->player_angle -= ((360 * M_PI) / 180.0f);
-		if (mlx->info->player_angle < 0)
-			mlx->info->player_angle += ((360 * M_PI) / 180.0f);
+		mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
 	}
 	else
 		return;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
 	mlx->r_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
-	display_rays(mlx);
+	display_rays(*mlx);
 	display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }
@@ -156,8 +162,7 @@ void display_window(t_mlx *mlx)
 	mlx->map_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	mlx->r_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	display_map(*mlx);
-	display_rays(mlx);
-	// put_pixel(mlx, mlx->info->player_x, mlx->info->player_y, get_rgba(0, 255, 0, 255));
+	display_rays(*mlx);
 	display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);

@@ -23,6 +23,13 @@
 #define PERSON_COLOR 109, 184, 194
 #define RAYS_COLOR 211, 215, 237
 
+typedef enum{
+	UP = 1,
+	DOWN = 2,
+	RIGHT = 3,
+	LEFT = 4,
+} E_DIRECTION;
+
 typedef struct s_info
 {
 	char *north_path;
@@ -36,10 +43,17 @@ typedef struct s_info
 	int height; // the height of the map, the height of the window is height * SIZE
 	int player_x; // position of the player x
 	int player_y; // position of the player y
-	float player_angle; // player angle N, W , S, E 
-	float player_fov; // player Field of View
+	double player_angle; // player angle N, W , S, E 
+	double player_fov; // player Field of View
 } t_info;
 
+
+typedef struct s_point
+{
+	double x;
+	double y;
+	int distance;
+} t_point;
 typedef struct s_mlx
 {
 	mlx_t *mlx;
