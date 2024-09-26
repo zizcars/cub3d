@@ -85,6 +85,13 @@ double angle_corrector(double angle)
 	return (angle);
 }
 
+static bool is_gape(char **map, int x, int y, int nx, int ny)
+{
+	if (map[ny][nx] != '1' && map[ny][nx] != '\0' && map[ny][nx] != SPACE && map[ny][x] != '1' && map[y][nx] != '1')
+		return true;
+	return false;
+}
+
 void move(t_mlx *mlx, E_DIRECTION d)
 {
 	int tmp_y;
@@ -92,29 +99,25 @@ void move(t_mlx *mlx, E_DIRECTION d)
 
 	if (d == UP)
 	{
-		// printf("UP angle: %f\n", mlx->info->player_angle * 180 / M_PI);
 		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
 		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
 	}
 	else if (d == DOWN)
 	{
-		// printf("DOWN angle: %f\n", mlx->info->player_angle * 180 / M_PI);
 		tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
 		tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
 	}
 	else if (d == RIGHT)
 	{
-		// printf("RIGHT angle: %f\n", angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180) * 180 / M_PI);
 		tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
 		tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
 	}
 	else if (d == LEFT)
 	{
-		// printf("LEFT angle: %f\n", angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180) * 180 / M_PI);
 		tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
 		tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
 	}
-	if (mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '1' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != '\0' && mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE] != SPACE)
+	if (is_gape(mlx->info->arr_map, mlx->info->player_x / SIZE, mlx->info->player_y / SIZE, tmp_x / SIZE, tmp_y / SIZE))
 	{
 		mlx->info->player_y = tmp_y;
 		mlx->info->player_x = tmp_x;

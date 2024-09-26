@@ -27,7 +27,7 @@ void display_map(t_mlx mlx);
 void keyhook(mlx_key_data_t keydata, void *param);
 void display_window(t_mlx *mlx);
 double angle_corrector(double angle);
-
+// bool is_gape(char **map, int x, int y, int nx, int ny);
 
 void display_rays(t_mlx mlx);
 
