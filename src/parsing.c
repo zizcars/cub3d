@@ -37,6 +37,17 @@ void take_map(t_info *info, char *line, int fd)
 	free(line);
 	if (info->arr_map == NULL)
 		ft_error("No map");
+	line = get_next_line(fd);
+	int i = 0;
+	while (line)
+	{
+		while(line[i] && line[i] != '\n' && (line[i] == SPACE || line[i] == TAB))
+			i++;
+		if (line[i] != '\n' && line[i] != '\0')
+			ft_error("More content after the map");
+		free(line);
+		line = get_next_line(fd);
+	}
 	check_map(info);
 }
 
@@ -45,9 +56,9 @@ int *take_color(char *s_color)
 	int *color;
 	int i;
 	char *tmp;
-	char  **color_split;
+	char **color_split;
 	int count;
-	int j ;
+	int j;
 
 	count = 0;
 	i = 0;
@@ -59,7 +70,7 @@ int *take_color(char *s_color)
 	free(tmp);
 	if (array_length(color_split) > 3)
 		ft_error("Invalid color number");
-	while(i < 3)
+	while (i < 3)
 	{
 		j = 0;
 		tmp = color_split[i];
@@ -86,7 +97,6 @@ int *take_color(char *s_color)
 	}
 	free_array(&color_split);
 	return color;
-	
 }
 
 char *take_diraction_path(char *trim_line)
@@ -127,17 +137,35 @@ t_info *read_info(int fd)
 		if (tmp)
 		{
 			if (tmp[0] == 'N' && tmp[1] == 'O' && (tmp[2] == SPACE || tmp[2] == TAB))
+			{
+				free(info->north_path);
 				info->north_path = take_diraction_path(tmp);
+			}
 			else if (tmp[0] == 'S' && tmp[1] == 'O' && (tmp[2] == SPACE || tmp[2] == TAB))
+			{
+				free(info->south_path);
 				info->south_path = take_diraction_path(tmp);
+			}
 			else if (tmp[0] == 'W' && tmp[1] == 'E' && (tmp[2] == SPACE || tmp[2] == TAB))
+			{
+				free(info->west_path);
 				info->west_path = take_diraction_path(tmp);
+			}
 			else if (tmp[0] == 'E' && tmp[1] == 'A' && (tmp[2] == SPACE || tmp[2] == TAB))
+			{
+				free(info->east_path);
 				info->east_path = take_diraction_path(tmp);
+			}
 			else if (tmp[0] == 'F' && (tmp[1] == SPACE || tmp[1] == TAB))
+			{
+				free(info->f_color);
 				info->f_color = take_color(tmp);
+			}
 			else if (tmp[0] == 'C' && (tmp[1] == SPACE || tmp[1] == TAB))
+			{
+				free(info->c_color);
 				info->c_color = take_color(tmp);
+			}
 			else if (tmp[0] != '\0')
 				ft_error("Invalid information");
 		}
@@ -146,6 +174,10 @@ t_info *read_info(int fd)
 		tmp = ft_strtrim(line, " 	\n");
 	}
 	free(tmp);
+	if (info->east_path == NULL || info->north_path == NULL || info->south_path == NULL || info->west_path == NULL)
+		ft_error("A texter path is meassing");
+	if (info->c_color == NULL || info->f_color == NULL)
+		ft_error("Color is missing");
 	take_map(info, line, fd);
 	return (info);
 }

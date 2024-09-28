@@ -37,17 +37,26 @@ void leaks()
 	system("leaks -q cub3D");
 }
 
-int main()
+
+// You should display emty spaces before 0s and 1s
+int main(int ac, char **av)
 {
 	int fd;
 	t_mlx mlx;
 
-	// atexit(leaks);
-	fd = open("maps/map1.cub", O_RDONLY);
-	if (fd < 0)
-		printf("no file\n");
-	mlx.info = read_info(fd);
-	// print_info(mlx.info);
-	close(fd);
-	display_window(&mlx);
+	atexit(leaks);
+	if (ac == 2)
+	{
+		if (check_filename(av[1]) == false)
+			ft_error("Invalid filetype: *.cub");
+		fd = open(av[1], O_RDWR);
+		if (fd < 0)
+			ft_error("no file");
+		mlx.info = read_info(fd);
+		// print_info(mlx.info);
+		close(fd);
+		display_window(&mlx);
+	}
+	else
+		ft_error("./cub3d A path for map");
 }

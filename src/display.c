@@ -65,7 +65,7 @@ void display_map(t_mlx mlx)
 		{
 			if (mlx.info->arr_map[i][j] == '1')
 				display_square(mlx.map_image, get_rgba(WALL_COLOR, 255), x, y);
-			else
+			else if (mlx.info->arr_map[i][j] != SPACE)
 				display_square(mlx.map_image, get_rgba(FLOOR_COLOR, 255), x, y);
 			j++;
 			x += SIZE;
@@ -124,6 +124,24 @@ void move(t_mlx *mlx, E_DIRECTION d)
 	}
 }
 
+void handle_close(void *param)
+{
+	t_mlx *mlx = (t_mlx *)param;
+
+	mlx_delete_image(mlx->mlx, mlx->r_image);
+	mlx_delete_image(mlx->mlx, mlx->map_image);
+	mlx_terminate(mlx->mlx);
+	free_array(&mlx->info->arr_map);
+	free(mlx->info->c_color);
+	free(mlx->info->f_color);
+	free(mlx->info->east_path);
+	free(mlx->info->north_path);
+	free(mlx->info->south_path);
+	free(mlx->info->west_path);
+	free(mlx->info);
+	exit(0);
+}
+
 void keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_mlx *mlx = (t_mlx *)param;
@@ -139,7 +157,13 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 		move(mlx, LEFT);
 	else if (keydata.key == MLX_KEY_ESCAPE)
+	{
+		// mlx_delete_image(mlx->mlx, mlx->r_image);
+		// mlx_delete_image(mlx->mlx, mlx->map_image);
+		// mlx_close_hook(mlx->mlx, handle_close, mlx);
+		// mlx_close_hook(mlx->mlx, close_window, (void *)mlx);
 		exit(0); // i think here some leaks
+	}
 	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
 		mlx->info->player_angle += (10 * M_PI) / 180.0f;
@@ -169,5 +193,6 @@ void display_window(t_mlx *mlx)
 	display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
+	mlx_close_hook(mlx->mlx, handle_close, mlx);
 	mlx_loop(mlx->mlx);
 }

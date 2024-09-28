@@ -113,6 +113,8 @@ void display_rays(t_mlx mlx)
 			mlx_put_pixel(mlx.r_image, a->x, a->y, get_rgba(255, 0, 0, 255));
 		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
 			mlx_put_pixel(mlx.r_image, b->x, b->y, get_rgba(0, 255, 0, 255));
+		free(a);
+		free(b);
 		r++;
 	}
 	// printf("---------------------\n");
