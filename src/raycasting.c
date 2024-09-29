@@ -1,7 +1,7 @@
 #include "../includes/types.h"
 #include "../includes/parsing.h"
 
-#define NUM_RAYS 10000 // should be width of the window
+#define NUM_RAYS 1000 // should be width of the window
 
 // The distance to the first object (wall, etc.) each ray encounters.
 // Information about where the intersection happens, like coordinates or wall type, to use for further logic or rendering.
@@ -35,7 +35,6 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 	ty = a->y;
 	while (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
 	{
-		// if (mlx.info->arr_map[(int)a->y / SIZE][(int)a->x / SIZE] == '1' || mlx.info->arr_map[(int)a->y / SIZE][(int)a->x / SIZE] == '\0' || mlx.info->arr_map[(int)a->y / SIZE][(int)a->x / SIZE] == SPACE)
 		if (is_gape(mlx.info->arr_map, tx / SIZE, ty / SIZE, a->x / SIZE, a->y / SIZE))
 			break;
 		if (angle <= M_PI && angle >= 0)
@@ -73,7 +72,6 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 	ty = a->y;
 	while (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
 	{
-		// if (mlx.info->arr_map[(int)a->y / SIZE][(int)a->x / SIZE] == '1' || mlx.info->arr_map[(int)a->y / SIZE][(int)a->x / SIZE] == '\0' || mlx.info->arr_map[(int)a->y / SIZE][(int)a->x / SIZE] == SPACE)
 		if (is_gape(mlx.info->arr_map, tx / SIZE, ty / SIZE, a->x / SIZE, a->y / SIZE))
 			break;
 		if (angle <= (3 * M_PI) / 2 && angle >= M_PI / 2) // left
@@ -95,20 +93,16 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 
 void display_rays(t_mlx mlx)
 {
-	double start_angle = angle_corrector(mlx.info->player_angle - mlx.info->player_fov / 2);
-	// double end_angle = angle_corrector(mlx.info->player_angle + mlx.info->player_fov / 2);
+	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2);
 	double angle = start_angle;
 	t_point *a;
 	t_point *b;
 	int r = 0;
 	while (r < NUM_RAYS)
 	{
-		angle = angle_corrector(start_angle + r * mlx.info->player_fov / NUM_RAYS);
-		// printf("%d:(%d => %d, %d => %d):%lf \n", r, (int)b->x, mlx.info->width * SIZE, (int)b->y, mlx.info->height * SIZE, angle * 180/ M_PI);
+		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
 		a = calculate_horizontal_intersection(mlx, angle);
 		b = calculate_vertical_intersection(mlx, angle);
-		// printf(">>>> %d:(%d => %d, %d => %d):%lf \n", r, (int)a->x, mlx.info->width * SIZE, (int)a->y, mlx.info->height * SIZE, angle * 180/ M_PI);
-		// printf("da:%d\tdb:%d\n", a->distance, b->distance);
 		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
 			mlx_put_pixel(mlx.r_image, a->x, a->y, get_rgba(255, 0, 0, 255));
 		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
@@ -117,7 +111,6 @@ void display_rays(t_mlx mlx)
 		free(b);
 		r++;
 	}
-	// printf("---------------------\n");
 }
 
 // void display_rays(t_mlx mlx)

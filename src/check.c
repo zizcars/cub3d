@@ -117,67 +117,81 @@ bool is_player(char c)
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
+static void check_first_line(char **map)
+{
+	int j;
+
+	j = 0;
+	while (map[0][j])
+	{
+		if (map[0][j] == SPACE)
+		{
+			if (ft_strlen(map[1]) >= j && (map[1][j] != SPACE && map[1][j] != '1' && map[1][j] != '\0')) // what if map has one line
+				ft_error("The map not srounded by walls 0000");
+		}
+		else if (map[0][j] != '1')
+			ft_error("The map not srounded by walls 0001");
+		j++;
+	}
+}
+
+static void check_last_line(char *last_line)
+{
+	int j;
+
+	j = 0;
+	while (last_line[j])
+	{
+		if (last_line[j] != '1' && last_line[j] != SPACE)
+			ft_error("Map not srounded by walls 0005");
+		j++;
+	}
+}
+
+static void check_others(char **map, int i, int j)
+{
+	if (check_char(map[i][j]) == false)
+		ft_error("invalid char");
+	if (map[i][j] == '0' || is_player(map[i][j]))
+	{
+		if (ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j]))
+			ft_error("Map not srounded by walls 1");
+		else if (ft_strlen(map[i - 1]) > j && invalid(map[i - 1][j]))
+			ft_error("Map not srounded by walls 2");
+		else if (invalid(map[i][j + 1]))
+			ft_error("Map not srounded by walls 3");
+		else if (j > 0 && invalid(map[i][j - 1]))
+			ft_error("Map not srounded by walls 4");
+	}
+}
+
 void check_map(t_info *info)
 {
 	int i;
 	int j;
-	int len;
 	int count;
 
-	j = 0;
 	count = 0;
-	while (info->arr_map[0][j])
-	{
-		if (info->arr_map[0][j] == SPACE)
-		{
-			if (ft_strlen(info->arr_map[1]) >= j && (info->arr_map[1][j] != SPACE && info->arr_map[1][j] != '1' && info->arr_map[1][j] != '\0')) // what if map has one line
-				ft_error("The map not srounded by walls 0000");
-		}
-		else if (info->arr_map[0][j] != '1')
-			ft_error("The map not srounded by walls 0001");
-		j++;
-	}
+	check_first_line(info->arr_map);
 	i = 1;
 	if (info->arr_map[i] == NULL)
 		ft_error("Invalid map");
 	while (info->arr_map[i + 1])
 	{
-		len = j;
 		j = 0;
 		while (info->arr_map[i][j])
 		{
-			if (check_char(info->arr_map[i][j]) == false)
-				ft_error("invalid char");
-			if (info->arr_map[i][j] == '0' || is_player(info->arr_map[i][j]))
-			{
-				if (ft_strlen(info->arr_map[i + 1]) >= j && invalid(info->arr_map[i + 1][j]))
-				{
-					printf("line: %s => |%s|\n", info->arr_map[i], info->arr_map[i + 1]);
-					ft_error("Map not srounded by walls 1");
-				}
-				else if (ft_strlen(info->arr_map[i - 1]) > j && invalid(info->arr_map[i - 1][j]))
-					ft_error("Map not srounded by walls 2");
-				else if (invalid(info->arr_map[i][j + 1]))
-					ft_error("Map not srounded by walls 3");
-				else if (j > 0 && invalid(info->arr_map[i][j - 1]))
-					ft_error("Map not srounded by walls 4");
-			}
+			check_others(info->arr_map, i, j);
 			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1' && info->arr_map[i][j] != SPACE)
 			{
 				set_player_info(info, j, i);
 				count++;
+				if (count != 1)
+					ft_error("Problem in the Player numeber in the map");
 			}
 			j++;
 		}
 		i++;
 	}
-	j = 0;
-	while(info->arr_map[i][j])
-	{
-		if (info->arr_map[i][j] != '1' && info->arr_map[i][j] != SPACE)
-			ft_error("Map not srounded by walls 0005");
-		j++;
-	}
-	if (count != 1)
-		ft_error("Problem in the Player numeber in the map");
+	check_last_line(info->arr_map[i]);
 }

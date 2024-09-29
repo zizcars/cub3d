@@ -92,31 +92,41 @@ static bool is_gape(char **map, int x, int y, int nx, int ny)
 	return false;
 }
 
+static void up_down(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
+{
+	if (d == UP)
+	{
+		*tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
+		*tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
+	}
+	else if (d == DOWN)
+	{
+		*tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
+		*tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
+	}
+}
+
+static void right_left(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
+{
+	if (d == RIGHT)
+	{
+		*tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
+		*tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
+	}
+	else if (d == LEFT)
+	{
+		*tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
+		*tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
+	}
+}
+
 void move(t_mlx *mlx, E_DIRECTION d)
 {
 	int tmp_y;
 	int tmp_x;
 
-	if (d == UP)
-	{
-		tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
-		tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
-	}
-	else if (d == DOWN)
-	{
-		tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
-		tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
-	}
-	else if (d == RIGHT)
-	{
-		tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
-		tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
-	}
-	else if (d == LEFT)
-	{
-		tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
-		tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
-	}
+	up_down(mlx, d, &tmp_x, &tmp_y);
+	right_left(mlx, d, &tmp_x, &tmp_y);
 	if (is_gape(mlx->info->arr_map, mlx->info->player_x / SIZE, mlx->info->player_y / SIZE, tmp_x / SIZE, tmp_y / SIZE))
 	{
 		mlx->info->player_y = tmp_y;
