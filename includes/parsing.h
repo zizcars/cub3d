@@ -29,6 +29,6 @@ void display_window(t_mlx *mlx);
 double angle_corrector(double angle);
 // bool is_gape(char **map, int x, int y, int nx, int ny);
 
-void display_rays(t_mlx mlx);
+void display_rays(t_mlx *mlx);
 
 #endif

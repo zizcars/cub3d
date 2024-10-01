@@ -12,9 +12,9 @@
 
 #define SPACE 32
 #define TAB 9
-// #define WIDTH 400
-// #define HEIGHT 400
-#define SIZE 20
+#define WIDTH 480
+#define HEIGHT 480
+#define SIZE 64
 #define STEP_SIZE 5
 // #define PI 180
 #define PLAYER_FOV (60 * M_PI) / 180.0f

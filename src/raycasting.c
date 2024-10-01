@@ -91,26 +91,48 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 	return a;
 }
 
-void display_rays(t_mlx mlx)
+void render(t_mlx *mlx, int d, int r, double a)
 {
-	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2);
+	int line_h;
+	printf("%d ", d);
+	if (d)
+		line_h = (64.0 / d) * 277;
+	else
+		line_h = 0;
+	int draw_begin = (HEIGHT / 2) - (line_h / 2);
+	int draw_end = draw_begin + line_h;
+	printf("line_h = %d, draw B = %d, draw e = %d\n", line_h, draw_begin, draw_end);
+	for (int y = draw_begin; y < draw_end; y += 1)
+		mlx_put_pixel(mlx->map_image, r, y, get_rgba(255, 0, 0, 255));
+}
+
+void display_rays(t_mlx *mlx)
+{
+	double start_angle = angle_corrector(mlx->info->player_angle - PLAYER_FOV / 2);
 	double angle = start_angle;
 	t_point *a;
 	t_point *b;
 	int r = 0;
+	int d;
+	mlx_delete_image(mlx->mlx, mlx->map_image);
+	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	while (r < NUM_RAYS)
 	{
 		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
-		a = calculate_horizontal_intersection(mlx, angle);
-		b = calculate_vertical_intersection(mlx, angle);
-		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
-			mlx_put_pixel(mlx.r_image, a->x, a->y, get_rgba(255, 0, 0, 255));
-		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
-			mlx_put_pixel(mlx.r_image, b->x, b->y, get_rgba(0, 255, 0, 255));
+		a = calculate_horizontal_intersection(*mlx, angle);
+		b = calculate_vertical_intersection(*mlx, angle);
+		if (a->x > 0 && a->x < mlx->info->width * SIZE && a->y > 0 && a->y < mlx->info->height * SIZE && a->distance < b->distance)
+			d = a->distance;
+		// mlx_put_pixel(mlx->r_image, a->x, a->y, get_rgba(255, 0, 0, 255));
+		else if (b->x > 0 && b->x < mlx->info->width * SIZE && b->y > 0 && b->y < mlx->info->height * SIZE && a->distance >= b->distance)
+			d = b->distance;
+		// mlx_put_pixel(mlx->r_image, b->x, b->y, get_rgba(0, 255, 0, 255));
 		free(a);
 		free(b);
+		render(mlx, d, r, angle);
 		r++;
 	}
+	mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
 }
 
 // void display_rays(t_mlx mlx)
