@@ -10,10 +10,13 @@
 #include "../libs/getnextline/get_next_line.h"
 #include "../libs/MLX42/include/MLX42/MLX42.h"
 
+#define WIDTH 1280
+#define HEIGHT 720
+#define BOX 32
+
+
 #define SPACE 32
 #define TAB 9
-// #define WIDTH 400
-// #define HEIGHT 400
 #define SIZE 20
 #define STEP_SIZE 5
 // #define PI 180

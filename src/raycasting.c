@@ -91,6 +91,33 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 	return a;
 }
 
+
+void draw_floor_ceiling(t_mlx mlx){
+	uint32_t color;
+	for (int y = 0; y < HEIGHT;y++)
+	for (int x = 0;x < WIDTH;x++){
+		if (y < HEIGHT / 2)
+			color = (uint32_t) get_rgba(0, 0, 255, 80);
+		else
+			color = (uint32_t) get_rgba(0, 255, 0, 80);
+		mlx_put_pixel(mlx.r_image, x, y, color);
+	}
+}
+
+void render3d(t_mlx mlx, t_point *x)
+{
+	if (!x->distance) x->distance = 1;
+	double wall_h = (BOX / x->distance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
+	double start_pix = -(wall_h / 2) + (HEIGHT / 2);
+	double end_pix = (wall_h / 2) + (HEIGHT / 2);
+	if (end_pix > HEIGHT) end_pix = HEIGHT;
+	if (start_pix < 0) start_pix = 0;
+	while (start_pix < end_pix)
+		mlx_put_pixel(mlx.r_image, x->x, start_pix++, get_rgba(255, 0, 0, 150));
+
+}
+
+
 void display_rays(t_mlx mlx)
 {
 	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2);
@@ -98,15 +125,20 @@ void display_rays(t_mlx mlx)
 	t_point *a;
 	t_point *b;
 	int r = 0;
+	draw_floor_ceiling(mlx);
 	while (r < NUM_RAYS)
 	{
 		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
 		a = calculate_horizontal_intersection(mlx, angle);
 		b = calculate_vertical_intersection(mlx, angle);
+		// if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
+		// 	mlx_put_pixel(mlx.r_image, a->x, a->y, get_rgba(255, 0, 0, 255));
+		// if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
+		// 	mlx_put_pixel(mlx.r_image, b->x, b->y, get_rgba(0, 255, 0, 255));
 		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
-			mlx_put_pixel(mlx.r_image, a->x, a->y, get_rgba(255, 0, 0, 255));
+			render3d(mlx, a);
 		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
-			mlx_put_pixel(mlx.r_image, b->x, b->y, get_rgba(0, 255, 0, 255));
+			render3d(mlx, b);
 		free(a);
 		free(b);
 		r++;
