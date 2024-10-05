@@ -2,6 +2,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#define FACTOR 0.4
 #include <stdbool.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -12,7 +13,7 @@
 
 #define WIDTH 1280
 #define HEIGHT 720
-#define BOX 32
+#define BOX 20
 
 
 #define SPACE 32
@@ -55,7 +56,7 @@ typedef struct s_point
 {
 	double x;
 	double y;
-	int distance;
+	double distance;
 } t_point;
 typedef struct s_mlx
 {

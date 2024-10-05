@@ -28,7 +28,7 @@ void display_square(mlx_image_t *image, int color, const int x, const int y)
 		j = 0;
 		while (j < SIZE)
 		{
-			mlx_put_pixel(image, i + x, j + y, color);
+			mlx_put_pixel(image, (i + x) *FACTOR , (j + y) * FACTOR, color);
 			j++;
 		}
 		i++;
@@ -189,7 +189,8 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	mlx_delete_image(mlx->mlx, mlx->r_image);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	display_rays(*mlx);
-	display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
+	display_map(*mlx);
+	display_person(*mlx, mlx->info->player_x * FACTOR, mlx->info->player_y * FACTOR);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }
 
@@ -198,10 +199,10 @@ void display_window(t_mlx *mlx)
 	mlx->mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	// display_map(*mlx);
-	display_rays(*mlx);
-	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
+	display_rays(*mlx);
+	display_map(*mlx);
+	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
 	mlx_close_hook(mlx->mlx, handle_close, mlx);
 	mlx_loop(mlx->mlx);
