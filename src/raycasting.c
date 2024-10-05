@@ -106,9 +106,9 @@ void draw_floor_ceiling(t_mlx mlx){
 
 void render3d(t_mlx mlx, t_point *x, int i, double rayAngle)
 {
-	// double prepDistance= 
-	if (!x->distance) x->distance = 1;
-	double wall_h = (BOX / x->distance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
+	double prepDistance= x->distance * cos(rayAngle - mlx.info->player_angle);
+	// if (!x->distance) x->distance = 1;
+	double wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
 	printf("height %f %f\n", wall_h, x->distance);
 	double start_pix = -(wall_h / 2) + (HEIGHT / 2);
 	double end_pix = (wall_h / 2) + (HEIGHT / 2);
