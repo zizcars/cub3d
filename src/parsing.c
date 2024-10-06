@@ -171,10 +171,12 @@ static bool check_file_char(char c)
 
 static void fill_info(char *tmp, t_info *info)
 {
+	// we can avoid using the paths by assigning directly
 	store_path(tmp, 'N', 'O', &info->north_path);
 	store_path(tmp, 'S', 'O', &info->south_path);
 	store_path(tmp, 'W', 'E', &info->west_path);
 	store_path(tmp, 'E', 'A', &info->east_path);
+	load_all_textures(&info);
 	store_color(tmp, 'C', &info->c_color);
 	store_color(tmp, 'F', &info->f_color);
 	if (check_file_char(tmp[0]) && tmp[0] != '\0')

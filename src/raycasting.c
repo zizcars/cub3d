@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/06 15:36:42 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/06 20:10:22 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,9 @@ void draw_floor_ceiling(t_mlx mlx){
 	for (int y = 0; y < HEIGHT;y++)
 	for (int x = 0;x < WIDTH;x++){
 		if (y < HEIGHT / 2)
-			color = (uint32_t) get_rgba(0, 0, 250, 255);
+			color = (uint32_t) mlx.info->c_color;
 		else
-			color = (uint32_t) get_rgba(0, 250, 0, 255);
+			color = (uint32_t) mlx.info->f_color;
 		mlx_put_pixel(mlx.r_image, x, y, color);
 	}
 }
@@ -121,11 +121,12 @@ void render3d(t_mlx mlx, t_point *x, int i, double rayAngle)
 	double prepDistance= x->distance * cos(rayAngle - mlx.info->player_angle);
 	// if (!x->distance) x->distance = 1;
 	double wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
-	printf("height %f %f\n", wall_h, x->distance);
 	double start_pix = -(wall_h / 2) + (HEIGHT / 2);
 	double end_pix = (wall_h / 2) + (HEIGHT / 2);
 	if (end_pix > HEIGHT) end_pix = HEIGHT;
 	if (start_pix < 0) start_pix = 0;
+	// where i would get the texture
+	// why colors change when changing rgba
 	while (start_pix < end_pix)
 		mlx_put_pixel(mlx.r_image, i, start_pix++, get_rgba(255, 0, 0, 255));
 }
@@ -150,8 +151,6 @@ void display_rays(t_mlx mlx)
 			mlx_put_pixel(mlx.r_image, a->x * FACTOR, a->y* FACTOR, get_rgba(255, 0, 0, 255));
 		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
 			mlx_put_pixel(mlx.r_image, b->x* FACTOR, b->y* FACTOR, get_rgba(0, 255, 0, 255));
-
-
 
 		// my render 3d
 		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)

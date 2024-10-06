@@ -1,13 +1,12 @@
-   WE                            textures/wolfenstein/grey_stone.xpm   
-NO      textures/wolfenstein/purple_stone.xpm   
+WE      ./texture/zelig.png
+NO      ./texture/stone.png
+SO      ./texture/wood.png
+EA      ./texture/pharaoh.png
 
 
 
 
-
-SO textures/wolfenstein/red_brick.xpm  
-EA textures/wolfenstein/wood.xpm   
-C 218,234,235      
+C	218,234,235
  
 F      17,38,64   
 

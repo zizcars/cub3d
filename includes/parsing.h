@@ -31,4 +31,7 @@ double angle_corrector(double angle);
 
 void display_rays(t_mlx mlx);
 
+
+int load_all_textures(t_info **);
+
 #endif

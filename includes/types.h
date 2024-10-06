@@ -2,7 +2,6 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#define FACTOR 0.4
 #include <stdbool.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -15,6 +14,7 @@
 #define HEIGHT 720
 #define BOX 20
 
+#define FACTOR 0.4
 
 #define SPACE 32
 #define TAB 9
@@ -41,6 +41,7 @@ typedef struct s_info
 	char *south_path;  // they store the path to n, s, w, e textures
 	char *west_path;
 	char *east_path; 
+	uint32_t *texture[4];
 	int *f_color; // floor color as [r, g, b]
 	int *c_color; // celling color as [r, g, b]
 	char **arr_map; // the map as an array of lines
