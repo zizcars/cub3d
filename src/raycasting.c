@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   raycasting.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
+/*   Updated: 2024/10/06 15:36:42 by abounab          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/types.h"
 #include "../includes/parsing.h"
 
@@ -97,9 +109,9 @@ void draw_floor_ceiling(t_mlx mlx){
 	for (int y = 0; y < HEIGHT;y++)
 	for (int x = 0;x < WIDTH;x++){
 		if (y < HEIGHT / 2)
-			color = (uint32_t) get_rgba(0, 0, 0, 0);
+			color = (uint32_t) get_rgba(0, 0, 250, 255);
 		else
-			color = (uint32_t) get_rgba(0, 0, 0, 0);
+			color = (uint32_t) get_rgba(0, 250, 0, 255);
 		mlx_put_pixel(mlx.r_image, x, y, color);
 	}
 }
@@ -132,11 +144,6 @@ void display_rays(t_mlx mlx)
 		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
 		a = calculate_horizontal_intersection(mlx, angle);
 		b = calculate_vertical_intersection(mlx, angle);
-		
-		// a->distance = sqrt(pow(mlx.info->player_x - a->x, 2) + pow(mlx.info->player_y - a->y, 2));
-		// b->distance = sqrt(pow(mlx.info->player_x - b->x, 2) + pow(mlx.info->player_y - b->y, 2));
-		// printf("a: x %f  \tb : x %f \n", a->distance, b->distance);
-
 
 		// have to edit it to create a mini map
 		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
