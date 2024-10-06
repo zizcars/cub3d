@@ -187,17 +187,17 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	else
 		return;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
-	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->r_image = mlx_new_image(mlx->mlx, mlx->info->height * SIZE, mlx->info->width * SIZE);
 	display_rays(mlx);
 	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
-	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
+	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }
 
 void display_window(t_mlx *mlx)
 {
-	mlx->mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
-	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->mlx = mlx_init(mlx->info->width * SIZE, mlx->info->height * SIZE, "CUB3D", true);
+	mlx->map_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
+	mlx->r_image = mlx_new_image(mlx->mlx, mlx->info->width * SIZE, mlx->info->height * SIZE);
 	// display_map(*mlx);
 	display_rays(mlx);
 	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);

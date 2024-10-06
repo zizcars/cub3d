@@ -1,7 +1,7 @@
 #include "../includes/types.h"
 #include "../includes/parsing.h"
 
-#define NUM_RAYS 1000 // should be width of the window
+#define NUM_RAYS 1400 // should be width of the window
 
 // The distance to the first object (wall, etc.) each ray encounters.
 // Information about where the intersection happens, like coordinates or wall type, to use for further logic or rendering.
@@ -33,8 +33,9 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 	a->x = (a->y - mlx.info->player_y) / tan(angle) + mlx.info->player_x;
 	tx = a->x;
 	ty = a->y;
-	while (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
+	while (a->x > 0 && a->x < mlx.info->height * SIZE && a->y > 0 && a->y < mlx.info->width * SIZE)
 	{
+		// printf("t(%d,%d) a(%f,%f) w:%d h:%d \n", tx/SIZE, ty/SIZE, a->x / SIZE, a->y / SIZE, mlx.info->width, mlx.info->width);
 		if (is_gape(mlx.info->arr_map, tx / SIZE, ty / SIZE, a->x / SIZE, a->y / SIZE))
 			break;
 		if (angle <= M_PI && angle >= 0)
@@ -47,7 +48,7 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 		a->x += x;
 		a->y += y;
 	}
-	if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
+	if (a->x > 0 && a->x < mlx.info->height * SIZE && a->y > 0 && a->y < mlx.info->width * SIZE)
 		a->distance = sqrt(pow(mlx.info->player_x - a->x, 2) + pow(mlx.info->player_y - a->y, 2));
 	else
 		a->distance = 2147483647;
@@ -91,18 +92,18 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 	return a;
 }
 
-void render(t_mlx *mlx, int d, int r, double a)
+void render(t_mlx *mlx, int d, int r, double angle)
 {
-	int line_h;
-	printf("%d ", d);
-	if (d)
-		line_h = (64.0 / d) * 277;
-	else
-		line_h = 0;
-	int draw_begin = (HEIGHT / 2) - (line_h / 2);
-	int draw_end = draw_begin + line_h;
-	printf("line_h = %d, draw B = %d, draw e = %d\n", line_h, draw_begin, draw_end);
-	for (int y = draw_begin; y < draw_end; y += 1)
+	double correct_distance ;
+	correct_distance = d / cos(angle);
+	int wall_height = (mlx->info->height * SIZE / correct_distance) * SIZE;
+	int start = (int)(mlx->info->height * SIZE / 2) - (int)(wall_height / 2);
+	if (start < 0)
+		start = 0;
+	int end = (int)(mlx->info->height * SIZE / 2) + (int)(wall_height / 2);
+	if (end > mlx->info->height * SIZE)
+		end = mlx->info->height * SIZE;
+	for (int y = start; y < end; y += 1)
 		mlx_put_pixel(mlx->map_image, r, y, get_rgba(255, 0, 0, 255));
 }
 
