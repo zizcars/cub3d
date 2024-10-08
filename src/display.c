@@ -38,7 +38,7 @@ void display_square(mlx_image_t *image, int color, const int x, const int y)
 	}
 }
 
-void display_person(t_mlx mlx, const int x, const int y)
+void display_person(mlx_image_t *img, const int x, const int y)
 {
 	float i, j, a;
 	i = j = a = 0;
@@ -46,7 +46,7 @@ void display_person(t_mlx mlx, const int x, const int y)
 	{
 		i = x + 2.0f * cos(a);
 		j = y + 2.0f * sin(a);
-		mlx_put_pixel(mlx.r_image, i, j, get_rgba(PERSON_COLOR, 255));
+		mlx_put_pixel(img, i, j, get_rgba(PERSON_COLOR, 255));
 		a += 0.1f;
 	}
 }
@@ -75,49 +75,67 @@ void display_map(t_mlx *mlx)
 	}
 
 	// drawing the map
+	int c = 0;
 	y = 0;
+	int tx, ty;
 	// i = (float)mlx->info->player_y/SIZE;
-	i = 0;
-	// printf("P:(%d,%d)\n", mlx->info->player_x, mlx->info->player_y);
-	while (mlx->info->arr_map[i] && y < FRAME_Y )
+	i = (int)(mlx->info->player_y / SIZE) - 3;
+	if (i < 0)
+		i = 0;
+	// j = (int)(mlx->info->player_x / SIZE) - 3;
+	// if (j < 0)
+	// 	j = 0;
+	// printf("P(%d,%d) -> (%d,%d)\n", mlx->info->player_x / SIZE, mlx->info->player_y / SIZE ,j, i);
+	while (mlx->info->arr_map[i] && c < 7)
 	{
 		x = 0;
 		// j = (float)mlx->info->player_x/SIZE;
-		j = 0;
-		while (mlx->info->arr_map[i][j] && x < FRAME_X )
+		j = mlx->info->player_x / SIZE - 3;
+		if (j < 0)
+			j = 0;
+		printf("(%d,%d)\n", i, j);
+		while (mlx->info->arr_map[i][j])
 		{
+			// printf("(%d,%d)\n", x, y);
 			if (mlx->info->arr_map[i][j] == '1')
 				display_square(mlx->map_image, get_rgba(WALL_COLOR, 255), x, y);
 			// N,S,E or W
-			// else if (mlx->info->arr_map[i][j] == 'N' || mlx->info->arr_map[i][j] == 'S' || mlx->info->arr_map[i][j] == 'E' || mlx->info->arr_map[i][j] == 'W')
-			// {
-			// 	display_person(*mlx, x, y);
-			// }
-			else if (mlx->info->arr_map[i][j] != SPACE)
+			else //if (mlx->info->arr_map[i][j] != SPACE)
 				display_square(mlx->map_image, get_rgba(FLOOR_COLOR, 255), x, y);
+			if (mlx->info->arr_map[i][j] == 'N' || mlx->info->arr_map[i][j] == 'S' || mlx->info->arr_map[i][j] == 'E' || mlx->info->arr_map[i][j] == 'W')
+			{
+				tx = x;
+				ty = y;
+				// printf("helo\n");
+				// display_square(mlx->map_image, get_rgba(PERSON_COLOR, 255), x, y);
+				// display_person(mlx->map_image, x, y);
+			}
 			j++;
+			// printf("%d %d %d %d\n", mlx->info->arr_map[i][j] == 'N', mlx->info->arr_map[i][j] == 'S' , mlx->info->arr_map[i][j] == 'E' || mlx->info->arr_map[i][j] == 'W');
 			x += SIZE;
 		}
+		// printf("(%d,%d)\n", i, j);
 		y += SIZE;
 		i++;
-		printf("P:(%d,%d) -> %d\t%d\n", x, y, FRAME_X, FRAME_Y);
+		c++;
+		// printf("P:(%d,%d) -> %d\t%d\n", x, y, FRAME_X, FRAME_Y);
 	}
 	// display_square(mlx->map_image, get_rgba(255,255,0, 255), 0, 0);
-
-	display_person(*mlx, mlx->info->player_x * FACTOR, mlx->info->player_y * FACTOR);
+	printf("x = %d -> y = %d\n", mlx->info->player_x - tx, mlx->info->player_y - ty);
+	// display_person(mlx->map_image, mlx->info->player_x * FACTOR, mlx->info->player_y * FACTOR);
 	// drawing Frame
-	f_y = 0;
-	while (f_y < FRAME_Y)
-	{
-		f_x = 0;
-		mlx_put_pixel(mlx->map_image, 0, f_y, get_rgba(FRAME_COLOR, 255));
-		while ((f_y == 0 || f_y == FRAME_Y - 1) && f_x < FRAME_X)
-			mlx_put_pixel(mlx->map_image, f_x++, f_y, get_rgba(FRAME_COLOR, 255));
-		while (f_x < FRAME_X)
-			f_x++;
-		mlx_put_pixel(mlx->map_image, f_x, f_y, get_rgba(FRAME_COLOR, 255));
-		f_y++;
-	}
+	// f_y = 0;
+	// while (f_y < FRAME_Y)
+	// {
+	// 	f_x = 0;
+	// 	mlx_put_pixel(mlx->map_image, 0, f_y, get_rgba(FRAME_COLOR, 255));
+	// 	while ((f_y == 0 || f_y == FRAME_Y - 1) && f_x < FRAME_X)
+	// 		mlx_put_pixel(mlx->map_image, f_x++, f_y, get_rgba(FRAME_COLOR, 255));
+	// 	while (f_x < FRAME_X)
+	// 		f_x++;
+	// 	mlx_put_pixel(mlx->map_image, f_x, f_y, get_rgba(FRAME_COLOR, 255));
+	// 	f_y++;
+	// }
 	mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
 }
 
