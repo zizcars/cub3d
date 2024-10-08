@@ -35,13 +35,21 @@ typedef enum{
 	LEFT = 4,
 } E_DIRECTION;
 
+typedef struct s_texture
+{
+	uint32_t *pixels;
+	uint32_t height;
+	uint32_t width;
+
+} t_texture;
+
 typedef struct s_info
 {
 	char *north_path;
 	char *south_path;  // they store the path to n, s, w, e textures
 	char *west_path;
 	char *east_path; 
-	uint32_t *texture[4];
+	t_texture *texture[4];
 	int *f_color; // floor color as [r, g, b]
 	int *c_color; // celling color as [r, g, b]
 	char **arr_map; // the map as an array of lines
@@ -66,5 +74,6 @@ typedef struct s_mlx
 	mlx_image_t *r_image;
 	t_info *info;
 } t_mlx;
+
 
 #endif

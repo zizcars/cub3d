@@ -126,7 +126,7 @@ static void check_first_line(char **map)
 	{
 		if (map[0][j] == SPACE)
 		{
-			if (ft_strlen(map[1]) >= j && (map[1][j] != SPACE && map[1][j] != '1' && map[1][j] != '\0')) // what if map has one line
+			if ((int)ft_strlen(map[1]) >= j && (map[1][j] != SPACE && map[1][j] != '1' && map[1][j] != '\0')) // what if map has one line
 				ft_error("The map not srounded by walls 0000");
 		}
 		else if (map[0][j] != '1')
@@ -154,9 +154,9 @@ static void check_others(char **map, int i, int j)
 		ft_error("invalid char");
 	if (map[i][j] == '0' || is_player(map[i][j]))
 	{
-		if (ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j]))
+		if ((int)ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j]))
 			ft_error("Map not srounded by walls 1");
-		else if (ft_strlen(map[i - 1]) > j && invalid(map[i - 1][j]))
+		else if ((int)ft_strlen(map[i - 1]) > j && invalid(map[i - 1][j]))
 			ft_error("Map not srounded by walls 2");
 		else if (invalid(map[i][j + 1]))
 			ft_error("Map not srounded by walls 3");

@@ -157,7 +157,7 @@ static void store_color(char *tmp, char c, int **color_box)
 static bool check_file_char(char c)
 {
 	char *chars;
-	int i;
+	// int i;
 
 	chars = "NSWECF";
 	while (*chars)
@@ -176,7 +176,7 @@ static void fill_info(char *tmp, t_info *info)
 	store_path(tmp, 'S', 'O', &info->south_path);
 	store_path(tmp, 'W', 'E', &info->west_path);
 	store_path(tmp, 'E', 'A', &info->east_path);
-	load_all_textures(&info);
+	// load_all_textures(&info);
 	store_color(tmp, 'C', &info->c_color);
 	store_color(tmp, 'F', &info->f_color);
 	if (check_file_char(tmp[0]) && tmp[0] != '\0')
@@ -188,7 +188,7 @@ t_info *read_info(int fd)
 {
 	char *line;
 	char *tmp;
-	char **split_line;
+	// char **split_line;
 	t_info *info;
 
 	info = ft_calloc(1, sizeof(t_info));
@@ -204,9 +204,10 @@ t_info *read_info(int fd)
 	}
 	free(tmp);
 	if (info->east_path == NULL || info->north_path == NULL || info->south_path == NULL || info->west_path == NULL)
-		ft_error("A texter path is meassing");
+		ft_error("A texter path is missing");
 	if (info->c_color == NULL || info->f_color == NULL)
 		ft_error("Color is missing");
 	take_map(info, line, fd);
+	load_all_textures(&info);
 	return (info);
 }

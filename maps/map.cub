@@ -1,7 +1,7 @@
-WE      ./texture/zelig.png
-NO      ./texture/stone.png
-SO      ./texture/wood.png
-EA      ./texture/pharaoh.png
+WE      maps/texture/zelig.png
+NO      maps/texture/stone.png
+SO      maps/texture/wood.png
+EA      maps/texture/pharaoh.png
 
 
 

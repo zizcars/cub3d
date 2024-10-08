@@ -22,10 +22,12 @@ all: $(NAME)
 
 $(NAME): $(OBJ) #mlxlib
 	make -C libs/libft
-	cc $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME)
+	cc $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME) -fsanitize=address
 
+
+# we need flags CFLAGS
 %.o: %.c $(INCLUDES)
-	cc -c $< -o $@
+	cc -c  $< -o $@
 
 mlxlib:
 	cd libs/MLX42/ && cmake -B build && cmake --build build -j4 && cd ..
