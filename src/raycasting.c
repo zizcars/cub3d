@@ -139,10 +139,10 @@ void display_rays(t_mlx mlx)
 
 
 		// have to edit it to create a mini map
-		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
-			mlx_put_pixel(mlx.r_image, a->x * FACTOR, a->y* FACTOR, get_rgba(255, 0, 0, 255));
-		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
-			mlx_put_pixel(mlx.r_image, b->x* FACTOR, b->y* FACTOR, get_rgba(0, 255, 0, 255));
+		// if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
+		// 	mlx_put_pixel(mlx.r_image, a->x * FACTOR, a->y* FACTOR, get_rgba(255, 0, 0, 255));
+		// if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
+		// 	mlx_put_pixel(mlx.r_image, b->x* FACTOR, b->y* FACTOR, get_rgba(0, 255, 0, 255));
 
 
 
@@ -155,6 +155,7 @@ void display_rays(t_mlx mlx)
 		free(b);
 		r++;
 	}
+	mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
 }
 
 // void display_rays(t_mlx mlx)

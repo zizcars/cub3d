@@ -53,89 +53,57 @@ void display_person(mlx_image_t *img, const int x, const int y)
 
 void display_map(t_mlx *mlx)
 {
-	int i;
-	int j;
-	int x;
-	int y;
-	int f_x;
-	int f_y = 0;
-
-	// fill spaces
+	int x, y;
+	int i, j;
+	int nx, ny;
 	mlx_delete_image(mlx->mlx, mlx->map_image);
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	while (f_y < FRAME_Y)
-	{
-		f_x = 0;
-		while (f_x < FRAME_X)
-		{
-			mlx_put_pixel(mlx->map_image, f_x, f_y, get_rgba(SPACE_COLOR, 255));
-			f_x++;
-		}
-		f_y++;
-	}
-
-	// drawing the map
-	int c = 0;
 	y = 0;
-	int tx, ty;
-	// i = (float)mlx->info->player_y/SIZE;
-	i = (int)(mlx->info->player_y / SIZE) - 3;
-	if (i < 0)
-		i = 0;
-	// j = (int)(mlx->info->player_x / SIZE) - 3;
-	// if (j < 0)
-	// 	j = 0;
-	// printf("P(%d,%d) -> (%d,%d)\n", mlx->info->player_x / SIZE, mlx->info->player_y / SIZE ,j, i);
-	while (mlx->info->arr_map[i] && c < 7)
+	while (y < FRAME_Y)
 	{
 		x = 0;
-		// j = (float)mlx->info->player_x/SIZE;
-		j = mlx->info->player_x / SIZE - 3;
-		if (j < 0)
-			j = 0;
-		printf("(%d,%d)\n", i, j);
-		while (mlx->info->arr_map[i][j])
+		while (x < FRAME_X)
 		{
-			// printf("(%d,%d)\n", x, y);
-			if (mlx->info->arr_map[i][j] == '1')
-				display_square(mlx->map_image, get_rgba(WALL_COLOR, 255), x, y);
-			// N,S,E or W
-			else //if (mlx->info->arr_map[i][j] != SPACE)
-				display_square(mlx->map_image, get_rgba(FLOOR_COLOR, 255), x, y);
-			if (mlx->info->arr_map[i][j] == 'N' || mlx->info->arr_map[i][j] == 'S' || mlx->info->arr_map[i][j] == 'E' || mlx->info->arr_map[i][j] == 'W')
-			{
-				tx = x;
-				ty = y;
-				// printf("helo\n");
-				// display_square(mlx->map_image, get_rgba(PERSON_COLOR, 255), x, y);
-				// display_person(mlx->map_image, x, y);
-			}
-			j++;
-			// printf("%d %d %d %d\n", mlx->info->arr_map[i][j] == 'N', mlx->info->arr_map[i][j] == 'S' , mlx->info->arr_map[i][j] == 'E' || mlx->info->arr_map[i][j] == 'W');
-			x += SIZE;
+			mlx_put_pixel(mlx->map_image, x, y, get_rgba(SPACE_COLOR, 255));
+			x++;
 		}
-		// printf("(%d,%d)\n", i, j);
-		y += SIZE;
-		i++;
-		c++;
-		// printf("P:(%d,%d) -> %d\t%d\n", x, y, FRAME_X, FRAME_Y);
+		y++;
 	}
-	// display_square(mlx->map_image, get_rgba(255,255,0, 255), 0, 0);
-	printf("x = %d -> y = %d\n", mlx->info->player_x - tx, mlx->info->player_y - ty);
-	// display_person(mlx->map_image, mlx->info->player_x * FACTOR, mlx->info->player_y * FACTOR);
-	// drawing Frame
-	// f_y = 0;
-	// while (f_y < FRAME_Y)
-	// {
-	// 	f_x = 0;
-	// 	mlx_put_pixel(mlx->map_image, 0, f_y, get_rgba(FRAME_COLOR, 255));
-	// 	while ((f_y == 0 || f_y == FRAME_Y - 1) && f_x < FRAME_X)
-	// 		mlx_put_pixel(mlx->map_image, f_x++, f_y, get_rgba(FRAME_COLOR, 255));
-	// 	while (f_x < FRAME_X)
-	// 		f_x++;
-	// 	mlx_put_pixel(mlx->map_image, f_x, f_y, get_rgba(FRAME_COLOR, 255));
-	// 	f_y++;
-	// }
+	i = mlx->info->player_y - FRAME_Y / 2;
+	y = 0;
+	while (y < FRAME_Y)
+	{
+		if (i < 0)
+		{
+			i++;
+			y++;
+			continue;
+		}
+		if (!mlx->info->arr_map[(int)(i / (SIZE))])
+			break;
+		j = mlx->info->player_x - FRAME_X / 2;
+		x = 0;
+		while (x < FRAME_X)
+		{
+			if (j < 0)
+			{
+				x++;
+				j++;
+				continue;
+			}
+			if (!mlx->info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))])
+				break;
+			if (mlx->info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] == '1')
+				mlx_put_pixel(mlx->map_image, x, y, get_rgba(WALL_COLOR, 255));
+			else if (mlx->info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] != SPACE)
+				mlx_put_pixel(mlx->map_image, x, y, get_rgba(FLOOR_COLOR, 255));
+			x++;
+			j++;
+		}
+		i++;
+		y++;
+	}
+	display_person(mlx->map_image, FRAME_X / 2, FRAME_Y / 2);
 	mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
 }
 
@@ -230,13 +198,7 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 		move(mlx, LEFT);
 	else if (keydata.key == MLX_KEY_ESCAPE)
-	{
-		// mlx_delete_image(mlx->mlx, mlx->r_image);
-		// mlx_delete_image(mlx->mlx, mlx->map_image);
-		// mlx_close_hook(mlx->mlx, handle_close, mlx);
-		// mlx_close_hook(mlx->mlx, close_window, (void *)mlx);
-		exit(0); // i think here some leaks
-	}
+		exit(0);
 	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
 		mlx->info->player_angle += (10 * M_PI) / 180.0f;
@@ -251,9 +213,8 @@ void keyhook(mlx_key_data_t keydata, void *param)
 		return;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	// display_rays(*mlx);
+	display_rays(*mlx);
 	display_map(mlx);
-	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }
 
 void display_window(t_mlx *mlx)
@@ -262,7 +223,7 @@ void display_window(t_mlx *mlx)
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
-	// display_rays(*mlx);
+	display_rays(*mlx);
 	display_map(mlx);
 	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
