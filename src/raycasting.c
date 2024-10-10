@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 19:26:27 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 19:47:01 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,8 @@ void render3d(t_mlx mlx, t_point *x)
 	if (start_pix < 0) start_pix = 0;
 
 	int r;
-	printf("%d\n", x->angle);
-	r = x->vertical ? (x->angle)? 1 : 2 : (x->angle)? 3: 4;
+	// printf("%f\n", x->angle);
+	r = !x->vertical ? (x->angle <= M_PI && x->angle >= 0)? 1 : 2 : (x->angle <= (3 * M_PI) / 2 && x->angle >= M_PI / 2)? 3: 0;
 	// r = 0;
 
 	int textureOffsetX;
