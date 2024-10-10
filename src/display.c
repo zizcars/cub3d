@@ -217,6 +217,33 @@ void keyhook(mlx_key_data_t keydata, void *param)
 	display_map(mlx);
 }
 
+void mousehook(void *param)
+{
+	t_mlx *mlx = (t_mlx *)param;
+	int x, y;
+	static int px, py;
+
+	mlx_get_mouse_pos(mlx->mlx, &x, &y);
+	printf("x=%d, y=%d\n", x, y);
+	if (x > 0 && y > 0 && px != x && (px - x > 50 || px - x < -50))
+	{
+		if ( px - x > 0)
+		{
+			mlx->info->player_angle -= (10 * M_PI) / 180.0f;
+			mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
+		}
+		else
+		{
+			mlx->info->player_angle += (10 * M_PI) / 180.0f;
+			mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
+		}
+		mlx_delete_image(mlx->mlx, mlx->r_image);
+		mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+		display_rays(*mlx);
+		display_map(mlx);
+		px = x;
+	}
+}
 void display_window(t_mlx *mlx)
 {
 	mlx->mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
@@ -227,6 +254,8 @@ void display_window(t_mlx *mlx)
 	display_map(mlx);
 	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
+	// mlx_mouse_hook(mlx->mlx, mousehook, mlx);
+	mlx_loop_hook(mlx->mlx, mousehook, mlx);
 	mlx_close_hook(mlx->mlx, handle_close, mlx);
 	mlx_loop(mlx->mlx);
 }
