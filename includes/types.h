@@ -48,7 +48,7 @@ typedef struct s_info
 	char *south_path;  // they store the path to n, s, w, e textures
 	char *west_path;
 	char *east_path; 
-	t_texture *texture[4];
+	mlx_texture_t *texture[4];
 	int *f_color; // floor color as [r, g, b]
 	int *c_color; // celling color as [r, g, b]
 	char **arr_map; // the map as an array of lines

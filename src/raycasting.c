@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 15:04:11 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 16:11:41 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,21 @@ void draw_floor_ceiling(t_mlx mlx){
 	}
 }
 
+int get_color(mlx_texture_t* texture, int x, int y)
+{
+	uint8_t* pos;
+	int p;
+	int color;
+
+	p = (y * texture->width * 4) + (x * 4);
+	if (x < 0 || y < 0 || p >= (texture->width * 4 * texture->height))
+		return 0;
+	pos = (&texture->pixels[p]);
+	color = (pos[0] << 24 | pos[1] << 16 | pos[2] << 8 | pos[3]);
+	return (color);
+}
+
+
 void render3d(t_mlx mlx, t_point *x)
 {
 	double prepDistance = x->distance * cos(x->angle - mlx.info->player_angle);
@@ -126,15 +141,20 @@ void render3d(t_mlx mlx, t_point *x)
 	if (end_pix > HEIGHT) end_pix = HEIGHT;
 	if (start_pix < 0) start_pix = 0;
 
-	int textureOffsetX = x->vertical ? (int)(x->y) % BOX : (int)(x->x) % BOX;
-
+	int textureOffsetX;
+	// textureOffsetX  = x->vertical ? (int)(x->y) % BOX : (int)(x->x) % BOX;
+	if (x->vertical)
+		textureOffsetX = ((x->y / BOX) - floor(x->y / BOX)) * mlx.info->texture[0]->width;
+	else
+		textureOffsetX = ((x->x / BOX) - floor(x->x / BOX)) * mlx.info->texture[0]->width;
 	int textureOffsetY;
 
 	for (int y = start_pix; y < end_pix; y++){
-		textureOffsetY = (y - start_pix) * ((float) BOX / (int)wall_h);
-		printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
+		textureOffsetY = ((y - start_pix)) * (mlx.info->texture[0]->height / wall_h);
+		// printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
 		// printf("color %d\n", mlx.info->texture[0]->pixels[(int)((BOX * textureOffsetY) + textureOffsetX)]);
-		mlx_put_pixel(mlx.r_image, x->ray, start_pix++, mlx.info->texture[0]->pixels[(BOX * textureOffsetY) + textureOffsetX]);
+		int color = get_color(mlx.info->texture[0], textureOffsetX, textureOffsetY);
+		mlx_put_pixel(mlx.r_image, x->ray, y, color);
 	}
 }
 
