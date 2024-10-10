@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 16:16:30 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 19:26:27 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,20 +141,25 @@ void render3d(t_mlx mlx, t_point *x)
 	if (end_pix > HEIGHT) end_pix = HEIGHT;
 	if (start_pix < 0) start_pix = 0;
 
+	int r;
+	printf("%d\n", x->angle);
+	r = x->vertical ? (x->angle)? 1 : 2 : (x->angle)? 3: 4;
+	// r = 0;
+
 	int textureOffsetX;
 	// textureOffsetX  = x->vertical ? (int)(x->y) % BOX : (int)(x->x) % BOX;
 	if (x->vertical)
-		textureOffsetX = ((x->y / BOX) - floor(x->y / BOX)) * mlx.info->texture[0]->width;
+		textureOffsetX = ((x->y / BOX) - floor(x->y / BOX)) * mlx.info->texture[r]->width;
 	else
-		textureOffsetX = ((x->x / BOX) - floor(x->x / BOX)) * mlx.info->texture[0]->width;
+		textureOffsetX = ((x->x / BOX) - floor(x->x / BOX)) * mlx.info->texture[r]->width;
 	int textureOffsetY;
 
 	for (int y = start_pix; y < end_pix; y++){
 		int differencetop = (y + wall_h / 2 - HEIGHT / 2);
-		textureOffsetY = differencetop * (mlx.info->texture[0]->height / wall_h);
+		textureOffsetY = differencetop * (mlx.info->texture[r]->height / wall_h);
 		// printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
 		// printf("color %d\n", mlx.info->texture[0]->pixels[(int)((BOX * textureOffsetY) + textureOffsetX)]);
-		int color = get_color(mlx.info->texture[0], textureOffsetX, textureOffsetY);
+		int color = get_color(mlx.info->texture[r], textureOffsetX, textureOffsetY);
 		mlx_put_pixel(mlx.r_image, x->ray, y, color);
 	}
 }

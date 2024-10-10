@@ -1,9 +1,7 @@
-WE      maps/texture/stone.png
+WE      maps/texture/zelig3.png
 NO      maps/texture/zelig.png
-SO      maps/texture/wood.png
-EA      maps/texture/pharaoh.png
-
-
+SO      maps/texture/zelig4.png
+EA      maps/texture/pharoah.png
 
 
 C	218,234,235
