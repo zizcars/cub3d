@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 19:29:20 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/08 22:49:06 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 14:47:29 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ static t_texture	*load_texture(char *texture_file)
 {
 	mlx_texture_t *texture;
 	t_texture *ptr = ft_calloc(1, sizeof(t_texture));
-	ptr->pixels = ft_calloc (BOX * BOX, sizeof(uint32_t));
+	ptr->pixels = ft_calloc ((uint32_t)BOX * (uint32_t)BOX, sizeof(uint32_t));
 	float scale[2];
-	if (!texture_file || !ptr->pixels)
+	if (!texture_file || !ptr || !ptr->pixels)
 		return NULL;
 	texture = mlx_load_png("maps/texture/bricks.png");
 	// mlx_texture_to_image(&mlx, texture);
@@ -34,19 +34,23 @@ static t_texture	*load_texture(char *texture_file)
 	// have to scale the texture
 	for (int i = 0; i < BOX; i++)
 	{
-		int y = (int)(i * scale[0]);
+		// int y = (int)(i * scale[0]);
 		for (int j = 0; j < BOX; j++)
 		{
-			int x = (int)(j * scale[1]);
-			ptr->pixels[i * BOX + j] = ((uint32_t*)texture->pixels)[y * texture->width + x];
-			// for (int k = 0; k < BOX; k++)
+			// int x = (int)(j * scale[1]);
+			// ptr->pixels[(i * BOX) + j] = ((uint32_t*)texture->pixels)[(y * texture->width) + x];
+			
+			// for (int k = 0; k < BOX; k++){
 			// 	printf("%d\t",ptr->pixels[k]);
-			// printf("\n");
+			// }
+			ptr->pixels[(j * BOX) + i] = (!(i % 5) && !(j % 5)) ? 0xF000FFFF : 0xFF000000;
 		}
 	}
 	free(texture);
 	return ptr;
 }
+
+
 
 int load_all_textures(t_info **info)
 {
@@ -54,14 +58,16 @@ int load_all_textures(t_info **info)
 	(*info)->texture[0] = load_texture((*info)->north_path);
 	if (!(*info)->texture[0])
 		return 0;
-	(*info)->texture[1] = load_texture((*info)->south_path);
-	if (!(*info)->texture[1])
-		return 0;
-	(*info)->texture[2] = load_texture((*info)->east_path);
-	if (!(*info)->texture[2])
-		return 0;
-	(*info)->texture[3] = load_texture((*info)->west_path);
-	if (!(*info)->texture[3])
-		return 0;
+	// for (int i = 0; i < 5; i++)
+	// 	printf("%d\t",(*info)->texture[0]->pixels[i]);
+	// (*info)->texture[1] = load_texture((*info)->south_path);
+	// if (!(*info)->texture[1])
+	// 	return 0;
+	// (*info)->texture[2] = load_texture((*info)->east_path);
+	// if (!(*info)->texture[2])
+	// 	return 0;
+	// (*info)->texture[3] = load_texture((*info)->west_path);
+	// if (!(*info)->texture[3])
+	// 	return 0;
 	return 1;
 }

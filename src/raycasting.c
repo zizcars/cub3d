@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/08 22:21:50 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 15:04:11 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,20 +116,26 @@ void draw_floor_ceiling(t_mlx mlx){
 	}
 }
 
-void render3d(t_mlx mlx, t_point *x, int ray, double angle)
+void render3d(t_mlx mlx, t_point *x)
 {
-	double prepDistance = x->distance * cos(angle - mlx.info->player_angle);
+	double prepDistance = x->distance * cos(x->angle - mlx.info->player_angle);
 	// if (!x->distance) x->distance = 1;
 	double wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
 	double start_pix = -(wall_h / 2) + (HEIGHT / 2);
 	double end_pix = (wall_h / 2) + (HEIGHT / 2);
 	if (end_pix > HEIGHT) end_pix = HEIGHT;
 	if (start_pix < 0) start_pix = 0;
-	// where ray would get the texture
-	// why colors change when changing rgba
-	// i want to use texture color inside the loop
-	while (start_pix < end_pix)
-		mlx_put_pixel(mlx.r_image, ray, start_pix++, get_rgba(255, 0 , 100 ,255));
+
+	int textureOffsetX = x->vertical ? (int)(x->y) % BOX : (int)(x->x) % BOX;
+
+	int textureOffsetY;
+
+	for (int y = start_pix; y < end_pix; y++){
+		textureOffsetY = (y - start_pix) * ((float) BOX / (int)wall_h);
+		printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
+		// printf("color %d\n", mlx.info->texture[0]->pixels[(int)((BOX * textureOffsetY) + textureOffsetX)]);
+		mlx_put_pixel(mlx.r_image, x->ray, start_pix++, mlx.info->texture[0]->pixels[(BOX * textureOffsetY) + textureOffsetX]);
+	}
 }
 
 
@@ -146,6 +152,16 @@ void display_rays(t_mlx mlx)
 		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
 		a = calculate_horizontal_intersection(mlx, angle);
 		b = calculate_vertical_intersection(mlx, angle);
+		// check if(b != null)
+		b->vertical = true;
+		a->angle = angle;
+		b->angle = angle;
+		a->ray = r;
+		b->ray = r;
+		
+
+
+		
 
 		// have to edit it to create a mini map
 		// if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
@@ -155,9 +171,9 @@ void display_rays(t_mlx mlx)
 
 		// my render 3d
 		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
-			render3d(mlx, a, r, angle);
-		if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
-			render3d(mlx, b, r, angle);
+			render3d(mlx, a);
+		else if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
+			render3d(mlx, b);
 		free(a);
 		free(b);
 		r++;

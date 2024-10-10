@@ -17,12 +17,11 @@ SO textures/wall_40_2.xpm
 
 
 
-//segfault happen with small maps or idk
 
 
 
 11111111111                                
-10000000011
+10000E00011
 10000000011
 11111111111
 

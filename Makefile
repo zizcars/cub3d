@@ -22,7 +22,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ) #mlxlib
 	make -C libs/libft
-	cc $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME) -fsanitize=address
+	cc $(OBJ) $(LIB) $(MLXFLAGS) -o $(NAME) 
+	
 
 
 # we need flags CFLAGS

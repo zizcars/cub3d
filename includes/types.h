@@ -40,7 +40,6 @@ typedef struct s_texture
 	uint32_t *pixels;
 	uint32_t height;
 	uint32_t width;
-
 } t_texture;
 
 typedef struct s_info
@@ -66,6 +65,9 @@ typedef struct s_point
 	double x;
 	double y;
 	double distance;
+	bool vertical;
+	double angle;
+	int ray;
 } t_point;
 typedef struct s_mlx
 {
