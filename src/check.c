@@ -65,7 +65,7 @@ int check_ones(char *line)
 		i++;
 	if (line[i] != '\0' || is_one == false)
 	{
-		printf("line: %s => %c\n", line, line[i]);
+		// printf("line: %s => %c\n", line, line[i]);
 		exit(1);
 		// ft_error("The map not srounded by walls");
 	}
@@ -74,8 +74,8 @@ int check_ones(char *line)
 
 void set_player_info(t_info *info, int x, int y)
 {
-	info->player_x = x * SIZE;
-	info->player_y = y * SIZE;
+	info->player_x = x * SIZE + 2;
+	info->player_y = y * SIZE + 2;
 	if (info->arr_map[y][x] == 'N')
 		info->player_angle = (270 * M_PI) / 180.0f;
 	else if (info->arr_map[y][x] == 'E')
@@ -186,12 +186,12 @@ void check_map(t_info *info)
 			{
 				set_player_info(info, j, i);
 				count++;
-				if (count != 1)
-					ft_error("Problem in the Player numeber in the map");
 			}
 			j++;
 		}
 		i++;
 	}
+	if (count != 1)
+		ft_error("Problem in the Player numeber in the map");
 	check_last_line(info->arr_map[i]);
 }
