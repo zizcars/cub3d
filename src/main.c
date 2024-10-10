@@ -54,6 +54,8 @@ int main(int ac, char **av)
 			ft_error("no file");
 		mlx.info = read_info(fd);
 		// print_info(mlx.info);
+		if (!mlx.info)
+			return ft_error("error on elements"), 1;
 		close(fd);
 		display_window(&mlx);
 	}

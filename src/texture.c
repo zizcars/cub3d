@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 19:29:20 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 16:09:09 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 16:30:29 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static mlx_texture_t	*load_texture(char *texture_file)
 	// float scale[2];
 	// if (!texture_file || !ptr || !ptr->pixels)
 	// 	return NULL;
-	return mlx_load_png("maps/texture/bricks.png");
+	return mlx_load_png("maps/texture/stone.png");
 	// mlx_texture_to_image(&mlx, texture);
 	// if (!texture)
 	// 	return NULL;
@@ -55,19 +55,17 @@ static mlx_texture_t	*load_texture(char *texture_file)
 int load_all_textures(t_info **info)
 {
 	// have to free it later after use
-	(*info)->texture[0] = load_texture((*info)->north_path);
+	(*info)->texture[0] = mlx_load_png((*info)->north_path);
 	if (!(*info)->texture[0])
 		return 0;
-	// for (int i = 0; i < 5; i++)
-	// 	printf("%d\t",(*info)->texture[0]->pixels[i]);
-	// (*info)->texture[1] = load_texture((*info)->south_path);
-	// if (!(*info)->texture[1])
-	// 	return 0;
-	// (*info)->texture[2] = load_texture((*info)->east_path);
-	// if (!(*info)->texture[2])
-	// 	return 0;
-	// (*info)->texture[3] = load_texture((*info)->west_path);
-	// if (!(*info)->texture[3])
-	// 	return 0;
+	(*info)->texture[1] = load_texture((*info)->south_path);
+	if (!(*info)->texture[1])
+		return 0;
+	(*info)->texture[2] = load_texture((*info)->east_path);
+	if (!(*info)->texture[2])
+		return 0;
+	(*info)->texture[3] = load_texture((*info)->west_path);
+	if (!(*info)->texture[3])
+		return 0;
 	return 1;
 }

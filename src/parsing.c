@@ -208,6 +208,7 @@ t_info *read_info(int fd)
 	if (info->c_color == NULL || info->f_color == NULL)
 		ft_error("Color is missing");
 	take_map(info, line, fd);
-	load_all_textures(&info);
+	if (load_all_textures(&info))
+		return 0;
 	return (info);
 }

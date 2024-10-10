@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 16:11:41 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/10 16:16:30 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ void render3d(t_mlx mlx, t_point *x)
 	int textureOffsetY;
 
 	for (int y = start_pix; y < end_pix; y++){
-		textureOffsetY = ((y - start_pix)) * (mlx.info->texture[0]->height / wall_h);
+		int differencetop = (y + wall_h / 2 - HEIGHT / 2);
+		textureOffsetY = differencetop * (mlx.info->texture[0]->height / wall_h);
 		// printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
 		// printf("color %d\n", mlx.info->texture[0]->pixels[(int)((BOX * textureOffsetY) + textureOffsetX)]);
 		int color = get_color(mlx.info->texture[0], textureOffsetX, textureOffsetY);
