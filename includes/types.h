@@ -23,10 +23,12 @@
 // #define PI 180
 #define PLAYER_FOV (60 * M_PI) / 180.0f
 
-#define WALL_COLOR 18, 25, 41
-#define FLOOR_COLOR  79, 86, 89
-#define PERSON_COLOR 109, 184, 194
+#define WALL_COLOR 2, 48, 71
+#define FLOOR_COLOR  142, 202, 230
+#define PERSON_COLOR 33, 158, 188
 #define RAYS_COLOR 211, 215, 237
+#define SPACE_COLOR 255, 183, 3
+#define FRAME_COLOR 251, 133, 0
 
 typedef enum{
 	UP = 1,
@@ -57,6 +59,8 @@ typedef struct s_info
 	int player_x; // position of the player x
 	int player_y; // position of the player y
 	double player_angle; // player angle N, W , S, E 
+	int check_x;
+	int check_y;
 } t_info;
 
 

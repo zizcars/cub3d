@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 19:47:01 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/11 14:58:36 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 	{
 		if (is_gape(mlx.info->arr_map, tx / SIZE, ty / SIZE, a->x / SIZE, a->y / SIZE))
 			break;
-		if (angle <= M_PI && angle >= 0)
+		if (angle <= M_PI && angle >= 0) //down
 			y = SIZE;
 		else
 			y = -SIZE;
@@ -102,7 +102,6 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 		a->distance = 2147483647;
 	return a;
 }
-
 
 void draw_floor_ceiling(t_mlx mlx){
 	uint32_t color;
@@ -164,7 +163,6 @@ void render3d(t_mlx mlx, t_point *x)
 	}
 }
 
-
 void display_rays(t_mlx mlx)
 {
 	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2);
@@ -204,6 +202,7 @@ void display_rays(t_mlx mlx)
 		free(b);
 		r++;
 	}
+	mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
 }
 
 // void display_rays(t_mlx mlx)
