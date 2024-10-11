@@ -42,7 +42,7 @@ typedef struct s_info
 	char *north_path;
 	char *south_path;  // they store the path to n, s, w, e textures
 	char *west_path;
-	char *east_path; 
+	char *east_path;
 	int *f_color; // floor color as [r, g, b]
 	int *c_color; // celling color as [r, g, b]
 	char **arr_map; // the map as an array of lines
@@ -51,6 +51,8 @@ typedef struct s_info
 	int player_x; // position of the player x
 	int player_y; // position of the player y
 	double player_angle; // player angle N, W , S, E 
+	int check_x;
+	int check_y;
 } t_info;
 
 

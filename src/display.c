@@ -122,18 +122,34 @@ static bool is_gape(char **map, int x, int y, int nx, int ny)
 		return true;
 	return false;
 }
-
+#define CHECK_N 2
 static void up_down(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
 {
 	if (d == UP)
 	{
 		*tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
 		*tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
+		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+			mlx->info->check_x = -CHECK_N;
+		else
+			mlx->info->check_x = CHECK_N;
+		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+			mlx->info->check_y = CHECK_N;
+		else
+			mlx->info->check_y = -CHECK_N;
 	}
 	else if (d == DOWN)
 	{
 		*tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
 		*tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
+		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+			mlx->info->check_x = CHECK_N;
+		else
+			mlx->info->check_x = -CHECK_N;
+		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+			mlx->info->check_y = -CHECK_N;
+		else
+			mlx->info->check_y = CHECK_N;
 	}
 }
 
@@ -143,11 +159,27 @@ static void right_left(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
 	{
 		*tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
 		*tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + (90 * M_PI) / 180)) * STEP_SIZE;
+		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+			mlx->info->check_y = -CHECK_N;
+		else
+			mlx->info->check_y = CHECK_N;
+		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+			mlx->info->check_x = -CHECK_N;
+		else
+			mlx->info->check_x = CHECK_N;
 	}
 	else if (d == LEFT)
 	{
 		*tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
 		*tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - (90 * M_PI) / 180)) * STEP_SIZE;
+		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+			mlx->info->check_y = CHECK_N;
+		else
+			mlx->info->check_y = -CHECK_N;
+		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+			mlx->info->check_x = CHECK_N;
+		else
+			mlx->info->check_x = -CHECK_N;
 	}
 }
 
@@ -158,8 +190,9 @@ void move(t_mlx *mlx, E_DIRECTION d)
 
 	up_down(mlx, d, &tmp_x, &tmp_y);
 	right_left(mlx, d, &tmp_x, &tmp_y);
-	if (is_gape(mlx->info->arr_map, mlx->info->player_x / SIZE, mlx->info->player_y / SIZE, tmp_x / SIZE, tmp_y / SIZE))
+	if (is_gape(mlx->info->arr_map, mlx->info->player_x / SIZE, mlx->info->player_y / SIZE, (tmp_x + mlx->info->check_x) / SIZE, (tmp_y + mlx->info->check_y) / SIZE))
 	{
+		// printf("(%d, %d) -> |%c|\n", tmp_x / SIZE, tmp_y / SIZE, mlx->info->arr_map[tmp_y / SIZE][tmp_x / SIZE]);
 		mlx->info->player_y = tmp_y;
 		mlx->info->player_x = tmp_x;
 	}
@@ -227,7 +260,7 @@ void mousehook(void *param)
 	// printf("x=%d, y=%d\n", x, y);
 	if (x > 0 && x < WIDTH && y > 0 && y < HEIGHT && px != x && (px - x > 10 || px - x < -10))
 	{
-		if ( px - x > 0)
+		if (px - x > 0)
 		{
 			mlx->info->player_angle -= (5 * M_PI) / 180.0f;
 			mlx->info->player_angle = angle_corrector(mlx->info->player_angle);

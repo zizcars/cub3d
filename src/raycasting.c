@@ -37,7 +37,7 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 	{
 		if (is_gape(mlx.info->arr_map, tx / SIZE, ty / SIZE, a->x / SIZE, a->y / SIZE))
 			break;
-		if (angle <= M_PI && angle >= 0)
+		if (angle <= M_PI && angle >= 0) //down
 			y = SIZE;
 		else
 			y = -SIZE;
@@ -91,7 +91,6 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 	return a;
 }
 
-
 void draw_floor_ceiling(t_mlx mlx){
 	uint32_t color;
 	for (int y = 0; y < HEIGHT;y++)
@@ -117,7 +116,6 @@ void render3d(t_mlx mlx, t_point *x, int i, double rayAngle)
 	while (start_pix < end_pix)
 		mlx_put_pixel(mlx.r_image, i, start_pix++, get_rgba(42, 61, 69, 255));
 }
-
 
 void display_rays(t_mlx mlx)
 {
