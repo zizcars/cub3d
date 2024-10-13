@@ -31,7 +31,8 @@ double angle_corrector(double angle);
 
 void display_rays(t_mlx mlx);
 
-
+void free_info(t_info *info);
+void draw_floor_ceiling(t_mlx mlx);
 int load_all_textures(t_info **);
 
 #endif

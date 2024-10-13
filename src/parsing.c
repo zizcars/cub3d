@@ -32,6 +32,7 @@ void take_map(t_info *info, char *line, int fd)
 {
 	int len;
 	char *tmp;
+	// int i ;
 
 	info->width = 0;
 	info->height = 0;
@@ -43,6 +44,7 @@ void take_map(t_info *info, char *line, int fd)
 		// 	i--;
 		tmp = line;
 		line = ft_substr(line, 0, len - 1);
+		// printf("line: |%s|\n", line);
 		free(tmp);
 		if (line && line[0])
 		{
@@ -50,7 +52,7 @@ void take_map(t_info *info, char *line, int fd)
 			info->height++;
 		}
 		if (info->width < len)
-			info->width = len;
+			info->width = ft_strlen(line);
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -209,6 +211,9 @@ t_info *read_info(int fd)
 		ft_error("Color is missing");
 	take_map(info, line, fd);
 	if (!load_all_textures(&info))
+	{
+		free_info(info);
 		return 0;
+	}
 	return (info);
 }

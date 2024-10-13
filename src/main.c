@@ -37,14 +37,13 @@ void leaks()
 	system("leaks -q cub3D");
 }
 
-
 // You should display emty spaces before 0s and 1s
 int main(int ac, char **av)
 {
 	int fd;
 	t_mlx mlx;
 
-	atexit(leaks);
+	// atexit(leaks);
 	if (ac == 2)
 	{
 		if (check_filename(av[1]) == false)
@@ -55,7 +54,9 @@ int main(int ac, char **av)
 		mlx.info = read_info(fd);
 		// print_info(mlx.info);
 		if (!mlx.info)
+		{
 			return ft_error("error on elements"), 1;
+		}
 		close(fd);
 		display_window(&mlx);
 	}

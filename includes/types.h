@@ -15,20 +15,20 @@
 #define BOX 20
 
 #define FACTOR 0.4
-
+#define ROTATION_ANGLE 5
 #define SPACE 32
 #define TAB 9
 #define SIZE 20
-#define STEP_SIZE 5
+#define STEP_SIZE 6
 // #define PI 180
 #define PLAYER_FOV (60 * M_PI) / 180.0f
 
-#define WALL_COLOR 2, 48, 71
-#define FLOOR_COLOR  142, 202, 230
-#define PERSON_COLOR 33, 158, 188
+#define WALL_COLOR 1, 22, 30
+#define FLOOR_COLOR  239, 246, 224
+#define PERSON_COLOR 174, 195, 176
+#define SPACE_COLOR 18, 69, 89
 #define RAYS_COLOR 211, 215, 237
-#define SPACE_COLOR 255, 183, 3
-#define FRAME_COLOR 251, 133, 0
+#define FRAME_COLOR 255, 183, 3
 
 typedef enum{
 	UP = 1,
@@ -61,6 +61,7 @@ typedef struct s_info
 	double player_angle; // player angle N, W , S, E 
 	int check_x;
 	int check_y;
+	// double correct_angle;
 } t_info;
 
 
@@ -73,10 +74,13 @@ typedef struct s_point
 	double angle;
 	int ray;
 } t_point;
+
 typedef struct s_mlx
 {
 	mlx_t *mlx;
 	mlx_image_t *map_image;
+	mlx_image_t *floor_image;
+	mlx_image_t *minimapfloor_image;
 	mlx_image_t *r_image;
 	t_info *info;
 } t_mlx;

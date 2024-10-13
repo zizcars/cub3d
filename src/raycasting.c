@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/11 14:58:36 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/13 15:31:57 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,10 @@
 // Change the ray casting for calcule every point to calculate just the start and end of a block
 static bool is_gape(char **map, int x, int y, int nx, int ny)
 {
-	if (map[ny][nx] == '1' || map[ny][nx] == '\0' || map[ny][nx] == SPACE)
+	// printf("N(%d, %d)\tO(%d,%d)|\n", nx, ny, x, y);
+	if (ft_strlen(map[ny]) > nx && (map[ny][nx] == '1' || map[ny][nx] == '\0' || map[ny][nx] == SPACE))
 		return true;
-	else if (map[ny][x] == '1' && map[y][nx] == '1')
+	else if (ft_strlen(map[y]) > nx && map[ny][x] == '1'&& map[y][nx] == '1')
 		return true;
 	return false;
 }
@@ -49,7 +50,7 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 	{
 		if (is_gape(mlx.info->arr_map, tx / SIZE, ty / SIZE, a->x / SIZE, a->y / SIZE))
 			break;
-		if (angle <= M_PI && angle >= 0) //down
+		if (angle <= M_PI && angle >= 0) // down
 			y = SIZE;
 		else
 			y = -SIZE;
@@ -103,21 +104,23 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 	return a;
 }
 
-void draw_floor_ceiling(t_mlx mlx){
+void draw_floor_ceiling(t_mlx mlx)
+{
 	uint32_t color;
-	for (int y = 0; y < HEIGHT;y++)
-	for (int x = 0;x < WIDTH;x++){
-		if (y < HEIGHT / 2)
-			color =  get_rgba(mlx.info->c_color[0], mlx.info->c_color[1], mlx.info->c_color[2], 255) ;
-		else
-			color = get_rgba(mlx.info->f_color[0], mlx.info->f_color[1], mlx.info->f_color[2], 255) ;
-		mlx_put_pixel(mlx.r_image, x, y, color);
-	}
+	for (int y = 0; y < HEIGHT; y++)
+		for (int x = 0; x < WIDTH; x++)
+		{
+			if (y < HEIGHT / 2)
+				color = get_rgba(mlx.info->c_color[0], mlx.info->c_color[1], mlx.info->c_color[2], 255);
+			else
+				color = get_rgba(mlx.info->f_color[0], mlx.info->f_color[1], mlx.info->f_color[2], 255);
+			mlx_put_pixel(mlx.floor_image, x, y, color);
+		}
 }
 
-int get_color(mlx_texture_t* texture, int x, int y)
+int get_color(mlx_texture_t *texture, int x, int y)
 {
-	uint8_t* pos;
+	uint8_t *pos;
 	int p;
 	int color;
 
@@ -129,7 +132,6 @@ int get_color(mlx_texture_t* texture, int x, int y)
 	return (color);
 }
 
-
 void render3d(t_mlx mlx, t_point *x)
 {
 	double prepDistance = x->distance * cos(x->angle - mlx.info->player_angle);
@@ -137,12 +139,15 @@ void render3d(t_mlx mlx, t_point *x)
 	double wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
 	double start_pix = -(wall_h / 2) + (HEIGHT / 2);
 	double end_pix = (wall_h / 2) + (HEIGHT / 2);
-	if (end_pix > HEIGHT) end_pix = HEIGHT;
-	if (start_pix < 0) start_pix = 0;
+	if (end_pix > HEIGHT)
+		end_pix = HEIGHT;
+	if (start_pix < 0)
+		start_pix = 0;
 
 	int r;
 	// printf("%f\n", x->angle);
-	r = !x->vertical ? (x->angle <= M_PI && x->angle >= 0)? 1 : 2 : (x->angle <= (3 * M_PI) / 2 && x->angle >= M_PI / 2)? 3: 0;
+	r = !x->vertical ? (x->angle <= M_PI && x->angle >= 0) ? 1 : 2 : (x->angle <= (3 * M_PI) / 2 && x->angle >= M_PI / 2) ? 3
+																														  : 0;
 	// r = 0;
 
 	int textureOffsetX;
@@ -153,7 +158,8 @@ void render3d(t_mlx mlx, t_point *x)
 		textureOffsetX = ((x->x / BOX) - floor(x->x / BOX)) * mlx.info->texture[r]->width;
 	int textureOffsetY;
 
-	for (int y = start_pix; y < end_pix; y++){
+	for (int y = start_pix; y < end_pix; y++)
+	{
 		int differencetop = (y + wall_h / 2 - HEIGHT / 2);
 		textureOffsetY = differencetop * (mlx.info->texture[r]->height / wall_h);
 		// printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
@@ -165,14 +171,16 @@ void render3d(t_mlx mlx, t_point *x)
 
 void display_rays(t_mlx mlx)
 {
-	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2);
+	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2.0f);
 	double angle = start_angle;
+	// double ah;
 	t_point *a;
 	t_point *b;
 	int r = 0;
-	draw_floor_ceiling(mlx);
+	// draw_floor_ceiling(mlx);
 	while (r < NUM_RAYS)
 	{
+		// ah = ;
 		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
 		a = calculate_horizontal_intersection(mlx, angle);
 		b = calculate_vertical_intersection(mlx, angle);
@@ -182,10 +190,6 @@ void display_rays(t_mlx mlx)
 		b->angle = angle;
 		a->ray = r;
 		b->ray = r;
-		
-
-
-		
 
 		// have to edit it to create a mini map
 		// if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
@@ -202,6 +206,9 @@ void display_rays(t_mlx mlx)
 		free(b);
 		r++;
 	}
+	// printf("ANGLE:%lf Player angle: %lf\n", angle, mlx.info->player_angle + PLAYER_FOV / 2.0f);
+	// mlx.info->correct_angle = (mlx.info->player_angle + PLAYER_FOV / 2.0f) - angle;
+	// printf("ANGLE:%lf\n",mlx.info->correct_angle);
 	mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
 }
 

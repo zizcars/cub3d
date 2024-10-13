@@ -78,7 +78,8 @@ void display_map(t_mlx *mlx)
 
 	mlx_delete_image(mlx->mlx, mlx->map_image);
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	display_mini_map_ground(mlx->map_image);
+	// display_mini_map_ground(mlx->map_image);
+	mlx_image_to_window(mlx->mlx, mlx->minimapfloor_image, 0, 0);
 	i = mlx->info->player_y - FRAME_Y / 2;
 	y = 0;
 	while (y < FRAME_Y)
@@ -113,6 +114,10 @@ void display_map(t_mlx *mlx)
 		i++;
 		y++;
 	}
+	mlx_put_pixel(mlx->map_image, WIDTH / 2, HEIGHT / 2, get_rgba(255, 0, 0, 255));
+	mlx_put_pixel(mlx->map_image, WIDTH / 2 + 1, HEIGHT / 2 + 1, get_rgba(255, 0, 0, 255));
+	mlx_put_pixel(mlx->map_image, WIDTH / 2, HEIGHT / 2 + 1, get_rgba(255, 0, 0, 255));
+	mlx_put_pixel(mlx->map_image, WIDTH / 2 + 1, HEIGHT / 2, get_rgba(255, 0, 0, 255));
 	display_person(mlx->map_image, FRAME_X / 2, FRAME_Y / 2);
 	mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
 }
@@ -128,6 +133,7 @@ double angle_corrector(double angle)
 
 static bool is_gape(char **map, int x, int y, int nx, int ny)
 {
+	// printf("n(%d, %d) o(%d, %d)\n", nx, ny, x, y);
 	if (map[ny][nx] != '1' && map[ny][nx] != '\0' && map[ny][nx] != SPACE && map[ny][x] != '1' && map[y][nx] != '1')
 		return (true);
 	return (false);
@@ -135,14 +141,23 @@ static bool is_gape(char **map, int x, int y, int nx, int ny)
 
 static void up_down(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
 {
+
 	if (d == UP)
 	{
-		*tmp_x = mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE;
-		*tmp_y = mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE;
+		// printf("result:%lf\n", round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE));
+		*tmp_x = round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE);
+		*tmp_y = round(mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE);
+		// printf("Player: (%d, %d) angle:%lf\n", *tmp_x, *tmp_y, mlx->info->player_angle * 180/M_PI);
 		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+		{
+			// error_fix = 0;
 			mlx->info->check_x = -CHECK_N;
+		}
 		else
+		{
+			// error_fix = 1;
 			mlx->info->check_x = CHECK_N;
+		}
 		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
 			mlx->info->check_y = CHECK_N;
 		else
@@ -150,8 +165,9 @@ static void up_down(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
 	}
 	else if (d == DOWN)
 	{
-		*tmp_x = mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE;
-		*tmp_y = mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE;
+		*tmp_x = round(mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE);
+		*tmp_y = round(mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE);
+		// printf("Player: (%d, %d) angle:%lf\n", *tmp_x, *tmp_y, mlx->info->player_angle * 180/M_PI);
 		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
 			mlx->info->check_x = CHECK_N;
 		else
@@ -167,8 +183,9 @@ static void right_left(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
 {
 	if (d == RIGHT)
 	{
-		*tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE;
-		*tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE;
+		*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
+		*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
+		// printf("Player pos: (%d, %d)\n", *tmp_x, *tmp_y);
 		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
 			mlx->info->check_y = -CHECK_N;
 		else
@@ -180,8 +197,9 @@ static void right_left(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
 	}
 	else if (d == LEFT)
 	{
-		*tmp_x = mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE;
-		*tmp_y = mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE;
+		*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
+		*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
+		// printf("Player pos: (%d, %d)\n", *tmp_x, *tmp_y);
 		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
 			mlx->info->check_y = CHECK_N;
 		else
@@ -207,8 +225,27 @@ void move(t_mlx *mlx, E_DIRECTION d)
 	}
 }
 
+// void free_info(t_info **info)
+// {
+// 	free_array(&(*info)->arr_map);
+// 	free((*info)->c_color);
+// 	free((*info)->f_color);
+// 	free((*info)->east_path)
+// 	free((*info)->north_path);
+// 	free((*info)->south_path);
+// 	free((*info)->west_path);
+// 	free((*info));
+// }
+
 void free_info(t_info *info)
 {
+	int i;
+	i = 0;
+	while (i < 4 && info->texture && info->texture[i])
+	{
+		mlx_delete_texture(info->texture[i]);
+		i++;
+	}
 	free_array(&info->arr_map);
 	free(info->c_color);
 	free(info->f_color);
@@ -226,16 +263,16 @@ void handle_close(void *param)
 	mlx = (t_mlx *)param;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
 	mlx_delete_image(mlx->mlx, mlx->map_image);
-	mlx_terminate(mlx->mlx);
+	mlx_delete_image(mlx->mlx, mlx->floor_image);
+	mlx_delete_image(mlx->mlx, mlx->minimapfloor_image);
 	free_info(mlx->info);
+	mlx_terminate(mlx->mlx);
 	exit(0);
 }
 
 void keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_mlx *mlx;
-	// int		tmp_y;
-	// int		tmp_x;
 
 	mlx = (t_mlx *)param;
 	if (keydata.key == MLX_KEY_W && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
@@ -250,12 +287,12 @@ void keyhook(mlx_key_data_t keydata, void *param)
 		exit(0);
 	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		mlx->info->player_angle += (10 * M_PI) / 180.0f;
+		mlx->info->player_angle += (ROTATION_ANGLE * M_PI) / 180.0f;
 		mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
 	}
 	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 	{
-		mlx->info->player_angle -= (10 * M_PI) / 180.0f;
+		mlx->info->player_angle -= (ROTATION_ANGLE * M_PI) / 180.0f;
 		mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
 	}
 	else
@@ -277,18 +314,19 @@ void mousehook(void *param)
 	{
 		if (px - x > 0)
 		{
-			mlx->info->player_angle -= (5 * M_PI) / 180.0f;
+			mlx->info->player_angle -= (ROTATION_ANGLE * M_PI) / 180.0f;
 			mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
 		}
 		else
 		{
-			mlx->info->player_angle += (5 * M_PI) / 180.0f;
+			mlx->info->player_angle += (ROTATION_ANGLE * M_PI) / 180.0f;
 			mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
 		}
 		mlx_delete_image(mlx->mlx, mlx->r_image);
 		mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 		display_rays(*mlx);
-		display_map(mlx);
+		mlx_image_to_window(mlx->mlx, mlx->minimapfloor_image, 0, 0);
+		mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
 		px = x;
 	}
 }
@@ -297,12 +335,15 @@ void display_window(t_mlx *mlx)
 {
 	mlx->mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->floor_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	mlx->minimapfloor_image = mlx_new_image(mlx->mlx, FRAME_X, FRAME_Y);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
+	display_mini_map_ground(mlx->minimapfloor_image);
+	draw_floor_ceiling(*mlx);
+	mlx_image_to_window(mlx->mlx, mlx->floor_image, 0, 0);
 	display_rays(*mlx);
 	display_map(mlx);
-	// display_person(*mlx, mlx->info->player_x, mlx->info->player_y);
-	// mlx_mouse_hook(mlx->mlx, mousehook, mlx);
 	mlx_key_hook(mlx->mlx, keyhook, mlx);
 	mlx_loop_hook(mlx->mlx, mousehook, mlx);
 	mlx_close_hook(mlx->mlx, handle_close, mlx);

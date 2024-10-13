@@ -1,17 +1,12 @@
 
-NO textures/wall_40_1.xpm     
-
-
-
-
-
-            EA textures/wall_40_4.xpm                   
+WE      maps/texture/zelig3.png
+NO      maps/texture/zelig.png
+SO      maps/texture/zelig4.png
+EA      maps/texture/pharoah.png                
             C     34 , +0    , +3
 
 
 
-WE textures/wall_40_3.xpm
-SO textures/wall_40_2.xpm
 
 
             F    +3 , -0  ,  255
@@ -20,13 +15,13 @@ SO textures/wall_40_2.xpm
 
 
 
-
-11111111111 
+ 
+11111111111   
 10000000001
-10000000001                              
+10000000001
 10000N00011
 10000000011
-11111111111
+11111111111     
 
 
 
