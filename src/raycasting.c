@@ -6,14 +6,13 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/13 15:31:57 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/14 12:09:07 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/types.h"
 #include "../includes/parsing.h"
 
-#define NUM_RAYS 1280 // should be width of the window
 
 // The distance to the first object (wall, etc.) each ray encounters.
 // Information about where the intersection happens, like coordinates or wall type, to use for further logic or rendering.
@@ -21,29 +20,20 @@
 // Change the ray casting for calcule every point to calculate just the start and end of a block
 static bool is_gape(char **map, int x, int y, int nx, int ny)
 {
-	// printf("N(%d, %d)\tO(%d,%d)|\n", nx, ny, x, y);
 	if (ft_strlen(map[ny]) > nx && (map[ny][nx] == '1' || map[ny][nx] == '\0' || map[ny][nx] == SPACE))
 		return true;
-	else if (ft_strlen(map[y]) > nx && map[ny][x] == '1'&& map[y][nx] == '1')
+	else if (ft_strlen(map[y]) > nx && map[ny][x] == '1' && map[y][nx] == '1')
 		return true;
 	return false;
 }
 
-t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
+static void find_horizontal_intersection(t_mlx mlx, double angle, t_point *a)
 {
 	double x;
 	double y;
-	t_point *a;
-	int tx, ty;
+	double tx;
+	double ty;
 
-	a = ft_calloc(1, sizeof(t_point));
-	if (a == NULL)
-		ft_error("malloc faild");
-	if (angle <= M_PI && angle >= 0)
-		a->y = floor(mlx.info->player_y / SIZE) * SIZE + SIZE;
-	else
-		a->y = floor(mlx.info->player_y / SIZE) * SIZE - 0.00001;
-	a->x = (a->y - mlx.info->player_y) / tan(angle) + mlx.info->player_x;
 	tx = a->x;
 	ty = a->y;
 	while (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
@@ -60,6 +50,23 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 		a->x += x;
 		a->y += y;
 	}
+}
+
+t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
+{
+	double x;
+	double y;
+	t_point *a;
+
+	a = ft_calloc(1, sizeof(t_point));
+	if (a == NULL)
+		ft_error("malloc faild");
+	if (angle <= M_PI && angle >= 0)
+		a->y = floor(mlx.info->player_y / SIZE) * SIZE + SIZE;
+	else
+		a->y = floor(mlx.info->player_y / SIZE) * SIZE - 0.00001;
+	a->x = (a->y - mlx.info->player_y) / tan(angle) + mlx.info->player_x;
+	find_horizontal_intersection(mlx, angle, a);
 	if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
 		a->distance = sqrt(pow(mlx.info->player_x - a->x, 2) + pow(mlx.info->player_y - a->y, 2));
 	else
@@ -67,20 +74,13 @@ t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 	return a;
 }
 
-t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
+static void find_vertical_intersection(t_mlx mlx, const double angle, t_point *a)
 {
-	float x, y;
-	t_point *a;
-	int tx, ty;
+	double x;
+	double y;
+	double tx;
+	double ty;
 
-	a = ft_calloc(1, sizeof(t_point));
-	if (a == NULL)
-		ft_error("malloc faild");
-	if (angle <= (3 * M_PI) / 2 && angle >= M_PI / 2) // left
-		a->x = (mlx.info->player_x / SIZE) * SIZE - 0.00001;
-	else
-		a->x = (mlx.info->player_x / SIZE) * SIZE + SIZE;
-	a->y = mlx.info->player_y + (a->x - mlx.info->player_x) * tan(angle);
 	tx = a->x;
 	ty = a->y;
 	while (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
@@ -97,6 +97,21 @@ t_point *calculate_vertical_intersection(t_mlx mlx, const float angle)
 		a->x += x;
 		a->y += y;
 	}
+}
+
+t_point *calculate_vertical_intersection(t_mlx mlx, const double angle)
+{
+	t_point *a;
+
+	a = ft_calloc(1, sizeof(t_point));
+	if (a == NULL)
+		ft_error("malloc faild");
+	if (angle <= (3 * M_PI) / 2 && angle >= M_PI / 2) // left
+		a->x = (mlx.info->player_x / SIZE) * SIZE - 0.00001;
+	else
+		a->x = (mlx.info->player_x / SIZE) * SIZE + SIZE;
+	a->y = mlx.info->player_y + (a->x - mlx.info->player_x) * tan(angle);
+	find_vertical_intersection(mlx, angle, a);
 	if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE)
 		a->distance = sqrt(pow(mlx.info->player_x - a->x, 2) + pow(mlx.info->player_y - a->y, 2));
 	else
@@ -169,46 +184,41 @@ void render3d(t_mlx mlx, t_point *x)
 	}
 }
 
-void display_rays(t_mlx mlx)
+void rays_utils(t_mlx mlx, double angle, double start_angle, int r)
 {
-	double start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2.0f);
-	double angle = start_angle;
-	// double ah;
 	t_point *a;
 	t_point *b;
-	int r = 0;
-	// draw_floor_ceiling(mlx);
+
+	angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
+	a = calculate_horizontal_intersection(mlx, angle);
+	b = calculate_vertical_intersection(mlx, angle);
+	b->vertical = true;
+	a->angle = angle;
+	b->angle = angle;
+	a->ray = r;
+	b->ray = r;
+	if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
+		render3d(mlx, a);
+	else if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
+		render3d(mlx, b);
+	free(a);
+	free(b);
+}
+
+void display_rays(t_mlx mlx)
+{
+	double start_angle;
+	double angle;
+	int r;
+
+	start_angle = angle_corrector(mlx.info->player_angle - PLAYER_FOV / 2.0f);
+	angle = start_angle;
+	r = 0;
 	while (r < NUM_RAYS)
 	{
-		// ah = ;
-		angle = angle_corrector(start_angle + r * PLAYER_FOV / NUM_RAYS);
-		a = calculate_horizontal_intersection(mlx, angle);
-		b = calculate_vertical_intersection(mlx, angle);
-		// check if(b != null)
-		b->vertical = true;
-		a->angle = angle;
-		b->angle = angle;
-		a->ray = r;
-		b->ray = r;
-
-		// have to edit it to create a mini map
-		// if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
-		// 	mlx_put_pixel(mlx.r_image, a->x * FACTOR, a->y* FACTOR, get_rgba(255, 0, 0, 255));
-		// if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
-		// 	mlx_put_pixel(mlx.r_image, b->x* FACTOR, b->y* FACTOR, get_rgba(0, 255, 0, 255));
-
-		// my render 3d
-		if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
-			render3d(mlx, a);
-		else if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
-			render3d(mlx, b);
-		free(a);
-		free(b);
+		rays_utils(mlx, angle, start_angle, r);
 		r++;
 	}
-	// printf("ANGLE:%lf Player angle: %lf\n", angle, mlx.info->player_angle + PLAYER_FOV / 2.0f);
-	// mlx.info->correct_angle = (mlx.info->player_angle + PLAYER_FOV / 2.0f) - angle;
-	// printf("ANGLE:%lf\n",mlx.info->correct_angle);
 	mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
 }
 
@@ -217,7 +227,6 @@ void display_rays(t_mlx mlx)
 //     float startAngle = mlx.info->player_angle - mlx.info->player_fov / 2;
 //     float endAngle = mlx.info->player_angle + mlx.info->player_fov / 2;
 //     int d;
-
 //     for (int i = 0; i < NUM_RAYS; i++)
 //     {
 //         float angle = startAngle + i * (endAngle - startAngle) / NUM_RAYS;

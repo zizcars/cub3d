@@ -44,7 +44,6 @@ void take_map(t_info *info, char *line, int fd)
 		// 	i--;
 		tmp = line;
 		line = ft_substr(line, 0, len - 1);
-		// printf("line: |%s|\n", line);
 		free(tmp);
 		if (line && line[0])
 		{
@@ -190,7 +189,6 @@ t_info *read_info(int fd)
 {
 	char *line;
 	char *tmp;
-	// char **split_line;
 	t_info *info;
 
 	info = ft_calloc(1, sizeof(t_info));

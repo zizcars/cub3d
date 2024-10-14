@@ -13,7 +13,6 @@ void put_pixel(mlx_image_t *image, int x, int y, int color)
 		for (int j = 0; j < 5; j++)
 			mlx_put_pixel(image, x + i, y + j, color);
 	}
-	// mlx_image_to_window(mlx->mlx, mlx->image, 0, 0);
 }
 
 int get_rgba(int r, int g, int b, int a)
@@ -47,7 +46,7 @@ void display_person(mlx_image_t *img, const int x, const int y)
 	{
 		i = x + 2.0f * cos(a);
 		j = y + 2.0f * sin(a);
-		mlx_put_pixel(img, i, j, get_rgba(PERSON_COLOR, 255));
+		mlx_put_pixel(img, i, j, get_rgba(PERSON_COLOR));
 		a += 0.1f;
 	}
 }
@@ -63,22 +62,73 @@ void display_mini_map_ground(mlx_image_t *img)
 		x = 0;
 		while (x < FRAME_X)
 		{
-			mlx_put_pixel(img, x, y, get_rgba(SPACE_COLOR, 255));
+			mlx_put_pixel(img, x, y, get_rgba(SPACE_COLOR));
 			x++;
 		}
 		y++;
 	}
 }
+
+void draw_map(t_mlx mlx, int y, int i)
+{
+	int j;
+	int x;
+
+	j = mlx.info->player_x - FRAME_X / 2;
+	x = 0;
+	while (x < FRAME_X)
+	{
+		if (j < 0)
+		{
+			x++;
+			j++;
+			continue;
+		}
+		if (!mlx.info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))])
+			break;
+		if (mlx.info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] == '1')
+			mlx_put_pixel(mlx.map_image, x, y, get_rgba(WALL_COLOR));
+		else if (mlx.info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] != SPACE)
+			mlx_put_pixel(mlx.map_image, x, y, get_rgba(FLOOR_COLOR));
+		x++;
+		j++;
+	}
+}
+
+void draw_point(mlx_image_t *img, int x, int y)
+{
+	mlx_put_pixel(img, x, y, get_rgba(FOCUS_COLOR));
+	mlx_put_pixel(img, x, y + 1, get_rgba(FOCUS_COLOR));
+	mlx_put_pixel(img, x + 1, y, get_rgba(FOCUS_COLOR));
+	mlx_put_pixel(img, x + 1, y + 1, get_rgba(FOCUS_COLOR));
+}
+
+void draw_focus_point(mlx_image_t *img)
+{
+	int i;
+
+	draw_point(img, WIDTH / 2, HEIGHT / 2);
+	i = 6;
+	while(i < 10)
+		draw_point(img, WIDTH / 2 + i++, HEIGHT / 2);
+	i = 6;
+	while(i < 10)
+		draw_point(img, WIDTH / 2 - i++, HEIGHT / 2);
+	i = 6;
+	while(i < 10)
+		draw_point(img, WIDTH / 2, HEIGHT / 2 + i++);
+	i = 6;
+	while(i < 10)
+		draw_point(img, WIDTH / 2, HEIGHT / 2 - i++);
+}
+
 void display_map(t_mlx *mlx)
 {
-	int x;
 	int y;
 	int i;
-	int j;
 
 	mlx_delete_image(mlx->mlx, mlx->map_image);
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	// display_mini_map_ground(mlx->map_image);
 	mlx_image_to_window(mlx->mlx, mlx->minimapfloor_image, 0, 0);
 	i = mlx->info->player_y - FRAME_Y / 2;
 	y = 0;
@@ -92,32 +142,11 @@ void display_map(t_mlx *mlx)
 		}
 		if (!mlx->info->arr_map[(int)(i / (SIZE))])
 			break;
-		j = mlx->info->player_x - FRAME_X / 2;
-		x = 0;
-		while (x < FRAME_X)
-		{
-			if (j < 0)
-			{
-				x++;
-				j++;
-				continue;
-			}
-			if (!mlx->info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))])
-				break;
-			if (mlx->info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] == '1')
-				mlx_put_pixel(mlx->map_image, x, y, get_rgba(WALL_COLOR, 255));
-			else if (mlx->info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] != SPACE)
-				mlx_put_pixel(mlx->map_image, x, y, get_rgba(FLOOR_COLOR, 255));
-			x++;
-			j++;
-		}
+		draw_map(*mlx, y, i);
 		i++;
 		y++;
 	}
-	mlx_put_pixel(mlx->map_image, WIDTH / 2, HEIGHT / 2, get_rgba(255, 0, 0, 255));
-	mlx_put_pixel(mlx->map_image, WIDTH / 2 + 1, HEIGHT / 2 + 1, get_rgba(255, 0, 0, 255));
-	mlx_put_pixel(mlx->map_image, WIDTH / 2, HEIGHT / 2 + 1, get_rgba(255, 0, 0, 255));
-	mlx_put_pixel(mlx->map_image, WIDTH / 2 + 1, HEIGHT / 2, get_rgba(255, 0, 0, 255));
+	draw_focus_point(mlx->map_image);
 	display_person(mlx->map_image, FRAME_X / 2, FRAME_Y / 2);
 	mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
 }
@@ -133,82 +162,71 @@ double angle_corrector(double angle)
 
 static bool is_gape(char **map, int x, int y, int nx, int ny)
 {
-	// printf("n(%d, %d) o(%d, %d)\n", nx, ny, x, y);
 	if (map[ny][nx] != '1' && map[ny][nx] != '\0' && map[ny][nx] != SPACE && map[ny][x] != '1' && map[y][nx] != '1')
 		return (true);
 	return (false);
 }
 
-static void up_down(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
+static void move_up(t_mlx *mlx, int *tmp_x, int *tmp_y)
 {
-
-	if (d == UP)
-	{
-		// printf("result:%lf\n", round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE));
-		*tmp_x = round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE);
-		*tmp_y = round(mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE);
-		// printf("Player: (%d, %d) angle:%lf\n", *tmp_x, *tmp_y, mlx->info->player_angle * 180/M_PI);
-		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
-		{
-			// error_fix = 0;
-			mlx->info->check_x = -CHECK_N;
-		}
-		else
-		{
-			// error_fix = 1;
-			mlx->info->check_x = CHECK_N;
-		}
-		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
-			mlx->info->check_y = CHECK_N;
-		else
-			mlx->info->check_y = -CHECK_N;
-	}
-	else if (d == DOWN)
-	{
-		*tmp_x = round(mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE);
-		*tmp_y = round(mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE);
-		// printf("Player: (%d, %d) angle:%lf\n", *tmp_x, *tmp_y, mlx->info->player_angle * 180/M_PI);
-		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
-			mlx->info->check_x = CHECK_N;
-		else
-			mlx->info->check_x = -CHECK_N;
-		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
-			mlx->info->check_y = -CHECK_N;
-		else
-			mlx->info->check_y = CHECK_N;
-	}
+	// printf("result:%lf\n", round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE));
+	*tmp_x = round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE);
+	*tmp_y = round(mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE);
+	// printf("Player: (%d, %d) angle:%lf\n", *tmp_x, *tmp_y, mlx->info->player_angle * 180/M_PI);
+	if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+		mlx->info->check_x = -CHECK_N;
+	else
+		mlx->info->check_x = CHECK_N;
+	if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+		mlx->info->check_y = CHECK_N;
+	else
+		mlx->info->check_y = -CHECK_N;
 }
 
-static void right_left(t_mlx *mlx, E_DIRECTION d, int *tmp_x, int *tmp_y)
+static void move_down(t_mlx *mlx, int *tmp_x, int *tmp_y)
 {
-	if (d == RIGHT)
-	{
-		*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
-		*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
-		// printf("Player pos: (%d, %d)\n", *tmp_x, *tmp_y);
-		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
-			mlx->info->check_y = -CHECK_N;
-		else
-			mlx->info->check_y = CHECK_N;
-		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
-			mlx->info->check_x = -CHECK_N;
-		else
-			mlx->info->check_x = CHECK_N;
-	}
-	else if (d == LEFT)
-	{
-		*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
-		*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
-		// printf("Player pos: (%d, %d)\n", *tmp_x, *tmp_y);
-		if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
-			mlx->info->check_y = CHECK_N;
-		else
-			mlx->info->check_y = -CHECK_N;
-		if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
-			mlx->info->check_x = CHECK_N;
-		else
-			mlx->info->check_x = -CHECK_N;
-	}
+	*tmp_x = round(mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE);
+	*tmp_y = round(mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE);
+	// printf("Player: (%d, %d) angle:%lf\n", *tmp_x, *tmp_y, mlx->info->player_angle * 180/M_PI);
+	if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+		mlx->info->check_x = CHECK_N;
+	else
+		mlx->info->check_x = -CHECK_N;
+	if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+		mlx->info->check_y = -CHECK_N;
+	else
+		mlx->info->check_y = CHECK_N;
+}
+
+static void move_right(t_mlx *mlx, int *tmp_x, int *tmp_y)
+{
+
+	*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
+	*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
+	// printf("Player pos: (%d, %d)\n", *tmp_x, *tmp_y);
+	if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+		mlx->info->check_y = -CHECK_N;
+	else
+		mlx->info->check_y = CHECK_N;
+	if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+		mlx->info->check_x = -CHECK_N;
+	else
+		mlx->info->check_x = CHECK_N;
+}
+
+static void move_left(t_mlx *mlx, int *tmp_x, int *tmp_y)
+{
+	*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
+	*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
+	// printf("Player pos: (%d, %d)\n", *tmp_x, *tmp_y);
+	if (mlx->info->player_angle <= (3 * M_PI) / 2 && mlx->info->player_angle >= M_PI / 2) // left
+		mlx->info->check_y = CHECK_N;
+	else
+		mlx->info->check_y = -CHECK_N;
+	if (mlx->info->player_angle <= M_PI && mlx->info->player_angle >= 0) // down
+		mlx->info->check_x = CHECK_N;
+	else
+		mlx->info->check_x = -CHECK_N;
 }
 
 void move(t_mlx *mlx, E_DIRECTION d)
@@ -216,26 +234,20 @@ void move(t_mlx *mlx, E_DIRECTION d)
 	int tmp_y;
 	int tmp_x;
 
-	up_down(mlx, d, &tmp_x, &tmp_y);
-	right_left(mlx, d, &tmp_x, &tmp_y);
+	if (d == UP)
+		move_up(mlx, &tmp_x, &tmp_y);
+	else if (d == DOWN)
+		move_down(mlx, &tmp_x, &tmp_y);
+	else if (d == RIGHT)
+		move_right(mlx, &tmp_x, &tmp_y);
+	else if (d == LEFT)
+		move_left(mlx, &tmp_x, &tmp_y);
 	if (is_gape(mlx->info->arr_map, mlx->info->player_x / SIZE, mlx->info->player_y / SIZE, (tmp_x + mlx->info->check_x) / SIZE, (tmp_y + mlx->info->check_y) / SIZE))
 	{
 		mlx->info->player_y = tmp_y;
 		mlx->info->player_x = tmp_x;
 	}
 }
-
-// void free_info(t_info **info)
-// {
-// 	free_array(&(*info)->arr_map);
-// 	free((*info)->c_color);
-// 	free((*info)->f_color);
-// 	free((*info)->east_path)
-// 	free((*info)->north_path);
-// 	free((*info)->south_path);
-// 	free((*info)->west_path);
-// 	free((*info));
-// }
 
 void free_info(t_info *info)
 {
@@ -270,6 +282,26 @@ void handle_close(void *param)
 	exit(0);
 }
 
+static void update_map(t_mlx *mlx)
+{
+	mlx_delete_image(mlx->mlx, mlx->r_image);
+	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	display_rays(*mlx);
+	display_map(mlx);
+}
+
+static void rotation_right(double *player_angle)
+{
+	*player_angle += (ROTATION_ANGLE * M_PI) / 180.0f;
+	*player_angle = angle_corrector(*player_angle);
+}
+
+static void rotation_left(double *player_angle)
+{
+	*player_angle -= (ROTATION_ANGLE * M_PI) / 180.0f;
+	*player_angle = angle_corrector(*player_angle);
+}
+
 void keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_mlx *mlx;
@@ -283,24 +315,15 @@ void keyhook(mlx_key_data_t keydata, void *param)
 		move(mlx, RIGHT);
 	else if (keydata.key == MLX_KEY_A && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
 		move(mlx, LEFT);
+	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+		rotation_right(&mlx->info->player_angle);
+	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
+		rotation_left(&mlx->info->player_angle);
 	else if (keydata.key == MLX_KEY_ESCAPE)
 		exit(0);
-	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-	{
-		mlx->info->player_angle += (ROTATION_ANGLE * M_PI) / 180.0f;
-		mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
-	}
-	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == MLX_REPEAT || keydata.action == MLX_PRESS))
-	{
-		mlx->info->player_angle -= (ROTATION_ANGLE * M_PI) / 180.0f;
-		mlx->info->player_angle = angle_corrector(mlx->info->player_angle);
-	}
 	else
 		return;
-	mlx_delete_image(mlx->mlx, mlx->r_image);
-	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	display_rays(*mlx);
-	display_map(mlx);
+	update_map(mlx);
 }
 
 void mousehook(void *param)

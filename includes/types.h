@@ -13,6 +13,7 @@
 #define WIDTH 1280
 #define HEIGHT 720
 #define BOX 20
+#define NUM_RAYS 1280 // should be width of the window
 
 #define FACTOR 0.4
 #define ROTATION_ANGLE 5
@@ -20,15 +21,13 @@
 #define TAB 9
 #define SIZE 20
 #define STEP_SIZE 6
-// #define PI 180
 #define PLAYER_FOV (60 * M_PI) / 180.0f
 
-#define WALL_COLOR 1, 22, 30
-#define FLOOR_COLOR  239, 246, 224
-#define PERSON_COLOR 174, 195, 176
-#define SPACE_COLOR 18, 69, 89
-#define RAYS_COLOR 211, 215, 237
-#define FRAME_COLOR 255, 183, 3
+#define WALL_COLOR 1, 22, 30, 255
+#define FLOOR_COLOR  239, 246, 224, 255
+#define PERSON_COLOR 174, 195, 176, 255
+#define SPACE_COLOR 18, 69, 89, 255
+#define FOCUS_COLOR 0, 255, 0, 255
 
 typedef enum{
 	UP = 1,
