@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/15 11:36:53 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:03:06 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int get_color(mlx_texture_t *texture, int x, int y)
 	int color;
 
 	p = (y * texture->width * 4) + (x * 4);
-	if (x < 0 || y < 0 || p >= (int)(texture->width * 4 * texture->height))
+	if (x < 0 || y < 0 || p >= (int)(texture->width * texture->byte_per_pixel * texture->height))
 		return 0;
 	pos = (&texture->pixels[p]);
 	color = (pos[0] << 24 | pos[1] << 16 | pos[2] << 8 | pos[3]);
@@ -147,36 +147,46 @@ int get_color(mlx_texture_t *texture, int x, int y)
 
 void render3d(t_mlx mlx, t_point *x)
 {
-	double prepDistance = x->distance * cos(x->angle - mlx.info->player_angle);
-	// if (!x->distance) x->distance = 1;
-	double wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
-	double start_pix = -(wall_h / 2) + (HEIGHT / 2);
-	double end_pix = (wall_h / 2) + (HEIGHT / 2);
+	int textureOffsetX;
+	int textureOffsetY;
+
+	double prep_distance;
+	double wall_h;
+	
+	double start_pix;
+	double end_pix;
+
+	int r;
+	
+	prep_distance = x->distance * cos(x->angle - mlx.info->player_angle);
+	wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
+	
+	start_pix = -(wall_h / 2) + (HEIGHT / 2);
+	end_pix = (wall_h / 2) + (HEIGHT / 2);
 	if (end_pix > HEIGHT)
 		end_pix = HEIGHT;
 	if (start_pix < 0)
 		start_pix = 0;
-
-	int r;
-	// printf("%f\n", x->angle);
-	r = !x->vertical ? (x->angle <= M_PI && x->angle >= 0) ? 1 : 2 : (x->angle <= (3 * M_PI) / 2 && x->angle >= M_PI / 2) ? 3
-																														  : 0;
-	// r = 0;
-
-	int textureOffsetX;
-	// textureOffsetX  = x->vertical ? (int)(x->y) % BOX : (int)(x->x) % BOX;
-	if (x->vertical)
-		textureOffsetX = ((x->y / BOX) - floor(x->y / BOX)) * mlx.info->texture[r]->width;
-	else
+	
+	if (!x->vertical){
+		r = 2;
+		if (x->angle <= M_PI && x->angle >= 0)
+			r = 1;
 		textureOffsetX = ((x->x / BOX) - floor(x->x / BOX)) * mlx.info->texture[r]->width;
-	int textureOffsetY;
-
-	for (int y = start_pix; y < end_pix; y++)
+	}
+	else 
 	{
+		r = 0;
+		if (x->angle <= (3 * M_PI) / 2 && x->angle >= M_PI / 2)
+			r = 3;
+		textureOffsetX = ((x->y / BOX) - floor(x->y / BOX)) * mlx.info->texture[r]->width;
+	}
+
+	for (int y = start_pix, ; y < end_pix; y++)
+	{
+		// assignment in norminette
 		int differencetop = (y + wall_h / 2 - HEIGHT / 2);
 		textureOffsetY = differencetop * (mlx.info->texture[r]->height / wall_h);
-		// printf("%d\t", (BOX * textureOffsetY) + textureOffsetX);
-		// printf("color %d\n", mlx.info->texture[0]->pixels[(int)((BOX * textureOffsetY) + textureOffsetX)]);
 		int color = get_color(mlx.info->texture[r], textureOffsetX, textureOffsetY);
 		mlx_put_pixel(mlx.r_image, x->ray, y, color);
 	}
@@ -195,9 +205,11 @@ void rays_utils(t_mlx mlx, double angle, double start_angle, int r)
 	b->angle = angle;
 	a->ray = r;
 	b->ray = r;
-	if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 && a->y < mlx.info->height * SIZE && a->distance < b->distance)
+	if (a->x > 0 && a->x < mlx.info->width * SIZE && a->y > 0 
+			&& a->y < mlx.info->height * SIZE && a->distance < b->distance)
 		render3d(mlx, a);
-	else if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 && b->y < mlx.info->height * SIZE && a->distance >= b->distance)
+	else if (b->x > 0 && b->x < mlx.info->width * SIZE && b->y > 0 
+				&& b->y < mlx.info->height * SIZE && a->distance >= b->distance)
 		render3d(mlx, b);
 	free(a);
 	free(b);
