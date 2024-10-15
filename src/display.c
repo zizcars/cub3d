@@ -234,6 +234,8 @@ void move(t_mlx *mlx, E_DIRECTION d)
 	int tmp_y;
 	int tmp_x;
 
+	tmp_y = 0;
+	tmp_x = 0;
 	if (d == UP)
 		move_up(mlx, &tmp_x, &tmp_y);
 	else if (d == DOWN)
@@ -253,7 +255,7 @@ void free_info(t_info *info)
 {
 	int i;
 	i = 0;
-	while (i < 4 && info->texture && info->texture[i])
+	while (i < 4 && info->texture[i])
 	{
 		mlx_delete_texture(info->texture[i]);
 		i++;
@@ -356,7 +358,7 @@ void mousehook(void *param)
 
 void display_window(t_mlx *mlx)
 {
-	mlx->mlx = mlx_init(WIDTH, HEIGHT, "CUB3D", true);
+	mlx->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
 	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->floor_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->minimapfloor_image = mlx_new_image(mlx->mlx, FRAME_X, FRAME_Y);

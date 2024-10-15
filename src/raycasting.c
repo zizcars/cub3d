@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/14 12:09:07 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/15 11:36:53 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 // Change the ray casting for calcule every point to calculate just the start and end of a block
 static bool is_gape(char **map, int x, int y, int nx, int ny)
 {
-	if (ft_strlen(map[ny]) > nx && (map[ny][nx] == '1' || map[ny][nx] == '\0' || map[ny][nx] == SPACE))
+	if ((int)ft_strlen(map[ny]) > nx && (map[ny][nx] == '1' || map[ny][nx] == '\0' || map[ny][nx] == SPACE))
 		return true;
-	else if (ft_strlen(map[y]) > nx && map[ny][x] == '1' && map[y][nx] == '1')
+	else if ((int)ft_strlen(map[y]) > nx && map[ny][x] == '1' && map[y][nx] == '1')
 		return true;
 	return false;
 }
@@ -54,8 +54,6 @@ static void find_horizontal_intersection(t_mlx mlx, double angle, t_point *a)
 
 t_point *calculate_horizontal_intersection(t_mlx mlx, double angle)
 {
-	double x;
-	double y;
 	t_point *a;
 
 	a = ft_calloc(1, sizeof(t_point));
@@ -140,7 +138,7 @@ int get_color(mlx_texture_t *texture, int x, int y)
 	int color;
 
 	p = (y * texture->width * 4) + (x * 4);
-	if (x < 0 || y < 0 || p >= (texture->width * 4 * texture->height))
+	if (x < 0 || y < 0 || p >= (int)(texture->width * 4 * texture->height))
 		return 0;
 	pos = (&texture->pixels[p]);
 	color = (pos[0] << 24 | pos[1] << 16 | pos[2] << 8 | pos[3]);
