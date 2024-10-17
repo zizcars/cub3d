@@ -6,11 +6,11 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:22:10 by Achakkaf          #+#    #+#             */
-/*   Updated: 2024/07/22 16:50:04 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:50:54 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 static char	*ft_free(char **s)
 {

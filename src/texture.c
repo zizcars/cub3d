@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   texture.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 19:29:20 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/10 19:06:40 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/17 15:41:21 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/types.h"
-#include "../includes/parsing.h"
+#include "../includes/utiles.h"
 
 int load_all_textures(t_info **info)
 {

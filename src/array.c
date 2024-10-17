@@ -1,4 +1,4 @@
-#include "../includes/parsing.h"
+#include "../includes/utiles.h"
 
 // calculate the length of an array (it stops in the NULL or '\n')
 int array_length(char **array)

@@ -6,11 +6,11 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:22:12 by Achakkaf          #+#    #+#             */
-/*   Updated: 2024/07/22 16:48:36 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/17 15:50:43 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 char	*get_one_line(char *s)
 {

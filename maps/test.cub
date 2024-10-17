@@ -1,27 +1,38 @@
 
+F    +3 , -0  ,  255
+
 WE      maps/texture/zelig3.png
-NO      maps/texture/zelig.png
-SO      maps/texture/zelig4.png
+        NO      maps/texture/zelig.png
+
+
+
+
+
+
+
+
 EA      maps/texture/pharoah.png                
-            C     34 , +0    , +3
+
+
+
+C     34,0,3        
+ 
 
 
 
 
 
-            F    +3 , -0  ,  255
 
 
 
-
+SO      maps/texture/zelig4.png
 
  
-11111111111   
+11111111111
 10000000001
-10000000001
+10000000001     
 10000N00011
 10000000011
-11111111111     
-
+11111111111
 
 

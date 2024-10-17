@@ -5,9 +5,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include "math.h"
+#include <math.h>
 #include "../libs/libft/libft.h"
-#include "../libs/getnextline/get_next_line.h"
+#include "get_next_line.h"
 #include "../libs/MLX42/include/MLX42/MLX42.h"
 
 #define WIDTH 1280
@@ -28,6 +28,10 @@
 #define PERSON_COLOR 174, 195, 176, 255
 #define SPACE_COLOR 18, 69, 89, 255
 #define FOCUS_COLOR 0, 255, 0, 255
+
+#define FRAME_Y 160
+#define FRAME_X 284
+#define CHECK_N 2
 
 typedef enum{
 	UP = 1,
@@ -60,9 +64,7 @@ typedef struct s_info
 	double player_angle; // player angle N, W , S, E 
 	int check_x;
 	int check_y;
-	// double correct_angle;
 } t_info;
-
 
 typedef struct s_point
 {
@@ -83,6 +85,5 @@ typedef struct s_mlx
 	mlx_image_t *r_image;
 	t_info *info;
 } t_mlx;
-
 
 #endif
