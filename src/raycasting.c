@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/15 13:03:06 by abounab          ###   ########.fr       */
+/*   Updated: 2024/10/17 12:26:42 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ int get_color(mlx_texture_t *texture, int x, int y)
 	int color;
 
 	p = (y * texture->width * 4) + (x * 4);
-	if (x < 0 || y < 0 || p >= (int)(texture->width * texture->byte_per_pixel * texture->height))
+	if (x < 0 || y < 0 || p >= (int)(texture->width * texture->bytes_per_pixel * texture->height))
 		return 0;
 	pos = (&texture->pixels[p]);
 	color = (pos[0] << 24 | pos[1] << 16 | pos[2] << 8 | pos[3]);
@@ -159,7 +159,7 @@ void render3d(t_mlx mlx, t_point *x)
 	int r;
 	
 	prep_distance = x->distance * cos(x->angle - mlx.info->player_angle);
-	wall_h = (BOX / prepDistance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
+	wall_h = (BOX / prep_distance) * ((WIDTH / 2) / (tan(PLAYER_FOV / 2)));
 	
 	start_pix = -(wall_h / 2) + (HEIGHT / 2);
 	end_pix = (wall_h / 2) + (HEIGHT / 2);
@@ -182,7 +182,7 @@ void render3d(t_mlx mlx, t_point *x)
 		textureOffsetX = ((x->y / BOX) - floor(x->y / BOX)) * mlx.info->texture[r]->width;
 	}
 
-	for (int y = start_pix, ; y < end_pix; y++)
+	for (int y = start_pix ; y < end_pix; y++)
 	{
 		// assignment in norminette
 		int differencetop = (y + wall_h / 2 - HEIGHT / 2);
