@@ -8,11 +8,11 @@ YELLOW = \033[33m
 BLUE = \033[34m
 MAGENTA = \033[35m
 CYAN = \033[36m
-
+CC = cc
 NAME = cub3D
 
-CFLAGS = -Wall -Wextra -Werror 
-# -g -fsanitize=address
+CFLAGS =  -g -fsanitize=address
+# -Wall -Wextra -Werror
 # SRC =	src/main.c src/display.c src/raycasting.c src/parsing.c src/array.c src/check.c \
 # 		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c \
 # 		src/texture.c src/check_map.c src/
@@ -40,8 +40,8 @@ $(NAME): $(OBJ) #mlxlib
 	@echo "$(GREEN)$(BOLD)🎮 $(NAME) is ready to play! 🎮$(RESET)"
 
 %.o: %.c $(INCLUDES)
-	@echo "$(CYAN)Compiling $<...$(RESET)"
-	@cc $(CFLAGS) -c $< -o $@
+	echo "$(CYAN)Compiling $<...$(RESET)"
+	$(CC) $(CFLAGS) -c $< -o $@
 
 mlxlib:
 	@echo "$(MAGENTA)Building MLX library...$(RESET)"

@@ -25,7 +25,8 @@ static void check_after_map(t_info *info, char *line, int fd)
 		free(line);
 		line = get_next_line(fd);
 	}
-	check_map(info);
+	// check_map(info);
+	check_map(info->arr_map, 0, 0);
 }
 
 void take_map(t_info *info, char *line, int fd)
