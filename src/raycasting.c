@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/17 15:41:14 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:50:06 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static bool is_gape(char **map, int x, int y, int nx, int ny)
 {
 	if ((int)ft_strlen(map[ny]) > nx && (map[ny][nx] == '1' || map[ny][nx] == '\0' || map[ny][nx] == SPACE))
 		return true;
-	else if ((int)ft_strlen(map[y]) > nx && map[ny][x] == '1' && map[y][nx] == '1')
+	else if ((int)ft_strlen(map[y]) > nx && (int)ft_strlen(map[ny]) > x && map[ny][x] == '1' && map[y][nx] == '1')
 		return true;
 	return false;
 }
