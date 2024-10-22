@@ -12,7 +12,7 @@ t_info *read_info(int fd);
 void put_pixel(mlx_image_t *image, int x, int y, int color);
 void display_square(mlx_image_t *image, int color, const int x, const int y);
 int get_rgba(int r, int g, int b, int a);
-void display_map(t_mlx *mlx);
+void display_mini_map(t_mlx *mlx);
 // void keyhook(mlx_key_data_t keydata, void *param);
 void display_window(t_mlx *mlx);
 double angle_corrector(double angle);

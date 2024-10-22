@@ -33,6 +33,8 @@
 #define FRAME_X 284
 #define CHECK_N 2
 
+#define MOUSE_R 2
+
 typedef enum{
 	UP = 1,
 	DOWN = 2,

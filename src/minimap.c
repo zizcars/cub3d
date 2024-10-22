@@ -38,9 +38,9 @@ void draw_map(t_mlx mlx, int y, int i)
 			if (!mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)])
 				break;
 			if (mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)] == '1')
-				mlx_put_pixel(mlx.map_image, x, y, get_rgba(WALL_COLOR));
+				mlx_put_pixel(mlx.r_image, x, y, get_rgba(WALL_COLOR));
 			else if (mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)] != SPACE)
-				mlx_put_pixel(mlx.map_image, x, y, get_rgba(FLOOR_COLOR));
+				mlx_put_pixel(mlx.r_image, x, y, get_rgba(FLOOR_COLOR));
 		}
 		x++;
 		j++;
@@ -74,14 +74,13 @@ void draw_focus_point(mlx_image_t *img)
 		draw_point(img, WIDTH / 2, HEIGHT / 2 - i++);
 }
 
-void display_map(t_mlx *mlx)
+void display_mini_map(t_mlx *mlx)
 {
 	int y;
 	int i;
 
-	mlx_delete_image(mlx->mlx, mlx->map_image);
-	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	mlx_image_to_window(mlx->mlx, mlx->minimapfloor_image, 0, 0);
+	
+	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	i = mlx->info->player_y - FRAME_Y / 2;
 	y = 0;
 	while (y < FRAME_Y)
@@ -98,7 +97,7 @@ void display_map(t_mlx *mlx)
 		i++;
 		y++;
 	}
-	draw_focus_point(mlx->map_image);
-	display_person(mlx->map_image, FRAME_X / 2, FRAME_Y / 2);
-	mlx_image_to_window(mlx->mlx, mlx->map_image, 0, 0);
+	draw_focus_point(mlx->r_image);
+	display_person(mlx->r_image, FRAME_X / 2, FRAME_Y / 2);
+	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }
