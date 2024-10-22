@@ -46,16 +46,17 @@ void handle_close(void *param)
 void display_window(t_mlx *mlx)
 {
 	mlx->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
-	mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	mlx->floor_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	mlx->minimapfloor_image = mlx_new_image(mlx->mlx, FRAME_X, FRAME_Y);
+	// mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	// mlx->floor_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
+	// mlx->minimapfloor_image = mlx_new_image(mlx->mlx, FRAME_X, FRAME_Y);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	draw_floor_ceiling(*mlx);
-	mlx_image_to_window(mlx->mlx, mlx->floor_image, 0, 0);
+	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	display_rays(*mlx);
-	display_mini_map_ground(mlx->minimapfloor_image);
-	display_map(mlx);
+	display_mini_map_ground(mlx->r_image);
+	display_mini_map(mlx);
+	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	mlx_loop_hook(mlx->mlx, keyhook, mlx);
 	mlx_loop_hook(mlx->mlx, mousehook, mlx);
 	mlx_close_hook(mlx->mlx, handle_close, mlx);

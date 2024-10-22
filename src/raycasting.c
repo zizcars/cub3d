@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/22 15:26:13 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/22 15:40:02 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void draw_floor_ceiling(t_mlx mlx)
 				color = get_rgba(mlx.info->c_color[0], mlx.info->c_color[1], mlx.info->c_color[2], 255);
 			else
 				color = get_rgba(mlx.info->f_color[0], mlx.info->f_color[1], mlx.info->f_color[2], 255);
-			mlx_put_pixel(mlx.floor_image, x, y, color);
+			mlx_put_pixel(mlx.r_image, x, y, color);
 			x++;
 		}
 		y++;
@@ -233,5 +233,5 @@ void display_rays(t_mlx mlx)
 		rays_utils(mlx, angle, start_angle, r);
 		r++;
 	}
-	mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
+	// mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
 }

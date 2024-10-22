@@ -29,9 +29,9 @@ MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/l
 
 INCLUDES = includes/parsing.h includes/types.h 
 
-all: $(NAME)
+all: $(NAME) 
 
-$(NAME): $(OBJ) #mlxlib
+$(NAME): $(OBJ) #mlxlib 
 	@echo "$(BOLD)$(BLUE)┌──── Building $(NAME) ────┐$(RESET)"
 	@echo " $(YELLOW)Compiling libft...$(RESET)"
 	@make -C libs/libft
@@ -40,7 +40,7 @@ $(NAME): $(OBJ) #mlxlib
 	@echo "$(BLUE)└──── Build complete ────┘$(RESET)"
 	@echo "$(GREEN)$(BOLD)🎮 $(NAME) is ready to play! 🎮$(RESET)"
 
-%.o: %.c $(INCLUDES)
+%.o: %.c $(INCLUDES) # YOU HAVE TO FIX THAT IT NOT WORKING
 	echo "$(CYAN)Compiling $<...$(RESET)"
 	$(CC) $(CFLAGS) -c $< -o $@
 

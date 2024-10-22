@@ -86,5 +86,5 @@ void move(t_mlx *mlx, E_DIRECTION d)
 		mlx->info->player_y = tmp_y;
 		mlx->info->player_x = tmp_x;
 	}
-	update_map(mlx);
+	// update_map(mlx);
 }
