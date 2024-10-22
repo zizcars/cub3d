@@ -33,12 +33,15 @@ void draw_map(t_mlx mlx, int y, int i)
 			j++;
 			continue;
 		}
-		if (!mlx.info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))])
-			break;
-		if (mlx.info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] == '1')
-			mlx_put_pixel(mlx.map_image, x, y, get_rgba(WALL_COLOR));
-		else if (mlx.info->arr_map[(int)(i / (SIZE))][(int)(j / (SIZE))] != SPACE)
-			mlx_put_pixel(mlx.map_image, x, y, get_rgba(FLOOR_COLOR));
+		if (mlx.info->arr_map[(int)(i / (SIZE))] && (int)ft_strlen(mlx.info->arr_map[(int)(i / SIZE)]) > j / SIZE)
+		{
+			if (!mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)])
+				break;
+			if (mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)] == '1')
+				mlx_put_pixel(mlx.map_image, x, y, get_rgba(WALL_COLOR));
+			else if (mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)] != SPACE)
+				mlx_put_pixel(mlx.map_image, x, y, get_rgba(FLOOR_COLOR));
+		}
 		x++;
 		j++;
 	}

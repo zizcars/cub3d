@@ -43,7 +43,7 @@ int main(int ac, char **av)
 	int fd;
 	t_mlx mlx;
 
-	atexit(leaks);
+	// atexit(leaks);
 	if (ac == 2)
 	{
 		if (check_filename(av[1]) == false)

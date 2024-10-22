@@ -41,8 +41,8 @@ static void check_others(char **map, int i, int j)
 {
 	if (check_char(map[i][j]) == false)
 		ft_error("invalid char");
-	if (map[i][0] != '1')
-		ft_error("Map not srounded by walls");
+	// if (map[i][0] != '1')
+	// 	ft_error("Map not srounded by walls");
 	if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 	{
 		if (((int)ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j])) || (int)ft_strlen(map[i + 1]) < j)
