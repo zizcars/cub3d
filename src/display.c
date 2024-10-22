@@ -50,13 +50,13 @@ void display_window(t_mlx *mlx)
 	mlx->floor_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
 	mlx->minimapfloor_image = mlx_new_image(mlx->mlx, FRAME_X, FRAME_Y);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
-	display_mini_map_ground(mlx->minimapfloor_image);
+	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	draw_floor_ceiling(*mlx);
 	mlx_image_to_window(mlx->mlx, mlx->floor_image, 0, 0);
 	display_rays(*mlx);
+	display_mini_map_ground(mlx->minimapfloor_image);
 	display_map(mlx);
-	mlx_key_hook(mlx->mlx, keyhook, mlx);
+	mlx_loop_hook(mlx->mlx, keyhook, mlx);
 	mlx_loop_hook(mlx->mlx, mousehook, mlx);
 	mlx_close_hook(mlx->mlx, handle_close, mlx);
 	mlx_loop(mlx->mlx);

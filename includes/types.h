@@ -80,9 +80,9 @@ typedef struct s_mlx
 {
 	mlx_t *mlx;
 	mlx_image_t *map_image;
-	mlx_image_t *floor_image;
 	mlx_image_t *minimapfloor_image;
 	mlx_image_t *r_image;
+	mlx_image_t *floor_image;
 	t_info *info;
 } t_mlx;
 
