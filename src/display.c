@@ -13,6 +13,7 @@ double angle_corrector(double angle)
 void free_info(t_info *info)
 {
 	int i;
+
 	i = 0;
 	while (i < 4 && info->texture[i])
 	{
@@ -35,9 +36,6 @@ void handle_close(void *param)
 
 	mlx = (t_mlx *)param;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
-	mlx_delete_image(mlx->mlx, mlx->map_image);
-	mlx_delete_image(mlx->mlx, mlx->floor_image);
-	mlx_delete_image(mlx->mlx, mlx->minimapfloor_image);
 	free_info(mlx->info);
 	mlx_terminate(mlx->mlx);
 	exit(0);
@@ -46,13 +44,8 @@ void handle_close(void *param)
 void display_window(t_mlx *mlx)
 {
 	mlx->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
-	// mlx->map_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	// mlx->floor_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	// mlx->minimapfloor_image = mlx_new_image(mlx->mlx, FRAME_X, FRAME_Y);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);
-	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	draw_floor_ceiling(*mlx);
-	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	display_rays(*mlx);
 	display_mini_map_ground(mlx->r_image);
 	display_mini_map(mlx);

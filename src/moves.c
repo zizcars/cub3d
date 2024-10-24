@@ -1,7 +1,7 @@
 #include "../includes/utiles.h"
 
 
-static void move_up(t_mlx *mlx, int *tmp_x, int *tmp_y)
+static void move_up(t_mlx *mlx, double *tmp_x, double *tmp_y)
 {
 	*tmp_x = round(mlx->info->player_x + cos(mlx->info->player_angle) * STEP_SIZE);
 	*tmp_y = round(mlx->info->player_y + sin(mlx->info->player_angle) * STEP_SIZE);
@@ -15,7 +15,7 @@ static void move_up(t_mlx *mlx, int *tmp_x, int *tmp_y)
 		mlx->info->check_y = -CHECK_N;
 }
 
-static void move_down(t_mlx *mlx, int *tmp_x, int *tmp_y)
+static void move_down(t_mlx *mlx, double *tmp_x, double *tmp_y)
 {
 	*tmp_x = round(mlx->info->player_x - cos(mlx->info->player_angle) * STEP_SIZE);
 	*tmp_y = round(mlx->info->player_y - sin(mlx->info->player_angle) * STEP_SIZE);
@@ -29,7 +29,7 @@ static void move_down(t_mlx *mlx, int *tmp_x, int *tmp_y)
 		mlx->info->check_y = CHECK_N;
 }
 
-static void move_right(t_mlx *mlx, int *tmp_x, int *tmp_y)
+static void move_right(t_mlx *mlx, double *tmp_x, double *tmp_y)
 {
 
 	*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle + M_PI_2)) * STEP_SIZE);
@@ -44,7 +44,7 @@ static void move_right(t_mlx *mlx, int *tmp_x, int *tmp_y)
 		mlx->info->check_x = CHECK_N;
 }
 
-static void move_left(t_mlx *mlx, int *tmp_x, int *tmp_y)
+static void move_left(t_mlx *mlx, double *tmp_x, double *tmp_y)
 {
 	*tmp_x = round(mlx->info->player_x + cos(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
 	*tmp_y = round(mlx->info->player_y + sin(angle_corrector(mlx->info->player_angle - M_PI_2)) * STEP_SIZE);
@@ -68,8 +68,8 @@ static bool is_gape(char **map, int x, int y, int nx, int ny)
 
 void move(t_mlx *mlx, E_DIRECTION d)
 {
-	int tmp_y;
-	int tmp_x;
+	double tmp_y;
+	double tmp_x;
 
 	tmp_y = 0;
 	tmp_x = 0;
@@ -86,5 +86,4 @@ void move(t_mlx *mlx, E_DIRECTION d)
 		mlx->info->player_y = tmp_y;
 		mlx->info->player_x = tmp_x;
 	}
-	// update_map(mlx);
 }

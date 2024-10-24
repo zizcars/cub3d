@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/22 15:40:02 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/24 10:39:02 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,5 +233,4 @@ void display_rays(t_mlx mlx)
 		rays_utils(mlx, angle, start_angle, r);
 		r++;
 	}
-	// mlx_image_to_window(mlx.mlx, mlx.r_image, 0, 0);
 }

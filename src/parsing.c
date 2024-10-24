@@ -26,7 +26,6 @@ static void check_after_map(t_info *info, char *line, int fd)
 		line = get_next_line(fd);
 	}
 	check_map(info);
-	// check_map(info->arr_map, 0, 0);
 }
 
 void take_map(t_info *info, char *line, int fd)
@@ -159,7 +158,6 @@ static void store_color(char *tmp, char c, int **color_box)
 static bool check_file_char(char c)
 {
 	char *chars;
-	// int i;
 
 	chars = "NSWECF";
 	while (*chars)
@@ -185,6 +183,13 @@ static void fill_info(char *tmp, t_info *info)
 		ft_error("Invalid information");
 }
 
+void check_info(t_info *info)
+{
+	if (info->east_path == NULL || info->north_path == NULL || info->south_path == NULL || info->west_path == NULL)
+		ft_error("A texter path is missing");
+	if (info->c_color == NULL || info->f_color == NULL)
+		ft_error("Color is missing");
+}
 // read the .cub file and return it as t_info
 t_info *read_info(int fd)
 {
@@ -204,10 +209,11 @@ t_info *read_info(int fd)
 		tmp = ft_strtrim(line, " 	\n");
 	}
 	free(tmp);
-	if (info->east_path == NULL || info->north_path == NULL || info->south_path == NULL || info->west_path == NULL)
-		ft_error("A texter path is missing");
-	if (info->c_color == NULL || info->f_color == NULL)
-		ft_error("Color is missing");
+	// if (info->east_path == NULL || info->north_path == NULL || info->south_path == NULL || info->west_path == NULL)
+	// 	ft_error("A texter path is missing");
+	// if (info->c_color == NULL || info->f_color == NULL)
+	// 	ft_error("Color is missing");
+	check_info(info);
 	take_map(info, line, fd);
 	if (!load_all_textures(&info))
 	{
