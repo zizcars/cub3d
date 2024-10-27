@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:48:01 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 15:04:26 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/27 15:32:12 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ static void	check_others(char **map, int i, int j)
 {
 	if (check_char(map[i][j]) == false)
 		ft_error("invalid char");
-	if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
+	if (map[i][j] == '0' || map[i][j] == 'N' || \
+		map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 	{
-		if (((int)ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j])) || (int)ft_strlen(map[i + 1]) < j)
+		if (((int)ft_strlen(map[i + 1]) >= j && \
+			invalid(map[i + 1][j])) || (int)ft_strlen(map[i + 1]) < j)
 			ft_error("Map not srounded by walls");
-		else if (((int)ft_strlen(map[i - 1]) > j && invalid(map[i - 1][j])) || (int)ft_strlen(map[i - 1]) < j)
+		else if (((int)ft_strlen(map[i - 1]) > j && \
+			invalid(map[i - 1][j])) || (int)ft_strlen(map[i - 1]) < j)
 			ft_error("Map not srounded by walls");
 		else if (invalid(map[i][j + 1]))
 			ft_error("Map not srounded by walls");
@@ -81,7 +84,8 @@ void	check_map(t_info *info)
 		while (info->map[i][j])
 		{
 			check_others(info->map, i, j);
-			if (info->map[i][j] != '0' && info->map[i][j] != '1' && info->map[i][j] != SPACE)
+			if (info->map[i][j] != '0' && \
+				info->map[i][j] != '1' && info->map[i][j] != SPACE)
 				set_player_info(info, j, i, &count);
 			j++;
 		}

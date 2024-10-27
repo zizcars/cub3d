@@ -6,28 +6,16 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:30:15 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 14:01:43 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/27 15:43:59 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
-void	display_mini_map_ground(mlx_image_t *img)
+static void	increment(int *x, int *j)
 {
-	int	y;
-	int	x;
-
-	y = 0;
-	while (y < FRAME_Y)
-	{
-		x = 0;
-		while (x < FRAME_X)
-		{
-			mlx_put_pixel(img, x, y, get_rgba(SPACE_COLOR));
-			x++;
-		}
-		y++;
-	}
+	(*x)++;
+	(*j)++;
 }
 
 void	draw_map(t_mlx mlx, int y, int i)
@@ -41,11 +29,11 @@ void	draw_map(t_mlx mlx, int y, int i)
 	{
 		if (j < 0)
 		{
-			x++;
-			j++;
+			increment(&x, &j);
 			continue ;
 		}
-		if (mlx.info->map[i / SIZE] && (int)ft_strlen(mlx.info->map[i / SIZE]) > j / SIZE)
+		if (mlx.info->map[i / SIZE] && \
+			(int)ft_strlen(mlx.info->map[i / SIZE]) > j / SIZE)
 		{
 			if (!mlx.info->map[i / SIZE][j / SIZE])
 				break ;
@@ -54,8 +42,7 @@ void	draw_map(t_mlx mlx, int y, int i)
 			else if (mlx.info->map[i / SIZE][j / SIZE] != SPACE)
 				mlx_put_pixel(mlx.r_image, x, y, get_rgba(FLOOR_COLOR));
 		}
-		x++;
-		j++;
+		increment(&x, &j);
 	}
 }
 
