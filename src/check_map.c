@@ -1,48 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 14:48:01 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 15:04:26 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
-bool invalid(char c)
+bool	invalid(char c)
 {
 	return (c == SPACE || c == '\0');
 }
 
-static void check_first_line(char **map)
+static void	check_first_line(char **map)
 {
-	int j;
+	int	i;
 
-	j = 0;
-	while (map[0][j])
+	i = 0;
+	while (map[0][i])
 	{
-		if (map[0][j] == SPACE)
+		if (map[0][i] == SPACE)
 		{
-			if ((int)ft_strlen(map[1]) >= j && (map[1][j] != SPACE && map[1][j] != '1' && map[1][j] != '\0')) // what if map has one line
+			if ((int)ft_strlen(map[1]) >= i && (map[1][i] != SPACE && \
+				map[1][i] != '1' && map[1][i] != '\0'))
 				ft_error("The map not srounded by walls");
 		}
-		else if (map[0][j] != '1')
+		else if (map[0][i] != '1')
 			ft_error("The map not srounded by walls");
-		j++;
+		i++;
 	}
 }
 
-static void check_last_line(char *last_line)
+static void	check_last_line(char *last_line)
 {
-	int j;
+	int	i;
 
-	j = 0;
-	while (last_line[j])
+	i = 0;
+	while (last_line[i])
 	{
-		if (last_line[j] != '1' && last_line[j] != SPACE)
+		if (last_line[i] != '1' && last_line[i] != SPACE)
 			ft_error("Map not srounded by walls");
-		j++;
+		i++;
 	}
 }
 
-static void check_others(char **map, int i, int j)
+static void	check_others(char **map, int i, int j)
 {
 	if (check_char(map[i][j]) == false)
 		ft_error("invalid char");
-	// if (map[i][0] != '1')
-	// 	ft_error("Map not srounded by walls");
 	if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 	{
 		if (((int)ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j])) || (int)ft_strlen(map[i + 1]) < j)
@@ -51,62 +61,33 @@ static void check_others(char **map, int i, int j)
 			ft_error("Map not srounded by walls");
 		else if (invalid(map[i][j + 1]))
 			ft_error("Map not srounded by walls");
-		// else if (j > 0 && invalid(map[i][j - 1]))
-		// 	ft_error("Map not srounded by walls");
 	}
 }
 
-void check_map(t_info *info)
+void	check_map(t_info *info)
 {
-	int i;
-	int j;
-	int count;
+	int	i;
+	int	j;
+	int	count;
 
 	count = 0;
-	check_first_line(info->arr_map);
+	check_first_line(info->map);
 	i = 1;
-	if (info->arr_map[i] == NULL)
+	if (info->map[i] == NULL)
 		ft_error("Invalid map");
-	while (info->arr_map[i + 1])
+	while (info->map[i + 1])
 	{
 		j = 0;
-		while (info->arr_map[i][j])
+		while (info->map[i][j])
 		{
-			check_others(info->arr_map, i, j);
-			if (info->arr_map[i][j] != '0' && info->arr_map[i][j] != '1' && info->arr_map[i][j] != SPACE)
-			{
-				set_player_info(info, j, i);
-				count++;
-			}
+			check_others(info->map, i, j);
+			if (info->map[i][j] != '0' && info->map[i][j] != '1' && info->map[i][j] != SPACE)
+				set_player_info(info, j, i, &count);
 			j++;
 		}
 		i++;
 	}
 	if (count != 1)
 		ft_error("Problem in the Player numeber in the map");
-	check_last_line(info->arr_map[i]);
+	check_last_line(info->map[i]);
 }
-
-// void check_map(char **map, int j, int i)
-// {
-// 	if (j < 0 || i < 0 || map[i][j] == '\0')
-// 		return;
-// 	printf("(%d, %d) => [%c]\n", j, i, map[i][j]);
-// 	if (map[i] && (int)ft_strlen(map[i]) < j)
-// 		return;
-// 	if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
-// 	{
-// 		if ((int)ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j]))
-// 			ft_error("Map not srounded by walls");
-// 		else if ((int)ft_strlen(map[i - 1]) > j && invalid(map[i - 1][j]))
-// 			ft_error("Map not srounded by walls");
-// 		else if (invalid(map[i][j + 1]))
-// 			ft_error("Map not srounded by walls");
-// 		else if (j > 0 && invalid(map[i][j - 1]))
-// 			ft_error("Map not srounded by walls");
-// 	}
-// 	check_map(map, j - 1, i);
-// 	check_map(map, j, i + 1);
-// 	check_map(map, j + 1, i);
-// 	check_map(map, j, i - 1);
-// }

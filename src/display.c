@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 14:47:26 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 14:47:47 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
-double angle_corrector(double angle)
+double	angle_corrector(double angle)
 {
 	if (angle > 2 * M_PI)
 		angle -= 2 * M_PI;
@@ -10,9 +21,9 @@ double angle_corrector(double angle)
 	return (angle);
 }
 
-void free_info(t_info *info)
+void	free_info(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 4 && info->texture[i])
@@ -20,7 +31,7 @@ void free_info(t_info *info)
 		mlx_delete_texture(info->texture[i]);
 		i++;
 	}
-	free_array(&info->arr_map);
+	free_array(&info->map);
 	free(info->c_color);
 	free(info->f_color);
 	free(info->east_path);
@@ -30,9 +41,9 @@ void free_info(t_info *info)
 	free(info);
 }
 
-void handle_close(void *param)
+void	handle_close(void *param)
 {
-	t_mlx *mlx;
+	t_mlx	*mlx;
 
 	mlx = (t_mlx *)param;
 	mlx_delete_image(mlx->mlx, mlx->r_image);
@@ -41,7 +52,7 @@ void handle_close(void *param)
 	exit(0);
 }
 
-void display_window(t_mlx *mlx)
+void	display_window(t_mlx *mlx)
 {
 	mlx->mlx = mlx_init(WIDTH, HEIGHT, "cub3D", true);
 	mlx->r_image = mlx_new_image(mlx->mlx, WIDTH, HEIGHT);

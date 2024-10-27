@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 15:13:37 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 15:13:40 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
@@ -19,11 +30,11 @@ void print_info(t_info *info)
 			printf("Floor color: (null)\n");
 		printf("width: %d\t heigth: %d\n", info->width, info->height);
 		printf("Player:(%d,%d)\n", info->player_x, info->player_y);
-		if (info->arr_map)
+		if (info->map)
 		{
 			printf("MAP: \n");
-			for (int i = 0; info->arr_map[i]; i++)
-				printf("|%s|\n", info->arr_map[i]);
+			for (int i = 0; info->map[i]; i++)
+				printf("|%s|\n", info->map[i]);
 		}
 		else
 			printf("map:(null)\n");

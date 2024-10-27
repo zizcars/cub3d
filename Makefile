@@ -11,9 +11,9 @@ CYAN = \033[36m
 CC = cc
 NAME = cub3D
 
-CFLAGS =  -g -fsanitize=address
+CFLAGS =  -g -fsanitize=address -Wall -Wextra -Werror
 
-# -Wall -Wextra -Werror
+# 
 # SRC =	src/main.c src/display.c src/raycasting.c src/parsing.c src/array.c src/check.c \
 # 		libs/getnextline/get_next_line.c libs/getnextline/get_next_line_utils.c \
 # 		src/texture.c src/check_map.c src/

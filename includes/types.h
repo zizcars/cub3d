@@ -20,7 +20,7 @@
 #define SPACE 32
 #define TAB 9
 #define SIZE 20
-#define STEP_SIZE 6
+#define SPEED 6
 #define PLAYER_FOV (60 * M_PI) / 180.0f
 
 #define WALL_COLOR 1, 22, 30, 255
@@ -58,7 +58,7 @@ typedef struct s_info
 	mlx_texture_t *texture[4];
 	int *f_color; // floor color as [r, g, b]
 	int *c_color; // celling color as [r, g, b]
-	char **arr_map; // the map as an array of lines
+	char **map; // the map as an array of lines
 	int width; // the width of the map, the width of the window is width * SIZE
 	int height; // the height of the map, the height of the window is height * SIZE
 	int player_x; // position of the player x
@@ -84,5 +84,15 @@ typedef struct s_mlx
 	mlx_image_t *r_image;
 	t_info *info;
 } t_mlx;
+
+typedef struct s_render
+{
+	int textureOffsetX;
+	int textureOffsetY;
+	double start_pix;
+	double end_pix;
+	double wall_h;
+	int r;
+} t_render;
 
 #endif

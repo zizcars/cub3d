@@ -1,24 +1,36 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   array.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 15:09:00 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 15:09:26 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/utiles.h"
 
 // calculate the length of an array (it stops in the NULL or '\n')
-int array_length(char **array)
+int	array_length(char **array)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (array && array[len])
 	{
-		if (ft_strcmp(array[len], "\n") == 0) // I add array[len] == '\n' because in some cases the array is being like this [..., "\n", NULL];
-			break;
+		if (ft_strcmp(array[len], "\n") == 0)
+			break ;
 		len++;
 	}
 	return (len);
 }
 
 //free an array and set it to NULL
-void free_array(char ***array)
+void	free_array(char ***array)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while ((*array) && (*array)[len])
@@ -30,9 +42,9 @@ void free_array(char ***array)
 }
 
 // calculate the length of an array
-int array_size(char **array)
+int	array_size(char **array)
 {
-	int size;
+	int	size;
 
 	size = 0;
 	while (array && array[size])
@@ -41,10 +53,10 @@ int array_size(char **array)
 }
 
 // append arg to end of old_array and free old_array
-char **append_array(char **old_array, char *arg)
+char	**append_array(char **old_array, char *arg)
 {
-	int size;
-	char **new_array;
+	int		size;
+	char	**new_array;
 
 	if (arg == NULL)
 		return (old_array);

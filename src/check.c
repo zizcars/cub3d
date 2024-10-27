@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 15:09:43 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 15:10:34 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/utiles.h"
 
 /// @brief check if file name end with .cub
-bool check_filename(char *file_name)
+bool	check_filename(char *file_name)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (file_name == NULL)
 		return (false);
@@ -16,9 +28,9 @@ bool check_filename(char *file_name)
 }
 
 // check a char is valid
-bool check_char(char c)
+bool	check_char(char c)
 {
-	const char *valid_char;
+	const char	*valid_char;
 
 	valid_char = "01NSEW ";
 	while (*valid_char && c != '\0')
@@ -33,24 +45,24 @@ bool check_char(char c)
 /// @brief check if the values of color are correct
 /// @param color like 32,255,255
 /// @return true if valid else false
-bool check_color(int *color)
+bool	check_color(int *color)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < 3)
 	{
 		if (color[i] < 0 || color[i] > 255)
-			return true;
+			return (true);
 		i++;
 	}
 	return (false);
 }
 
-int check_ones(char *line)
+int	check_ones(char *line)
 {
-	int i;
-	bool is_one;
+	int		i;
+	bool	is_one;
 
 	is_one = false;
 	i = 0;
@@ -68,16 +80,17 @@ int check_ones(char *line)
 	return (i);
 }
 
-void set_player_info(t_info *info, int x, int y)
+void	set_player_info(t_info *info, int x, int y, int *count)
 {
 	info->player_x = x * SIZE + SIZE / 2;
 	info->player_y = y * SIZE + SIZE / 2;
-	if (info->arr_map[y][x] == 'N')
+	if (info->map[y][x] == 'N')
 		info->player_angle = (270 * M_PI) / 180.0f;
-	else if (info->arr_map[y][x] == 'E')
+	else if (info->map[y][x] == 'E')
 		info->player_angle = 0;
-	else if (info->arr_map[y][x] == 'S')
+	else if (info->map[y][x] == 'S')
 		info->player_angle = (90 * M_PI) / 180.0f;
 	else
 		info->player_angle = (180 * M_PI) / 180.0f;
+	(*count)++;
 }

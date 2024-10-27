@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 13:22:10 by Achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/17 15:50:54 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/27 14:46:56 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,29 +18,6 @@ static char	*ft_free(char **s)
 	*s = NULL;
 	return (NULL);
 }
-
-// static char	*ft_strjoin(char *s1, char *s2)
-// {
-// 	char	*store;
-// 	int		i;
-
-// 	i = 0;
-// 	if (!s1 && !s2)
-// 		return (NULL);
-// 	else if (!s1)
-// 		return (ft_strdup(s2));
-// 	else if (!s2)
-// 		return (ft_strdup(s1));
-// 	store = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-// 	if (!store)
-// 		return (NULL);
-// 	while (*s1)
-// 		store[i++] = *(s1++);
-// 	while (*s2)
-// 		store[i++] = *(s2++);
-// 	store[i] = '\0';
-// 	return (store);
-// }
 
 static char	*m_bytes(char **str, char **buffer, int bytes, char *line)
 {

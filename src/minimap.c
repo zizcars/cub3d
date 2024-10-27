@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 13:30:15 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 14:01:43 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/utiles.h"
 
-void display_mini_map_ground(mlx_image_t *img)
+void	display_mini_map_ground(mlx_image_t *img)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < FRAME_Y)
@@ -18,10 +30,10 @@ void display_mini_map_ground(mlx_image_t *img)
 	}
 }
 
-void draw_map(t_mlx mlx, int y, int i)
+void	draw_map(t_mlx mlx, int y, int i)
 {
-	int j;
-	int x;
+	int	j;
+	int	x;
 
 	j = mlx.info->player_x - FRAME_X / 2;
 	x = 0;
@@ -31,15 +43,15 @@ void draw_map(t_mlx mlx, int y, int i)
 		{
 			x++;
 			j++;
-			continue;
+			continue ;
 		}
-		if (mlx.info->arr_map[(int)(i / (SIZE))] && (int)ft_strlen(mlx.info->arr_map[(int)(i / SIZE)]) > j / SIZE)
+		if (mlx.info->map[i / SIZE] && (int)ft_strlen(mlx.info->map[i / SIZE]) > j / SIZE)
 		{
-			if (!mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)])
-				break;
-			if (mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)] == '1')
+			if (!mlx.info->map[i / SIZE][j / SIZE])
+				break ;
+			if (mlx.info->map[i / SIZE][j / SIZE] == '1')
 				mlx_put_pixel(mlx.r_image, x, y, get_rgba(WALL_COLOR));
-			else if (mlx.info->arr_map[(int)(i / SIZE)][(int)(j / SIZE)] != SPACE)
+			else if (mlx.info->map[i / SIZE][j / SIZE] != SPACE)
 				mlx_put_pixel(mlx.r_image, x, y, get_rgba(FLOOR_COLOR));
 		}
 		x++;
@@ -47,7 +59,7 @@ void draw_map(t_mlx mlx, int y, int i)
 	}
 }
 
-void draw_point(mlx_image_t *img, int x, int y)
+void	draw_point(mlx_image_t *img, int x, int y)
 {
 	mlx_put_pixel(img, x, y, get_rgba(FOCUS_COLOR));
 	mlx_put_pixel(img, x, y + 1, get_rgba(FOCUS_COLOR));
@@ -55,9 +67,9 @@ void draw_point(mlx_image_t *img, int x, int y)
 	mlx_put_pixel(img, x + 1, y + 1, get_rgba(FOCUS_COLOR));
 }
 
-void draw_focus_point(mlx_image_t *img)
+void	draw_focus_point(mlx_image_t *img)
 {
-	int i;
+	int	i;
 
 	draw_point(img, WIDTH / 2, HEIGHT / 2);
 	i = 6;
@@ -74,13 +86,11 @@ void draw_focus_point(mlx_image_t *img)
 		draw_point(img, WIDTH / 2, HEIGHT / 2 - i++);
 }
 
-void display_mini_map(t_mlx *mlx)
+void	display_mini_map(t_mlx *mlx)
 {
-	int y;
-	int i;
+	int	y;
+	int	i;
 
-	
-	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 	i = mlx->info->player_y - FRAME_Y / 2;
 	y = 0;
 	while (y < FRAME_Y)
@@ -89,15 +99,14 @@ void display_mini_map(t_mlx *mlx)
 		{
 			i++;
 			y++;
-			continue;
+			continue ;
 		}
-		if (!mlx->info->arr_map[(int)(i / (SIZE))])
-			break;
+		if (!mlx->info->map[i / SIZE])
+			break ;
 		draw_map(*mlx, y, i);
 		i++;
 		y++;
 	}
 	draw_focus_point(mlx->r_image);
 	display_person(mlx->r_image, FRAME_X / 2, FRAME_Y / 2);
-	// mlx_image_to_window(mlx->mlx, mlx->r_image, 0, 0);
 }

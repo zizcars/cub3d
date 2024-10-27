@@ -1,10 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/27 14:45:46 by achakkaf          #+#    #+#             */
+/*   Updated: 2024/10/27 14:46:31 by achakkaf         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
-void put_pixel(mlx_image_t *image, int x, int y, int color)
+void	put_pixel(mlx_image_t *image, int x, int y, int color)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < 5)
@@ -19,15 +30,15 @@ void put_pixel(mlx_image_t *image, int x, int y, int color)
 	}
 }
 
-int get_rgba(int r, int g, int b, int a)
+int	get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void display_square(mlx_image_t *image, int color, const int x, const int y)
+void	display_square(mlx_image_t *image, int color, const int x, const int y)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < SIZE)
@@ -42,11 +53,11 @@ void display_square(mlx_image_t *image, int color, const int x, const int y)
 	}
 }
 
-void display_person(mlx_image_t *img, const int x, const int y)
+void	display_person(mlx_image_t *img, const int x, const int y)
 {
-	double i;
-	double j;
-	double a;
+	double	i;
+	double	j;
+	double	a;
 
 	i = 0;
 	j = 0;
