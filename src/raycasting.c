@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/27 15:43:33 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:28:14 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	display_mini_map_ground(mlx_image_t *img)
 		x = 0;
 		while (x < FRAME_X)
 		{
-			mlx_put_pixel(img, x, y, get_rgba(SPACE_COLOR));
+			mlx_put_pixel(img, x, y, get_rgba(18, 69, 89, 255));
 			x++;
 		}
 		y++;

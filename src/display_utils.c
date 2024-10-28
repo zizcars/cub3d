@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:45:46 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 14:46:31 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:27:07 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	display_person(mlx_image_t *img, const int x, const int y)
 	{
 		i = x + 2.0f * cos(a);
 		j = y + 2.0f * sin(a);
-		mlx_put_pixel(img, i, j, get_rgba(PERSON_COLOR));
+		mlx_put_pixel(img, i, j, get_rgba(174, 195, 176, 255));
 		a += 0.1f;
 	}
 }

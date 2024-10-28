@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:03:48 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 13:25:56 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:28:05 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	move_left(t_mlx *mlx, double *tmp_x, double *tmp_y)
 		mlx->info->check_x = -CHECK_N;
 }
 
-void	move(t_mlx *mlx, E_DIRECTION d)
+void	move(t_mlx *mlx, t_direction d)
 {
 	double	tmp_y;
 	double	tmp_x;

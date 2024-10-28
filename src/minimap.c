@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:30:15 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 15:43:59 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:27:51 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	draw_map(t_mlx mlx, int y, int i)
 			if (!mlx.info->map[i / SIZE][j / SIZE])
 				break ;
 			if (mlx.info->map[i / SIZE][j / SIZE] == '1')
-				mlx_put_pixel(mlx.r_image, x, y, get_rgba(WALL_COLOR));
+				mlx_put_pixel(mlx.r_image, x, y, get_rgba(1, 22, 30, 255));
 			else if (mlx.info->map[i / SIZE][j / SIZE] != SPACE)
-				mlx_put_pixel(mlx.r_image, x, y, get_rgba(FLOOR_COLOR));
+				mlx_put_pixel(mlx.r_image, x, y, get_rgba(239, 246, 224, 255));
 		}
 		increment(&x, &j);
 	}
@@ -48,10 +48,10 @@ void	draw_map(t_mlx mlx, int y, int i)
 
 void	draw_point(mlx_image_t *img, int x, int y)
 {
-	mlx_put_pixel(img, x, y, get_rgba(FOCUS_COLOR));
-	mlx_put_pixel(img, x, y + 1, get_rgba(FOCUS_COLOR));
-	mlx_put_pixel(img, x + 1, y, get_rgba(FOCUS_COLOR));
-	mlx_put_pixel(img, x + 1, y + 1, get_rgba(FOCUS_COLOR));
+	mlx_put_pixel(img, x, y, get_rgba(0, 255, 0, 255));
+	mlx_put_pixel(img, x, y + 1, get_rgba(0, 255, 0, 255));
+	mlx_put_pixel(img, x + 1, y, get_rgba(0, 255, 0, 255));
+	mlx_put_pixel(img, x + 1, y + 1, get_rgba(0, 255, 0, 255));
 }
 
 void	draw_focus_point(mlx_image_t *img)

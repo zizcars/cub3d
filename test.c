@@ -140,10 +140,12 @@ int check_ones(char *line)
 		ft_error("The map not srounded by walls");
 	return i;
 }
+#include <math.h>
 
 int main()
 {
-	char *line = "11111111";
-	check_ones(line);
-	printf("Every thing is good \n");
+	// char *line = "11111111";
+	// check_ones(line);
+	double t = (60 * M_PI) / 180.0f;
+	printf("%lf\n", t);
 }
