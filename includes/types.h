@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:14:32 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/28 11:26:22 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:55:59 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,6 @@
 # define SIZE 20
 # define SPEED 6
 # define PLAYER_FOV 1.047198
-
-// # define WALL_COLOR 1, 22, 30, 255
-// # define FLOOR_COLOR  239, 246, 224, 255
-// # define PERSON_COLOR 174, 195, 176, 255
-// # define SPACE_COLOR 18, 69, 89, 255
-// # define FOCUS_COLOR 0, 255, 0, 255
 
 # define FRAME_Y 160
 # define FRAME_X 284
