@@ -1,7 +1,7 @@
 
 
-WE      maps/texture/zelig3.png
-        NO      maps/texture/zelig.png
+WE      maps/texture/rome1.png
+        NO      maps/texture/rome2.png
 
 
 
@@ -10,7 +10,7 @@ WE      maps/texture/zelig3.png
 
 
 
-EA      maps/texture/pharoah.png                
+EA      maps/texture/rome3.png                
 
 
 
@@ -26,7 +26,7 @@ F      17,38,64
 
 
 
-SO      maps/texture/zelig4.png
+SO      maps/texture/rome4.png
 
  
 111111111111111111111111111
