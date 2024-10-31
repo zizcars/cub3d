@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:30:15 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/28 11:27:51 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:10:49 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,6 @@ void	display_mini_map(t_mlx *mlx)
 		i++;
 		y++;
 	}
-	draw_focus_point(mlx->r_image);
+	// draw_focus_point(mlx->r_image);
 	display_person(mlx->r_image, FRAME_X / 2, FRAME_Y / 2);
 }
