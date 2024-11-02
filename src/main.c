@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:13:37 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 15:35:36 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/02 20:53:21 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 // 		printf("East path: %s\n", info->east_path);
 // 		if (info->c_color)
 // 			printf("Ceiling color: [%d, %d, %d]\n",
-		//  info->c_color[0], info->c_color[1], info->c_color[2]);
+// 		 info->c_color[0], info->c_color[1], info->c_color[2]);
 // 		else
 // 			printf("Ceiling color: (null)\n");
 // 		if (info->f_color)
