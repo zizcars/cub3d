@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 13:30:15 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/31 13:10:49 by abounab          ###   ########.fr       */
+/*   Updated: 2024/11/03 09:41:07 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,33 +46,6 @@ void	draw_map(t_mlx mlx, int y, int i)
 	}
 }
 
-void	draw_point(mlx_image_t *img, int x, int y)
-{
-	mlx_put_pixel(img, x, y, get_rgba(0, 255, 0, 255));
-	mlx_put_pixel(img, x, y + 1, get_rgba(0, 255, 0, 255));
-	mlx_put_pixel(img, x + 1, y, get_rgba(0, 255, 0, 255));
-	mlx_put_pixel(img, x + 1, y + 1, get_rgba(0, 255, 0, 255));
-}
-
-void	draw_focus_point(mlx_image_t *img)
-{
-	int	i;
-
-	draw_point(img, WIDTH / 2, HEIGHT / 2);
-	i = 6;
-	while (i < 10)
-		draw_point(img, WIDTH / 2 + i++, HEIGHT / 2);
-	i = 6;
-	while (i < 10)
-		draw_point(img, WIDTH / 2 - i++, HEIGHT / 2);
-	i = 6;
-	while (i < 10)
-		draw_point(img, WIDTH / 2, HEIGHT / 2 + i++);
-	i = 6;
-	while (i < 10)
-		draw_point(img, WIDTH / 2, HEIGHT / 2 - i++);
-}
-
 void	display_mini_map(t_mlx *mlx)
 {
 	int	y;
@@ -94,6 +67,5 @@ void	display_mini_map(t_mlx *mlx)
 		i++;
 		y++;
 	}
-	// draw_focus_point(mlx->r_image);
 	display_person(mlx->r_image, FRAME_X / 2, FRAME_Y / 2);
 }

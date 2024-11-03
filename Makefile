@@ -14,9 +14,11 @@ NAME = cub3D
 
 LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
 
-# MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
-MLXFLAGS = -Iinclude -lglfw # in my mac
+MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
 
+# MLXFLAGS = -Iinclude -lglfw # in my mac
+
+CFLAGS = -Wall -Wextra -Werror
 
 SRC = $(wildcard src/*.c)
 
@@ -28,10 +30,9 @@ INCLUDES = $(wildcard includes/*.h)
 	@echo "$(CYAN)Compiling $<...$(RESET)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-
 all: $(NAME) 
 
-$(NAME): $(OBJ) #mlxlib 
+$(NAME): $(OBJ) build mlxlib
 	@echo "$(BOLD)$(BLUE)┌──── Building $(NAME) ────┐$(RESET)"
 	@echo " $(YELLOW)Compiling libft...$(RESET)"
 	@make -C libs/libft
@@ -60,10 +61,8 @@ re: fclean all
 
 .PHONY: all clean fclean re mlxlib
 
-# build:
-# 	brew install glfw
-# 	brew install cmake
-# 	git clone https://github.com/codam-coding-college/MLX42.git
+build:
+	brew install glfw
+	cd libs/ && git clone https://github.com/codam-coding-college/MLX42.git || cd ..
 
-CFLAGS = -g -fsanitize=address -Wall -Wextra -Werror
 

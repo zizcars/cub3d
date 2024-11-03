@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:13:37 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/02 20:53:21 by mac              ###   ########.fr       */
+/*   Updated: 2024/11/03 09:39:45 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@
 // {
 // 	system("leaks -q cub3D");
 // }
-// You should display emty spaces before 0s and 1s
 
 int	main(int ac, char **av)
 {

@@ -6,15 +6,13 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:14:32 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/28 12:55:59 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 09:47:58 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 # define TYPES_H
 
-# include <stdbool.h>
-# include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
 # include "../libs/libft/libft.h"
@@ -24,7 +22,7 @@
 # define WIDTH 1280
 # define HEIGHT 720
 # define BOX 20
-# define NUM_RAYS 1280 // should be width of the window
+# define NUM_RAYS 1280
 
 # define FACTOR 0.4
 # define ROTATION_ANGLE 5

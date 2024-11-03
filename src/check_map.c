@@ -3,30 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 14:48:01 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/02 20:56:51 by mac              ###   ########.fr       */
+/*   Updated: 2024/11/03 09:39:35 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utiles.h"
-// remove the mac name in hidder file
-bool invalid(char c)
+
+bool	invalid(char c)
 {
 	return (c == SPACE || c == '\0');
 }
 
-static void check_first_line(char **map)
+static void	check_first_line(char **map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map[0][i])
 	{
 		if (map[0][i] == SPACE)
 		{
-			if ((int)ft_strlen(map[1]) >= i && (map[1][i] != SPACE && map[1][i] != '1' && map[1][i] != '\0'))
+			if ((int)ft_strlen(map[1]) >= i && 
+				(map[1][i] != SPACE && map[1][i] != '1' && map[1][i] != '\0'))
 				ft_error("The map not srounded by walls");
 		}
 		else if (map[0][i] != '1')
@@ -35,9 +36,9 @@ static void check_first_line(char **map)
 	}
 }
 
-static void check_last_line(char *last_line)
+static void	check_last_line(char *last_line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (last_line[i])
@@ -48,15 +49,18 @@ static void check_last_line(char *last_line)
 	}
 }
 
-static void check_others(char **map, int i, int j)
+static void	check_others(char **map, int i, int j)
 {
 	if (check_char(map[i][j]) == false)
 		ft_error("invalid char");
-	if (map[i][j] == '0' || map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
+	if (map[i][j] == '0' || map[i][j] == 'N' || 
+		map[i][j] == 'S' || map[i][j] == 'E' || map[i][j] == 'W')
 	{
-		if (((int)ft_strlen(map[i + 1]) >= j && invalid(map[i + 1][j])) || (int)ft_strlen(map[i + 1]) < j)
+		if (((int)ft_strlen(map[i + 1]) >= j && 
+				invalid(map[i + 1][j])) || (int)ft_strlen(map[i + 1]) < j)
 			ft_error("Map not srounded by walls");
-		else if (((int)ft_strlen(map[i - 1]) > j && invalid(map[i - 1][j])) || (int)ft_strlen(map[i - 1]) < j)
+		else if (((int)ft_strlen(map[i - 1]) > j && 
+				invalid(map[i - 1][j])) || (int)ft_strlen(map[i - 1]) < j)
 			ft_error("Map not srounded by walls");
 		else if (invalid(map[i][j + 1]))
 			ft_error("Map not srounded by walls");
@@ -65,11 +69,11 @@ static void check_others(char **map, int i, int j)
 	}
 }
 
-void check_map(t_info *info)
+void	check_map(t_info *info)
 {
-	int i;
-	int j;
-	int count;
+	int	i;
+	int	j;
+	int	count;
 
 	count = 0;
 	check_first_line(info->map);

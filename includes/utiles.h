@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:18:31 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/28 11:26:35 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 09:51:25 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ bool	check_filename(char *file_name);
 bool	check_color(int *color);
 void	check_map(t_info *info);
 t_info	*read_info(int fd);
-void	put_pixel(mlx_image_t *image, int x, int y, int color);
-void	display_square(mlx_image_t *image, int color, const int x, const int y);
 int		get_rgba(int r, int g, int b, int a);
 void	display_mini_map(t_mlx *mlx);
 void	display_window(t_mlx *mlx);
@@ -45,8 +43,8 @@ void	render3d(t_mlx mlx, t_point *x);
 int		get_color(mlx_texture_t *texture, int x, int y);
 t_point	*calculate_horizontal_intersection(t_mlx mlx, double angle);
 t_point	*calculate_vertical_intersection(t_mlx mlx, const double angle);
-void	store_color(char *tmp, char c, int **color_box);
-void	store_path(char *tmp, char c1, char c2, char **path_box);
+void	store_color(char *tmp, int **color_box);
+void	store_path(char *tmp, char **path_box);
 void	take_map(t_info *info, char *line, int fd);
 bool	move_check(t_mlx mlx, int nx, int ny);
 
