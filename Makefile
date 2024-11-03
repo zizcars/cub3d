@@ -61,7 +61,7 @@ re: fclean all
 
 .PHONY: all clean fclean re mlxlib
 
-build:
+# build:
 # brew install glfw
 # cd libs/ && git clone https://github.com/codam-coding-college/MLX42.git || cd ..
 
