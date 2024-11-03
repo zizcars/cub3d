@@ -6,13 +6,12 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:11:05 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 13:02:57 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 09:43:48 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
-// print Error massege in stderr
 void	ft_error(char *error_ms)
 {
 	write(STDERR_FILENO, error_ms, ft_strlen(error_ms));
@@ -20,36 +19,33 @@ void	ft_error(char *error_ms)
 	exit(1);
 }
 
-static bool	check_file_char(char c)
-{
-	char	*chars;
-
-	chars = "NSWECF";
-	while (*chars)
-	{
-		if (*chars == c)
-			return (false);
-		chars++;
-	}
-	return (true);
-}
-
 static void	fill_info(char *tmp, t_info *info)
 {
-	store_path(tmp, 'N', 'O', &info->north_path);
-	store_path(tmp, 'S', 'O', &info->south_path);
-	store_path(tmp, 'W', 'E', &info->west_path);
-	store_path(tmp, 'E', 'A', &info->east_path);
-	store_color(tmp, 'C', &info->c_color);
-	store_color(tmp, 'F', &info->f_color);
-	if (check_file_char(tmp[0]) && tmp[0] != '\0')
+	if (tmp[0] == 'N' && tmp[1] == 'O' && (tmp[2] == SPACE || tmp[2] == TAB))
+		store_path(tmp, &info->north_path);
+	else if (tmp[0] == 'S' && tmp[1] == 'O' && 
+		(tmp[2] == SPACE || tmp[2] == TAB))
+		store_path(tmp, &info->south_path);
+	else if (tmp[0] == 'W' && tmp[1] == 'E' && 
+		(tmp[2] == SPACE || tmp[2] == TAB))
+		store_path(tmp, &info->west_path);
+	else if (tmp[0] == 'E' && tmp[1] == 'A' && 
+		(tmp[2] == SPACE || tmp[2] == TAB))
+		store_path(tmp, &info->east_path);
+	else if (tmp[0] == 'C' && (tmp[1] == SPACE || tmp[1] == TAB))
+		store_color(tmp, &info->c_color);
+	else if (tmp[0] == 'F' && (tmp[1] == SPACE || tmp[1] == TAB))
+		store_color(tmp, &info->f_color);
+	else if (!tmp[0])
+		return ;
+	else
 		ft_error("Invalid information");
 }
 
 void	check_info(t_info *info)
 {
-	if (info->east_path == NULL || info->north_path == NULL \
-			|| info->south_path == NULL || info->west_path == NULL)
+	if (info->east_path == NULL || info->north_path == NULL 
+		|| info->south_path == NULL || info->west_path == NULL)
 		ft_error("A texter path is missing");
 	if (info->c_color == NULL || info->f_color == NULL)
 		ft_error("Color is missing");

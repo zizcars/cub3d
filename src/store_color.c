@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:48:14 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/27 13:00:44 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 09:44:57 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ static int	*take_color_init(char *s_color)
 	return (color);
 }
 
-void	store_color(char *tmp, char c, int **color_box)
+void	store_color(char *tmp, int **color_box)
 {
-	if (tmp[0] == c && (tmp[1] == SPACE || tmp[1] == TAB))
-	{
-		free(*color_box);
-		*color_box = take_color_init(tmp);
-	}
+	free(*color_box);
+	*color_box = take_color_init(tmp);
 }
