@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:48:14 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 09:44:57 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 16:41:15 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,16 +53,39 @@ static void	take_color(char **color_split, int **color, char *tmp)
 	}
 }
 
+static void	check_comas(char *tmp)
+{
+	int		i;
+	int		count_coma;
+
+	i = 0;
+	count_coma = 0;
+	while(tmp[i])
+	{
+		if (tmp[i] == ',')
+			count_coma++;
+		else if (ft_isdigit(tmp[i]) == 0)
+			count_coma = 0;
+		if (count_coma > 1)
+			ft_error("Invalid color number");
+		i++;
+	}
+	if (count_coma != 0)
+		ft_error("Invalid color number");
+}
+
 static int	*take_color_init(char *s_color)
 {
 	int		*color;
 	char	*tmp;
 	char	**color_split;
 
+
 	color = ft_calloc(3, sizeof(int));
 	if (color == NULL)
 		ft_error("Malloc Flailed");
 	tmp = ft_substr(s_color, 1, ft_strlen(s_color));
+	check_comas(tmp);
 	color_split = ft_split(tmp, ',');
 	free(tmp);
 	if (array_length(color_split) > 3)

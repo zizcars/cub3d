@@ -32,7 +32,7 @@ INCLUDES = $(wildcard includes/*.h)
 
 all: $(NAME) 
 
-$(NAME): $(OBJ) build mlxlib
+$(NAME): $(OBJ) #build mlxlib
 	@echo "$(BOLD)$(BLUE)┌──── Building $(NAME) ────┐$(RESET)"
 	@echo " $(YELLOW)Compiling libft...$(RESET)"
 	@make -C libs/libft
