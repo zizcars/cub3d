@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:11:05 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 09:43:48 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 14:35:08 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ t_info	*read_info(int fd)
 	t_info	*info;
 
 	info = ft_calloc(1, sizeof(t_info));
+	if (!info)
+		return (NULL);
 	line = get_next_line(fd);
 	tmp = ft_strtrim(line, " 	\n");
 	while (tmp && tmp[0] != '1')
@@ -72,9 +74,6 @@ t_info	*read_info(int fd)
 	check_info(info);
 	take_map(info, line, fd);
 	if (!load_all_textures(&info))
-	{
-		free_info(info);
-		return (NULL);
-	}
+		return (free_info(info), NULL);
 	return (info);
 }

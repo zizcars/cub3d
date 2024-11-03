@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 11:35:58 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/10/28 11:29:10 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 15:58:57 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,18 @@ void	calculate_texture_x(t_mlx mlx, t_point *x, t_render *render)
 		render->r = 2;
 		if (x->angle <= M_PI && x->angle >= 0)
 			render->r = 1;
-		render->texture_off_set_x = ((x->x / BOX) - floor(x->x / BOX)) * \
-			mlx.info->texture[render->r]->width;
+		render->texture_off_set_x 
+			= (int) fmodf((x->x * mlx.info->texture[render->r]->width / BOX),
+				mlx.info->texture[render->r]->width);
 	}
 	else
 	{
 		render->r = 0;
 		if (x->angle <= (3 * M_PI) / 2 && x->angle >= M_PI / 2)
 			render->r = 3;
-		render->texture_off_set_x = ((x->y / BOX) - floor(x->y / BOX)) * \
-			mlx.info->texture[render->r]->width;
+		render->texture_off_set_x 
+			= (int) fmodf((x->y * mlx.info->texture[render->r]->width / BOX),
+				mlx.info->texture[render->r]->width);
 	}
 }
 

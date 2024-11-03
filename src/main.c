@@ -6,7 +6,7 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 15:13:37 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 13:11:33 by abounab          ###   ########.fr       */
+/*   Updated: 2024/11/03 17:55:59 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,3 @@ int	main(int ac, char **av)
 	else
 		ft_error("./cub3d A path for map");
 }
-

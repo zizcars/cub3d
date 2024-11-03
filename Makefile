@@ -18,7 +18,7 @@ MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/l
 
 # MLXFLAGS = -Iinclude -lglfw # in my mac
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
 SRC = $(wildcard src/*.c)
 
@@ -62,7 +62,7 @@ re: fclean all
 .PHONY: all clean fclean re mlxlib
 
 build:
-	brew install glfw
-	cd libs/ && git clone https://github.com/codam-coding-college/MLX42.git || cd ..
+# brew install glfw
+# cd libs/ && git clone https://github.com/codam-coding-college/MLX42.git || cd ..
 
 
