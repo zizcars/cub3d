@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
+/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 15:36:41 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/28 11:28:14 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/03 22:02:17 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int	get_color(mlx_texture_t *texture, int x, int y)
 	int		p;
 	int		color;
 
-	p = (y * texture->width * 4) + (x * 4);
+	p = (y * texture->width * texture->bytes_per_pixel) + \
+		(x * texture->bytes_per_pixel);
 	if (x < 0 || y < 0 || p >= (int)(texture->width * \
 		texture->bytes_per_pixel * texture->height))
 		return (0);

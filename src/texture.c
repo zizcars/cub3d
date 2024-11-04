@@ -6,13 +6,12 @@
 /*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 19:29:20 by abounab           #+#    #+#             */
-/*   Updated: 2024/10/29 16:29:44 by abounab          ###   ########.fr       */
+/*   Updated: 2024/11/03 22:03:03 by abounab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/utiles.h"
 
-// have to free it later after use
 int	load_all_textures(t_info **info)
 {
 	(*info)->texture[0] = mlx_load_png((*info)->north_path);
