@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   types.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:14:32 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 13:12:37 by abounab          ###   ########.fr       */
+/*   Updated: 2024/11/04 10:20:36 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@
 # define TAB 9
 # define SIZE 20
 # define SPEED 6
-// # define PLAYER_FOV 1.047198
-// is 60 degree
 # define PLAYER_FOV 1.0472
 
 # define FRAME_Y 160

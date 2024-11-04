@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utiles.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abounab <abounab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:18:31 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 17:05:45 by abounab          ###   ########.fr       */
+/*   Updated: 2024/11/04 10:18:59 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define UTILES_H
 
 # include "types.h"
-// # define malloc(size) NULL
 
 bool	check_filename(char *file_name);
 bool	check_color(int *color);

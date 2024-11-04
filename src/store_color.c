@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:48:14 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 16:41:15 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:17:50 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	check_comas(char *tmp)
 
 	i = 0;
 	count_coma = 0;
-	while(tmp[i])
+	while (tmp[i])
 	{
 		if (tmp[i] == ',')
 			count_coma++;
@@ -79,7 +79,6 @@ static int	*take_color_init(char *s_color)
 	int		*color;
 	char	*tmp;
 	char	**color_split;
-
 
 	color = ft_calloc(3, sizeof(int));
 	if (color == NULL)

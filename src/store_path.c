@@ -6,7 +6,7 @@
 /*   By: achakkaf <achakkaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/27 12:56:21 by achakkaf          #+#    #+#             */
-/*   Updated: 2024/11/03 16:14:19 by achakkaf         ###   ########.fr       */
+/*   Updated: 2024/11/04 10:18:10 by achakkaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ static char	*take_diraction_path(char *trim_line)
 	start = i;
 	while (trim_line[i] != SPACE && trim_line[i] != TAB && trim_line[i] != '\0')
 		i++;
-	// if (trim_line[i] == SPACE || trim_line[i] == TAB)
-	// 	ft_error("Invalid information");
 	return (ft_substr(trim_line, start, i));
 }
 
