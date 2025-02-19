@@ -31,5 +31,5 @@ int	main(int ac, char **av)
 		display_window(&mlx);
 	}
 	else
-		ft_error("./cub3d A path for map");
+		ft_error("./cub3D /path/to/a/map.ber\nExemple:\n./cub3D maps/map.ber");
 }

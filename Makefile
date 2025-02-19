@@ -14,9 +14,9 @@ NAME = cub3D
 
 LIB = libs/libft/libft.a libs/MLX42/build/libmlx42.a
 
-MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
+# MLXFLAGS = -Iinclude -lglfw -L"/Users/$(USER)/goinfre/homebrew/Cellar/glfw/3.4/lib/" #in school mac
 
-# MLXFLAGS = -Iinclude -lglfw # in my mac
+MLXFLAGS = -Iinclude -lglfw # in my mac
 
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 
