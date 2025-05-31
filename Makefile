@@ -32,7 +32,7 @@ INCLUDES = $(wildcard includes/*.h)
 
 all: $(NAME) 
 
-$(NAME): $(OBJ) #build mlxlib
+$(NAME): build mlxlib $(OBJ) 
 	@echo "$(BOLD)$(BLUE)┌──── Building $(NAME) ────┐$(RESET)"
 	@echo " $(YELLOW)Compiling libft...$(RESET)"
 	@make -C libs/libft
@@ -61,8 +61,8 @@ re: fclean all
 
 .PHONY: all clean fclean re mlxlib
 
-# build:
-# brew install glfw
-# cd libs/ && git clone https://github.com/codam-coding-college/MLX42.git || cd ..
+build:
+	@brew install glfw
+	@cd libs/ && git clone https://github.com/codam-coding-college/MLX42.git || cd ..
 
 

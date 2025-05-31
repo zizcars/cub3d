@@ -1,0 +1,15 @@
+WE  maps/texture/zelig3.png
+NO  maps/texture/zelig4.png
+SO  maps/texture/zelig5.png
+EA  maps/texture/zelig6.png
+
+F 150,100,50
+C 50,200,255
+
+111111
+100001
+101111
+101001
+100S01
+101001
+111111
